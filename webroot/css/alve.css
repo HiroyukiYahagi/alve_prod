@@ -1,0 +1,85 @@
+/* header */
+nav{
+	box-shadow: none;
+}
+
+.brand-logo{
+	left: 0;
+	width: 100%;
+	text-align:
+	center;
+	z-index: 0;
+}
+
+
+/* main */
+header, main, footer {
+  margin-left: 240px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    margin-left: 0;
+  }
+}
+
+main{
+	padding: 20px;
+}
+
+blockquote{
+	border-left: 5px solid #4CAF50;
+}
+
+i.fa-with{
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.content{
+	margin-bottom: 40px;
+}
+
+/* title and buttons */
+.title-and-item{
+	display: block;
+	position: relative;
+}
+
+.title-and-item > *{
+	display: inline-block;
+	position: relative;
+}
+
+.title-and-item > a{
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	position: absolute;
+	margin-left: 10px;
+}
+
+/* flush message */
+.message{
+	position: relative;
+	margin: 0.5rem 0 1rem 0;
+	background-color: #fff;
+	border-radius: 2px;
+	padding: 20px;
+	box-shadow: 0 2px 5px 0  rgba(0, 0, 0, 0.16), 0 2px 10px 0  rgba(0, 0, 0, 0.12)
+}
+
+.message.success{
+	background-color: #e8f5e9;
+	color: #1b5e20;
+}
+
+.message.error{
+	background-color: #ffebee;
+	color: #b71c1c;
+}
+
+.hidden{
+	display: none;
+}
+
