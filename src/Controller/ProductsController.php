@@ -41,11 +41,10 @@ class ProductsController extends AppController
         $types = $this->Types->find();
         $this->set('types', $types);
 
-        $data = $this->request->data;
-        var_dump($data);
-
-        if ($this->request->is('get') && isset($this->request->data['condition'])) {
-            var_dump("ok");
+        $data = $this->request->query;
+        if ($this->request->is('get') && isset($data['condition'])) {
+            $products = $this->Products->findByConditions($data['condition'], isset($data['options'])? $data['options'] : null );
+            $this->set('products', $products);            
         }
     }
 
@@ -84,10 +83,11 @@ class ProductsController extends AppController
                 $this->Flash->error(__('The product could not be saved. Please, try again.'));
             }
         }
-        $company = $this->Products->Company->find('list', ['limit' => 200]);
-        $types = $this->Products->Types->find('list', ['limit' => 200]);
-        $this->set(compact('product', 'company', 'types'));
-        $this->set('_serialize', ['product']);
+
+        $this->loadModel("Types");
+        $types = $this->Types->find();
+        $this->set('types', $types);
+
     }
 
     /**

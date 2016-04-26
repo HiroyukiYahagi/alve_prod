@@ -125,4 +125,5 @@
 					<td>$0.87</td>
 				</tr>
 			</tbody>
+			
 		</table>

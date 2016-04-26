@@ -40,7 +40,7 @@
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
 			<?= __('Product Evaluation') ?>
 		</h5>
-		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit" ]);?>'>
+		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "add" ]);?>'>
 			<i class="fa fa-plus"></i>
 		</a>
 	</div>
@@ -70,10 +70,10 @@
 								<td><?php echo $product->modified; ?></td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn-large grey">
+									<a class="btn-floating btn-large grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn-large grey">
+									<a class="btn-floating btn-large grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
 										<i class="fa fa-trash"></i>
 									</a>
 
@@ -111,10 +111,10 @@
 								<td><?php echo $product->modified; ?></td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn-large grey">
+									<a class="btn-floating btn-large grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $product->id ]);?>'>
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn-large grey">
+									<a class="btn-floating btn-large grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $product->id ]);?>'>
 										<i class="fa fa-trash"></i>
 									</a>
 								</td>
@@ -130,15 +130,13 @@
 </div>
 
 
-
-
 <div class="content">
 	<div class="title-and-item">
 		<h5>
 			<i class="fa fa-filter fa-with" aria-hidden="true"></i>
 			<?= __('Folumas Evaluation') ?>
 		</h5>
-		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit" ]);?>'>
+		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "add" ]);?>'>
 			<i class="fa fa-plus"></i>
 		</a>
 	</div>

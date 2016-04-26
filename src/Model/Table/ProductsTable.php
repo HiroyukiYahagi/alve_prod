@@ -91,4 +91,9 @@ class ProductsTable extends Table
         $rules->add($rules->existsIn(['type_id'], 'Types'));
         return $rules;
     }
+
+    public function findByConditions($condition, $options)
+    {
+        return null;
+    }
 }
