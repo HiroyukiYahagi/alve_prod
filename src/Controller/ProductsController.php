@@ -46,6 +46,9 @@ class ProductsController extends AppController
             $products = $this->Products->findByConditions($data['condition'], isset($data['options'])? $data['options'] : null );
             $this->set('products', $products);            
         }
+
+        $this->viewBuilder()->layout(false);
+
     }
 
 

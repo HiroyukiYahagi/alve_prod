@@ -1,3 +1,3 @@
-<li><a href="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>"><i class="fa fa-search fa-lg fa-with"></i>登録製品検索</a></li>
+<!-- <li><a href="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>"><i class="fa fa-search fa-lg fa-with"></i>登録製品検索</a></li> -->
 <li><a href="<?php echo $this->Url->build(["controller" => "Companies", "action" => "view" ]);?>"><i class="fa fa-user fa-lg fa-with"></i>マイページ</a></li>
 <li><a href="<?php echo $this->Url->build(["controller" => "Companies", "action" => "logout" ]);?>"><i class="fa fa-sign-out fa-lg fa-with"></i>ログアウト</a></li>
