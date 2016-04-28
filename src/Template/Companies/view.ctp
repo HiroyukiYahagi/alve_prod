@@ -1,6 +1,6 @@
 <h4><?= __('My Page') ?></h4>
 
-<div class="content">
+<div class="row">
 	<h5>
 		<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
 		<?= __('Company Infomation') ?>
@@ -14,16 +14,16 @@
 				</a>
 			</div>
 			<label><?= __('Company Name') ?></label>
-			<p><? echo $company->name;?></p>
+			<p><?php echo $company->name;?></p>
 
 			<label><?= __('E-mail') ?></label>
-			<p><? echo $company->email;?></p>
+			<p><?php echo $company->email;?></p>
 
 			<label><?= __('URL') ?></label>
-			<p><? echo $company->url;?></p>
+			<p><?php echo $company->url;?></p>
 
 			<label><?= __('TEL') ?></label>
-			<p><? echo $company->tel;?></p>
+			<p><?php echo $company->tel;?></p>
 		</div>
 		<div class="card-action">
 			<a href="#" class="waves-effect waves-light btn grey"><?= __('Label Download') ?></a>
@@ -34,7 +34,7 @@
 </div>
 
 
-<div class="content">
+<div class="row">
 	<div class="title-and-item">
 		<h5>
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
@@ -130,7 +130,7 @@
 </div>
 
 
-<div class="content">
+<div class="row">
 	<div class="title-and-item">
 		<h5>
 			<i class="fa fa-filter fa-with" aria-hidden="true"></i>

@@ -34,6 +34,13 @@ class EvaluationHeadsTable extends Table
         $this->belongsTo('Allocations', [
             'foreignKey' => 'allocation_id'
         ]);
+
+        $this->belongsToMany('Units', [
+            'joinTable' => 'Units',
+            'foreignKey' => 'category',
+            'targetForeignKey' => 'unit_category'
+        ]);
+
     }
 
     /**

@@ -126,4 +126,16 @@ class AppController extends Controller
         return $this->Auth->user()['id'];
     }
 
+
+    protected function _setUnitMap(){
+        $this->loadModel("Units");
+        $units = $this->Units->find('all');
+
+        foreach ($units as $unit) {
+            $unitMap[$unit['category']][] = $unit;
+        }
+
+        $this->set('units', $unitMap);
+    }
+
 }

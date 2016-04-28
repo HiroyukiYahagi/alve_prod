@@ -111,13 +111,15 @@ class CompaniesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $company = $this->Companies->patchEntity($company, $this->request->data);
-
             $result = $this->Companies->save($company);
+            //var_dump($result);
             if ($result) {
                 $this->Flash->success(__('The company has been saved.'));
                 return $this->redirect(['action' => 'view']);
             } else {
-                $this->Flash->error(__('The company could not be saved. Please, try again.'));
+                foreach ($company->errors() as $key => $value) {
+                    $this->Flash->error($key.__(' is Invalid.'));   
+                }
             }
         }
         $this->set(compact('company'));

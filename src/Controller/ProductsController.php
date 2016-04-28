@@ -73,21 +73,44 @@ class ProductsController extends AppController
      */
     public function add()
     {
-        $product = $this->Products->newEntity();
-        if ($this->request->is('post')) {
-            $product = $this->Products->patchEntity($product, $this->request->data);
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('The product has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The product could not be saved. Please, try again.'));
-            }
-        }
-
         $this->loadModel("Types");
         $types = $this->Types->find();
         $this->set('types', $types);
 
+        $this->_setEvaluationHeads();
+        $this->_setUnitMap();
+
+    }
+
+    private function _setEvaluationHeads(){
+        $this->loadModel("EvaluationHeads");
+        $evaluationHeads = $this->EvaluationHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
+
+        foreach ($evaluationHeads as $evaluationHead) {
+            $evaluationHeadsMap[$evaluationHead->large_type][] = $evaluationHead;
+        }
+        $this->set('evaluationHeadsMap', $evaluationHeadsMap);
+    }
+
+    public function evaluate(){
+
+        $id = $this->request->data['id'];
+
+        $json = json_encode(['id' => $id ,'data' => ['result' => 'OK', 'point' => 'OK' ]]);
+        echo $json;
+
+        $this->autoRender = false;
+    }
+
+
+    public function save(){
+        $this->Flash->success(__('Product has been saved.'));
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+    }
+
+    public function submit(){
+        $this->Flash->success(__('Product has been submitted.'));
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 
     /**

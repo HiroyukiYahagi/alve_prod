@@ -16,9 +16,19 @@ $(function() {
 	$('select').material_select();
 
 	$('.datepicker').pickadate({
-	    selectMonths: true, // Creates a dropdown to control month
-	    selectYears: 15 // Creates a dropdown of 15 years to control year
+	    selectMonths: true,
+	    selectYears: 15,
 	});
 
+	$('.modal-trigger').leanModal();
+
+	$('.submit').click(function() {
+	  $(this).parents('form').attr('action', $(this).data('action'));
+	  $(this).parents('form').submit();
+	});
 	
 });
+
+
+
+

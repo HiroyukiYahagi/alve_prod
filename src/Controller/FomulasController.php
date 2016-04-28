@@ -51,20 +51,30 @@ class FomulasController extends AppController
      */
     public function add()
     {
-        $fomula = $this->Fomulas->newEntity();
-        if ($this->request->is('post')) {
-            $fomula = $this->Fomulas->patchEntity($fomula, $this->request->data);
-            if ($this->Fomulas->save($fomula)) {
-                $this->Flash->success(__('The fomula has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The fomula could not be saved. Please, try again.'));
-            }
-        }
-        $company = $this->Fomulas->Company->find('list', ['limit' => 200]);
-        $this->set(compact('fomula', 'company'));
-        $this->set('_serialize', ['fomula']);
+        $this->_setFomulaHeads();
+        $this->_setUnitMap();
     }
+
+    private function _setFomulaHeads(){
+        $this->loadModel("FomulaHeads");
+        $fomulaHeads = $this->FomulaHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
+
+        foreach ($fomulaHeads as $fomulaHead) {
+            $fomulaHeadsMap[$fomulaHead->large_type][] = $fomulaHead;
+        }
+        $this->set('fomulaHeadsMap', $fomulaHeadsMap);
+    }
+
+    public function evaluate(){
+
+        $id = $this->request->data['id'];
+
+        $json = json_encode(['id' => $id ,'data' => ['result' => 'OK', 'point' => 'OK' ]]);
+        echo $json;
+
+        $this->autoRender = false;
+    }
+
 
     /**
      * Edit method

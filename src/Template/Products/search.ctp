@@ -6,7 +6,7 @@
 </blockquote>
 
 
-<div class="content">
+<div class="row">
 	<div class="card">
 		<form method="get" action="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>">
 			<div class="card-content">
@@ -38,7 +38,7 @@
 	</div>
 </div>
 
-<div class="content">
+<div class="row">
 	<div class="card">
 		<div class="card-content">
 			<?php if(!isset($results)): ?>
@@ -77,6 +77,5 @@
 
 		<?php endif; ?>
 	</div>
-</div>
 </div>
 
