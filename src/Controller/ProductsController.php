@@ -93,6 +93,7 @@ class ProductsController extends AppController
             $evaluationHeadsMap[$evaluationHead->large_type][] = $evaluationHead;
         }
         $this->set('evaluationHeadsMap', $evaluationHeadsMap);
+        return $evaluationHeadsMap;
     }
 
     public function evaluate(){
@@ -105,15 +106,70 @@ class ProductsController extends AppController
         $this->autoRender = false;
     }
 
+    private function _validateProductEvaluation($data){
+        return true;
+    }
+
+    private function _saveData($data){
+        return 1;
+    }
 
     public function save(){
+        $data = $this->request->query;
+        $this->_saveData($data);
+        if($product == null){
+            $this->Flash->error(__('Invalid Access.'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
         $this->Flash->success(__('Product has been saved.'));
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 
     public function submit(){
-        $this->Flash->success(__('Product has been submitted.'));
-        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        $data = $this->request->query;
+        $product = $this->_saveData($data);
+
+        if($product == null){
+            $this->Flash->error(__('Invalid Access.'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        if(!$this->_validateProductEvaluation($data)){
+            $this->Flash->error(__('Not completed.'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'edit'], $product->id);
+        }
+
+
+        $product = $this->Products->newEntity();
+
+        //product
+        $product->name = "製品名A";
+        $product->model_number = "ASDFG-ASDF";
+        $product->type = "aaaa";
+        $product->operator_name = "yahagi hiroyuki";
+        $product->product_comment = "test-comment";
+        $product->modified = date("Ymd");
+
+
+        $this->set('product', $product);
+
+        //set results
+        $results = [
+            '省エネルギー' => '2',
+            'リデュース' => '3',
+            'リユース' => '2.5',
+            'リサイクル' => '3',
+            '環境・安全' => '1',
+            '情報提供' => '0',
+            '情報提供' => '-1'
+        ];
+        $this->set('results', $results);
+
+        //set answer
+        $answers = $this->_setEvaluationHeads();
+        $this->set('answersMap', $answers);
+        $this->render('view');
     }
 
     /**

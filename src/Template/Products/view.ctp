@@ -1,99 +1,148 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Product'), ['action' => 'edit', $product->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Product'), ['action' => 'delete', $product->id], ['confirm' => __('Are you sure you want to delete # {0}?', $product->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Products'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Product'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Company'), ['controller' => 'Company', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Company', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Types'), ['controller' => 'Types', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Type'), ['controller' => 'Types', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Evaluations'), ['controller' => 'Evaluations', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Evaluation'), ['controller' => 'Evaluations', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="products view large-9 medium-8 columns content">
-    <h3><?= h($product->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Company') ?></th>
-            <td><?= $product->has('company') ? $this->Html->link($product->company->name, ['controller' => 'Company', 'action' => 'view', $product->company->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Type') ?></th>
-            <td><?= $product->has('type') ? $this->Html->link($product->type->id, ['controller' => 'Types', 'action' => 'view', $product->type->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Product Name') ?></th>
-            <td><?= h($product->product_name) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Model Number') ?></th>
-            <td><?= h($product->model_number) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Operator Name') ?></th>
-            <td><?= h($product->operator_name) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($product->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Deleted') ?></th>
-            <td><?= $this->Number->format($product->deleted) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created') ?></th>
-            <td><?= h($product->created) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Modified') ?></th>
-            <td><?= h($product->modified) ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Product Comment') ?></h4>
-        <?= $this->Text->autoParagraph(h($product->product_comment)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('Product Info Url') ?></h4>
-        <?= $this->Text->autoParagraph(h($product->product_info_url)); ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Evaluations') ?></h4>
-        <?php if (!empty($product->evaluations)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Product Id') ?></th>
-                <th><?= __('Compared Product Id') ?></th>
-                <th><?= __('Created') ?></th>
-                <th><?= __('Modified') ?></th>
-                <th><?= __('Deleted') ?></th>
-                <th><?= __('Update Comment') ?></th>
-                <th><?= __('Completed') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($product->evaluations as $evaluations): ?>
-            <tr>
-                <td><?= h($evaluations->id) ?></td>
-                <td><?= h($evaluations->product_id) ?></td>
-                <td><?= h($evaluations->compared_product_id) ?></td>
-                <td><?= h($evaluations->created) ?></td>
-                <td><?= h($evaluations->modified) ?></td>
-                <td><?= h($evaluations->deleted) ?></td>
-                <td><?= h($evaluations->update_comment) ?></td>
-                <td><?= h($evaluations->completed) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Evaluations', 'action' => 'view', $evaluations->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Evaluations', 'action' => 'edit', $evaluations->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Evaluations', 'action' => 'delete', $evaluations->id], ['confirm' => __('Are you sure you want to delete # {0}?', $evaluations->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+<h4><?= __('Evaluation Result') ?></h4>
+
+<div class="row">
+    <h5>
+        <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+        <?= __('Evaluation Infomation') ?>
+    </h5>
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Product Name') ?></label>
+                    <p><?php echo $product->name;?></p>
+                </div>
+                <div class="col s4">
+                    <label><?= __('Model Number') ?></label>
+                    <p><?php echo $product->model_number;?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Product Type') ?></label>
+                    <p><?php echo $product->type;?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Operator Name') ?></label>
+                    <p><?php echo $product->operator_name;?></p>
+                </div>
+                <div class="col s4">
+                    <label><?= __('Last Edit Date') ?></label>
+                    <p><?php echo $product->modified;?></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+<div class="row">
+    <h5>
+        <i class="fa fa-line-chart fa-with" aria-hidden="true"></i>
+        <?= __('Evaluation Result') ?>
+    </h5>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form method="post" action="#">
+    <input type="hidden" name="id" value="<?php echo $product->id;?>">
+    <div class="row">
+        <h5>
+            <i class="fa fa-file fa-with" aria-hidden="true"></i>
+            <?= __('Create Result Sheat') ?>
+        </h5>
+        <div class="card">
+            <div class="card-content">
+                <?php foreach($answersMap as $key => $answers):?>
+                    <div class="row">
+                        <div class="col s12">
+                        <h6><?php echo $key;?></h6>
+                        <?php foreach($answers as $key => $answer):?>
+                            <p>
+                                <input type="checkbox" class="filled-in" id="filled-in-box_<?php echo $answer->id;?>" checked="checked" name="reported_<?php echo $answer->id;?>"/>
+                                <label for="filled-in-box_<?php echo $answer->id;?>"><?php echo $answer->item_description;?></label>
+                            </p>
+                        <?php endforeach;?>
+                        </div>
+                    </div>
+                <?php endforeach;?>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="product_info" class="materialize-textarea" name="product_info"><?php echo $product->product_comment;?></textarea>
+                        <label for="product_info"><?= __('Product Information') ?></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf']);?>"><?= __('Create PDF Sheat') ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row fixed-button">
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register']);?>"><?= __('Go to register') ?></button>
+    </div>
+</form>
+
+
+
+<script>
+
+$(function() {
+
+    var ctx = $("#myChart");
+
+    var labels = [];
+    var dataset_data = [];
+    <?php foreach ($results as $key => $value): ?>
+        labels.push("<?php echo $key;?>");
+        dataset_data.push("<?php echo $value;?>");
+    <?php endforeach ?>
+
+    var data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "<?= __('Evaluation Result')?>",
+                backgroundColor: "rgba(76,175,80,0.2)",
+                borderColor: "rgba(76,175,80,1)",
+                pointBackgroundColor: "rgba(76,175,80,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(76,175,80,1)",
+                data: dataset_data
+            },
+        ]
+    };
+
+    var myRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: data,
+        options: {
+            scale: {
+                ticks: {
+                    min: -2,
+                    max: 4,
+                }
+            }
+        }
+    });
+
+});
+</script>

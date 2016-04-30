@@ -40,6 +40,8 @@ $cakeDescription = 'Alve';
     <?= $this->Html->css('alve.css') ?>
     <?= $this->Html->script('alve.js') ?>
 
+    <?= $this->Html->script('Chart.min.js') ?>
+
 </head>
 <body class="blue-grey lighten-5">
     <nav class="white">

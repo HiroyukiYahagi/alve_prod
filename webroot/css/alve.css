@@ -90,3 +90,12 @@ i.fa-with{
 	bottom: 0;
 	right: 20px;
 }
+
+
+#chart_div{
+	position: relative;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 80%;
+}
