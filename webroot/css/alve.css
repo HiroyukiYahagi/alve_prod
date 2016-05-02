@@ -36,6 +36,10 @@ i.fa-with{
 	margin-left: 5px;
 }
 
+i.fa-sm{
+	font-size: 20px;
+}
+
 .content{
 	margin-bottom: 40px;
 }
@@ -99,3 +103,39 @@ i.fa-with{
 	margin: auto;
 	width: 80%;
 }
+
+
+/* table for Register */
+table.table-for-product > thead > tr > th:nth-child(1){
+	width: 5%;
+}
+
+table.table-for-product > tbody > tr > td:nth-child(1) > p{
+	text-align: center;
+}
+
+table.table-for-product > thead > tr > th:nth-child(2){
+	width: 40%;
+}
+
+table.table-for-product > thead > tr > th:nth-child(3){
+	width: 10%;
+}
+
+table.table-for-product > thead > tr > th:nth-child(4){
+	width: 15%;
+}
+
+table.table-for-product > thead > tr > th:nth-child(5){
+	width: 10%;
+}
+
+table.table-for-product > thead > tr > th:nth-child(6){
+	width: 10%;
+}
+
+table.table-for-product > tbody > tr > th:nth-child(7){
+	width: 10%;
+}
+
+

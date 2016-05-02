@@ -37,6 +37,7 @@ class CompaniesTable extends Table
         $this->hasMany('Fomulas', [
             'foreignKey' => 'company_id'
         ]);
+        
         $this->hasMany('Products', [
             'foreignKey' => 'company_id'
         ]);

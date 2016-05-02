@@ -72,7 +72,7 @@
                         <h6><?php echo $key;?></h6>
                         <?php foreach($answers as $key => $answer):?>
                             <p>
-                                <input type="checkbox" class="filled-in" id="filled-in-box_<?php echo $answer->id;?>" checked="checked" name="reported_<?php echo $answer->id;?>"/>
+                                <input type="checkbox" class="filled-in" id="filled-in-box_<?php echo $answer->id;?>" checked="checked" name="reported[<?php echo $answer->id;?>]"/>
                                 <label for="filled-in-box_<?php echo $answer->id;?>"><?php echo $answer->item_description;?></label>
                             </p>
                         <?php endforeach;?>

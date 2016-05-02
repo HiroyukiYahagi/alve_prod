@@ -34,6 +34,19 @@ class CompaniesController extends AppController
             'contain' => ['Fomulas' => ['FomulaItems'], 'Products' => ['Types', 'Evaluations']]
         ]);
 
+        $completedProducts = array();
+        $editingProducts = array();
+        foreach ($company->products as $product) {
+            if($product->published == 1)
+                $completedProducts[] = $product;
+            else
+                $editingProducts[] = $product;
+
+        }
+        $this->set('completedProducts', $completedProducts);
+        $this->set('editingProducts', $editingProducts);
+
+
         $this->set('company', $company);
         $this->set('_serialize', ['company']);
     }
@@ -75,28 +88,6 @@ class CompaniesController extends AppController
     }
 
 
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $company = $this->Companies->newEntity();
-        if ($this->request->is('post')) {
-            $company = $this->Companies->patchEntity($company, $this->request->data);
-            if ($this->Companies->save($company)) {
-                $this->Flash->success(__('The company has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The company could not be saved. Please, try again.'));
-            }
-        }
-        $this->set(compact('company'));
-        $this->set('_serialize', ['company']);
-    }
-
     /**
      * Edit method
      *
@@ -126,13 +117,7 @@ class CompaniesController extends AppController
         $this->set('_serialize', ['company']);
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Company id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

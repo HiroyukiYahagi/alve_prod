@@ -17,23 +17,31 @@ class ProductsController extends AppController
         parent::beforeFilter($event);
         // ユーザーによるログアウトを許可する
         $this->Auth->allow(['search']);
-    }    
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Company', 'Types']
-        ];
-        $products = $this->paginate($this->Products);
 
-        $this->set(compact('products'));
-        $this->set('_serialize', ['products']);
+        //TODO
+        //自社のプロダクトID以外にアクセスが来た場合は強制リダイレクト
+        $this->_validateId($event);
     }
+
+    private function _validateId(Event $event){
+        if(isset($event->subject()->request->params['pass'][0])){
+            $id = $event->subject()->request->params['pass'][0];
+        }else if(isset($this->request->data['id'])){
+            $id = $this->request->data['id'];
+        }else if(isset($this->request->query['id'])){
+            $id = $this->request->query['id'];
+        }else{
+            return;
+        }
+
+        $product = $this->Products->get($id);
+        if($this->getAuthedUserId() != $product->company_id){
+            $this->Flash->error(__('Invalid Access'));
+            $this->redirect(['controller' => 'Top', 'action' => 'index']);
+        }
+    }
+
 
     public function search()
     {
@@ -51,38 +59,14 @@ class ProductsController extends AppController
 
     }
 
-
-    /**
-     * View method
-     *
-     * @param string|null $id Product id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => ['Company', 'Types', 'Evaluations']
+            'contain' => ['Companies', 'Types', 'Evaluations']
         ]);
 
         $this->set('product', $product);
         $this->set('_serialize', ['product']);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $this->loadModel("Types");
-        $types = $this->Types->find();
-        $this->set('types', $types);
-
-        $this->_setEvaluationHeads();
-        $this->_setUnitMap();
-
     }
 
     private function _setEvaluationHeads(){
@@ -96,27 +80,174 @@ class ProductsController extends AppController
         return $evaluationHeadsMap;
     }
 
+    public function edit($id = null)
+    {
+        $this->loadModel("Types");
+        $types = $this->Types->find();
+        $this->set('types', $types);
+
+        $this->_setEvaluationHeads();
+        $this->_setUnitMap();
+
+        if($id == null){
+            $this->set('title', __('New Product'));
+        }else{
+            $this->set('title', __('Edit Product'));
+            $product = $this->Products->get($id, [
+                'contain' => ['Types', 'Evaluations' => [ 'EvaluationItems' => ['Units'] ] ]
+            ]);
+            $this->set('product', $product);
+        }
+    }
+
+    /* ajax function */
     public function evaluate(){
-
-        $id = $this->request->data['id'];
-
-        $json = json_encode(['id' => $id ,'data' => ['result' => 'OK', 'point' => 'OK' ]]);
-        echo $json;
-
         $this->autoRender = false;
+
+        $evaluationId = $this->request->data['evaluation_id'];
+        $newValue = $this->request->data['newValue'];
+        $oldValue = $this->request->data['oldValue'];
+
+        echo json_encode([
+            'evaluation_id' => $evaluationId ,
+            'data' => $this->_evaluateValues($evaluationId, $newValue, $oldValue)]
+        );
+
+    }
+
+    private function _evaluateValues($evaluationId, $newValue, $oldValue){
+        $this->loadModel('EvaluationHeads');
+        $evaluationHead = $this->EvaluationHeads->get($evaluationId, ['contain' => ['Allocations' => ['AllocationItems'] ] ]);
+
+        $data = ['result' => '-', 'point' => '-'];
+        switch ($evaluationHead->allocation->allocation_type) {
+            case 1:
+                if($newValue == 0) break;
+                $rate = (($newValue - $oldValue)/$newValue)*100;
+                $data = $this->_rangeEvaluation($rate, $evaluationHead->allocation->allocation_items);
+                $data['result'] .= $evaluationHead->allocation->allocation_unit;
+                break;
+            case 2:
+                if($oldValue == 0) break;
+                $rate = (($oldValue - $newValue)/$oldValue)*100;
+                $data = $this->_rangeEvaluation($rate, $evaluationHead->allocation->allocation_items);
+                $data['result'] .= $evaluationHead->allocation->allocation_unit;
+                break;
+            case 0:
+                //特定値評価
+                $data = $this->_valueEvaluation($newValue, $evaluationHead->allocation->allocation_items);
+                break;
+        }
+        return $data;
+    }
+
+    private function _rangeEvaluation($rate, $candidates){
+        foreach ($candidates as $candidate) {
+            if($candidate->range_max === null || intval($candidate->range_max) > $rate ){
+                if($candidate->range_min === null || intval($candidate->range_min) <= $rate ){
+                    return ['result' => round($rate,1), 'point' => $candidate->point];
+                }
+            }
+        }
+        return ['result' => $rate, 'point' => '0'];
+    }
+
+    private function _valueEvaluation($newValue, $candidates){
+        foreach ($candidates as $candidate) {
+            if($newValue == $candidate->id){
+                return ['result' => '-', 'point' => $candidate->point];
+                
+            }
+        }
+        return ['result' => '-', 'point' => '-'];
     }
 
     private function _validateProductEvaluation($data){
+        if ($article->errors()) {
+            foreach ($article->errors() as $key => $error) {
+                $this->Flash->error(__('Error:').$error);
+            }
+            return false;
+        }
         return true;
     }
 
     private function _saveData($data){
-        return 1;
+        $companyId = $this->getAuthedUserId();
+        if(!isset($data['id'])){
+            $product = $this->Products->newEntity();
+            $product->company_id = $companyId;
+        }else{
+            $id = $data['id'];
+            $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
+        }
+        $product = $this->Products->patchEntity($product,$data);
+
+        if(!$this->Products->save($product)){
+            $this->Flash->error(__('Server Error'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        $this->loadModel('Evaluations');
+        if($product->evaluations == null){
+            $evaluation = $this->Evaluations->newEntity();
+            $evaluation->product_id = $product->id;
+        }else{
+            $evaluation = $product->evaluations[0];
+        }
+
+        $evaluation->compared_product_name = $data['compared_product_name'];
+        $evaluation->compared_model_number = $data['compared_model_number'];
+        $evaluation->completed == 0;
+        
+        if(!$this->Evaluations->save($evaluation)){
+            $this->Flash->error(__('Server Error'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        $evalId = $evaluation->id;
+        foreach ($data['selected'] as $key => $value) {
+            $this->_createEvaluationItem(
+                $evalId,
+                $key,
+                isset($data['units'][$key]) ? $data['units'][$key] : null,
+                isset($data['new_value'][$key]) ? $data['new_value'][$key] : null,
+                isset($data['old_value'][$key]) ? $data['old_value'][$key] : null
+            );
+        }
+
+        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
+        return $product;
+    }
+
+    private function _createEvaluationItem($evalId, $evalHeadId, $unit, $newValue, $oldValue){
+
+        $this->loadModel('EvaluationItems');
+
+        $evaluationItem = $this->EvaluationItems->find()
+            ->where(['evaluation_id' => $evalId])
+            ->where(['head_id' => $evalHeadId])
+            ->first();
+            
+        if($evaluationItem == null)
+            $evaluationItem = $this->EvaluationItems->newEntity();
+
+        $evaluationItem->evaluation_id = $evalId;
+        $evaluationItem->head_id = $evalHeadId;
+        $evaluationItem->unit_id = $unit;
+        $evaluationItem->value = $newValue;
+        $evaluationItem->compared_value = $oldValue;
+
+        if(!$this->EvaluationItems->save($evaluationItem)){
+            $this->Flash->error(__('Server Error'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }   
+
     }
 
     public function save(){
-        $data = $this->request->query;
-        $this->_saveData($data);
+        $data = $this->request->data;
+        $product = $this->_saveData($data);
         if($product == null){
             $this->Flash->error(__('Invalid Access.'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
@@ -126,10 +257,10 @@ class ProductsController extends AppController
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 
-    public function submit(){
-        $data = $this->request->query;
-        $product = $this->_saveData($data);
 
+    public function submit(){
+        $data = $this->request->data;
+        $product = $this->_saveData($data);
         if($product == null){
             $this->Flash->error(__('Invalid Access.'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
@@ -140,19 +271,12 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'edit'], $product->id);
         }
 
-
-        $product = $this->Products->newEntity();
-
-        //product
-        $product->name = "製品名A";
-        $product->model_number = "ASDFG-ASDF";
-        $product->type = "aaaa";
-        $product->operator_name = "yahagi hiroyuki";
-        $product->product_comment = "test-comment";
-        $product->modified = date("Ymd");
-
-
+        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ], 'Types']] );
         $this->set('product', $product);
+
+        //set answer
+        $answers = $this->_setEvaluationHeads();
+        $this->set('answersMap', $answers);
 
         //set results
         $results = [
@@ -166,38 +290,44 @@ class ProductsController extends AppController
         ];
         $this->set('results', $results);
 
-        //set answer
-        $answers = $this->_setEvaluationHeads();
-        $this->set('answersMap', $answers);
         $this->render('view');
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Product id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
+    public function register(){
+        $data = $this->request->data;
+        $id = $data['id'];
+
         $product = $this->Products->get($id, [
-            'contain' => []
+            'contain' => ['Companies', 'Types', 'Evaluations']
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $product = $this->Products->patchEntity($product, $this->request->data);
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('The product has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The product could not be saved. Please, try again.'));
-            }
+        $this->set('product', $product);
+
+        $this->loadModel('Types');
+        $types = $this->Types->find()->all();
+        $this->set('types', $types->toArray());
+
+        if(isset($data['status'])){
+            $evaluation_type = $data['evaluation_type'];
+            $this->set('evaluation_type', $evaluation_type);
+            $this->render('confirm');
         }
-        $company = $this->Products->Company->find('list', ['limit' => 200]);
-        $types = $this->Products->Types->find('list', ['limit' => 200]);
-        $this->set(compact('product', 'company', 'types'));
-        $this->set('_serialize', ['product']);
+
     }
+
+    public function publish(){
+        $data = $this->request->data;
+        $id = $data['id'];
+        $product = $this->Products->get($id);
+        $product->published = 1;
+        if($this->Products->save($product)){
+            $this->Flash->success(__('Successfully Published'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }else{
+            $this->Flash->error(__('Please Inform Administrator'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+    }
+
 
     /**
      * Delete method

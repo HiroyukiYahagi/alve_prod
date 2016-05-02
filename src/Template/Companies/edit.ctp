@@ -11,8 +11,8 @@
                         <input type="text" name="company_name" maxlength="256" id="company-name" value="<?php echo $company->company_name;?>">
                     </div>
                     <div class="input text">
-                        <label for="name" class="active"><?= __('Operator Name') ?></label>
-                        <input type="text" name="name" maxlength="256" id="name" value="<?php echo $company->name;?>">
+                        <label for="name_kana" class="active"><?= __('Company Name (Kana)') ?></label>
+                        <input type="text" name="name_kana" maxlength="256" id="name_kana" value="<?php echo $company->name_kana;?>">
                     </div>
                     <div class="input email">
                         <label for="email" class="active"><?= __('Email') ?></label>

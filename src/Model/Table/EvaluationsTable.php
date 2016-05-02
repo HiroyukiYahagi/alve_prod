@@ -36,9 +36,6 @@ class EvaluationsTable extends Table
         $this->belongsTo('Products', [
             'foreignKey' => 'product_id'
         ]);
-        $this->belongsTo('ComparedProducts', [
-            'foreignKey' => 'compared_product_id'
-        ]);
         $this->hasMany('EvaluationItems', [
             'foreignKey' => 'evaluation_id'
         ]);
@@ -80,7 +77,6 @@ class EvaluationsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['product_id'], 'Products'));
-        $rules->add($rules->existsIn(['compared_product_id'], 'ComparedProducts'));
         return $rules;
     }
 }
