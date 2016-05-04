@@ -123,7 +123,7 @@
                             <td>
                                 <?php if($evaluationHead->required == 0): ?>
                                 <p>
-                                    <input type="checkbox" id="selected_<?php echo $evaluationHead->id; ?>" name="selected[<?php echo $evaluationHead->id; ?>]" <?php echo isset($product->evaluations[0]->evaluation_items[$evaluationHead->id]) ? 'checked="checked"': ''; ?> />
+                                    <input type="checkbox" id="selected_<?php echo $evaluationHead->id; ?>" name="selected[<?php echo $evaluationHead->id; ?>]"  />
                                     <label for="selected_<?php echo $evaluationHead->id; ?>"></label>
                                 </p>
                                 <?php else: ?>
@@ -156,7 +156,7 @@
                             <td>
                                 <select id="units_<?php echo $evaluationHead->id; ?>" name="units[<?php echo $evaluationHead->id; ?>]">
                                     <?php foreach ($units[$evaluationHead->unit_category] as $unit):?>
-                                        <option value="<?php echo $unit->id;?>" <?php if(isset($product->evaluations[0]->evaluation_items[$evaluationHead->id]->unit_id)) echo $unit->id==$product->evaluations[0]->evaluation_items[$evaluationHead->id]->unit_id ? 'selected': ''; ?> ><?php echo $unit->name;?></option>
+                                        <option class="unit_id_<?php echo $unit->id;?>" value="<?php echo $unit->id;?>" <?php echo (isset($selectedUnits[$evaluationHead->id]) && $selectedUnits[$evaluationHead->id] == $unit->id ) ? 'selected' : '' ;?> ><?php echo $unit->name;?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </td>
@@ -165,14 +165,14 @@
                             <?php endif; ?>
                             <?php if($evaluationHead->allocation->allocation_type!=0):?>
                             <td>
-                                <input id="new_value_<?php echo $evaluationHead->id; ?>" type="number" name="new_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($product->evaluations[0]->evaluation_items[$evaluationHead->id]->value) ? $product->evaluations[0]->evaluation_items[$evaluationHead->id]->value: ''; ?>" min="0">
+                                <input id="new_value_<?php echo $evaluationHead->id; ?>" type="number" name="new_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedValues[$evaluationHead->id]) ? $selectedValues[$evaluationHead->id] : ''; ?>" min="0">
                             </td>
                             <?php elseif($evaluationHead->allocation->allocation_type==0): ?>
                             <td class="no-old" colspan="2">
                                 <select id="new_value_<?php echo $evaluationHead->id; ?>" name="new_value[<?php echo $evaluationHead->id; ?>]" onchange="evalAjax(<?php echo $evaluationHead->id; ?>);">
                                     <option value="" disabled selected>Select</option>
                                     <?php foreach ($evaluationHead->allocation->allocation_items as $allocation_item):?>
-                                        <option value="<?php echo $allocation_item->id;?>" <?php if(isset($product->evaluations[0]->evaluation_items[$evaluationHead->id])) echo $allocation_item->id==$product->evaluations[0]->evaluation_items[$evaluationHead->id]->value ? 'selected': ''; ?> ><?php echo $allocation_item->text;?></option>
+                                        <option class="new_value_<?php echo $allocation_item->id;?>" value="<?php echo $allocation_item->id;?>" <?php echo (isset($selectedValues[$evaluationHead->id] ) && $selectedValues[$evaluationHead->id] == $allocation_item->id ) ? 'selected' : '' ;?> ><?php echo $allocation_item->text;?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <input id="old_value_<?php echo $evaluationHead->id; ?>" type="hidden" name="old_value[<?php echo $evaluationHead->id; ?>]" value="0">
@@ -180,7 +180,7 @@
                             <?php endif; ?>
                             <?php if($evaluationHead->allocation->allocation_type!=0):?>
                             <td>
-                                <input id="old_value_<?php echo $evaluationHead->id; ?>" type="number" name="old_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($product->evaluations[0]->evaluation_items[$evaluationHead->id]->compared_value) ? $product->evaluations[0]->evaluation_items[$evaluationHead->id]->compared_value: ''; ?>" min="0">
+                                <input id="old_value_<?php echo $evaluationHead->id; ?>" type="number" name="old_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedCompValues[$evaluationHead->id]) ? $selectedCompValues[$evaluationHead->id] : ''; ?>"  min="0">
                             </td>
                             <?php endif; ?>
                             
@@ -243,6 +243,12 @@
     }
 
     $(function(){
+        <?php if(isset($product->evaluations[0])): ?>
+        <?php foreach ($product->evaluations[0]->evaluation_items as $evaluation_item):?>
+            $('#selected_<?php echo $evaluation_item->head_id;?>').attr("checked", "checked");
+        <?php endforeach; ?>
+        <?php endif;?>
+
         <?php foreach ($evaluationHeadsMap as $evaluationHeads): ?>
             <?php foreach ($evaluationHeads as $evaluationHead): ?>
                 evalAjax(<?php echo $evaluationHead->id;?>);

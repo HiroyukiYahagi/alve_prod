@@ -97,6 +97,16 @@ class ProductsController extends AppController
                 'contain' => ['Types', 'Evaluations' => [ 'EvaluationItems' => ['Units'] ] ]
             ]);
             $this->set('product', $product);
+
+            foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
+                $selectedUnits[$evaluation_item->head_id] = $evaluation_item->unit_id;
+                $selectedValues[$evaluation_item->head_id] = $evaluation_item->value;
+                $selectedCompValues[$evaluation_item->head_id] = $evaluation_item->compared_value;
+            }
+            
+            $this->set('selectedUnits', $selectedUnits);
+            $this->set('selectedValues', $selectedValues);
+            $this->set('selectedCompValues', $selectedCompValues);
         }
     }
 
@@ -189,6 +199,7 @@ class ProductsController extends AppController
         }
 
         $this->loadModel('Evaluations');
+        $this->loadModel('EvaluationItems');
         if($product->evaluations == null){
             $evaluation = $this->Evaluations->newEntity();
             $evaluation->product_id = $product->id;
@@ -200,12 +211,15 @@ class ProductsController extends AppController
         $evaluation->compared_model_number = $data['compared_model_number'];
         $evaluation->completed == 0;
         
-        if(!$this->Evaluations->save($evaluation)){
+        $evaluation = $this->Evaluations->save($evaluation);
+        if(!$evaluation){
             $this->Flash->error(__('Server Error'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
         $evalId = $evaluation->id;
+        $this->EvaluationItems->deleteAll(['evaluation_id' => $evalId]);
+
         foreach ($data['selected'] as $key => $value) {
             $this->_createEvaluationItem(
                 $evalId,
@@ -228,7 +242,7 @@ class ProductsController extends AppController
             ->where(['evaluation_id' => $evalId])
             ->where(['head_id' => $evalHeadId])
             ->first();
-            
+
         if($evaluationItem == null)
             $evaluationItem = $this->EvaluationItems->newEntity();
 
