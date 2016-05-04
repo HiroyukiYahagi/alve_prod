@@ -1,6 +1,6 @@
 <h4><?= __('Confirm') ?></h4>
 
-<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish']);?>">
+<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish', $product->id]);?>">
 	<input type="hidden" name="id" value="<?php echo $product->id;?>">
     <div class="row">
         <div class="col s12">

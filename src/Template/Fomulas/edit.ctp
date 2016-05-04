@@ -1,31 +1,197 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $fomula->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $fomula->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Fomulas'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Company'), ['controller' => 'Company', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Company', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Fomula Items'), ['controller' => 'FomulaItems', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Fomula Item'), ['controller' => 'FomulaItems', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="fomulas form large-9 medium-8 columns content">
-    <?= $this->Form->create($fomula) ?>
-    <fieldset>
-        <legend><?= __('Edit Fomula') ?></legend>
-        <?php
-            echo $this->Form->input('company_id', ['options' => $company, 'empty' => true]);
-            echo $this->Form->input('deleted');
-            echo $this->Form->input('fomula_start', ['empty' => true]);
-            echo $this->Form->input('fomula_end', ['empty' => true]);
-            echo $this->Form->input('completed');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+<h4><?php echo $title; ?></h4>
+
+<form method="post" action="">
+    <div class="row">
+        <div class="col s12">
+            <h5>
+                <i class="fa fa-user fa-with" aria-hidden="true"></i>
+                <?= __('Operator Info') ?>
+            </h5>
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="input-field col s6">  
+                            <label for="operator_name">
+                                <?= __('Operator Name') ?>
+                            </label>
+                            <input id="operator_name" type="text" name="operator_name" class="validate" required value="<?php echo isset($fomula->operator_name) ? $fomula->operator_name : ''; ?>">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h5>
+                <i class="fa fa-user fa-with" aria-hidden="true"></i>
+                <?= __('Evaluation Info') ?>
+            </h5>
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s6">  
+                            <label for="fomula_start">
+                                <?= __('Fomula Start') ?>
+                            </label>
+                            <input id="fomula_start" name="fomula_start" type="date" class="datepicker">
+                        </div>
+                        <div class="col s6">
+                            <label for="fomula_end">
+                                <?= __('Fomula End') ?>
+                            </label>
+                            <input id="fomula_end" name="fomula_end" type="date" class="datepicker">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h5>
+                <i class="fa fa-line-chart fa-with" aria-hidden="true"></i>
+                <?= __('Evaluation') ?>
+            </h5>
+        </div>
+    </div>
+
+    <?php foreach ($fomulaHeadsMap as $key => $fomulaHeads): ?>
+
+        <div class="row">
+            <div class="col s12">
+                <h5>
+                    <?php echo $key; ?>
+                </h5>
+
+                <table class="tablesorter white striped z-depth-2 table-for-fomula">
+                    <thead>
+                        <tr>
+                            <th><?= __('Selected') ?></th>
+                            <th><?= __('Title') ?></th>
+                            <th><?= __('Value') ?></th>
+                            <th></th>
+                            <th><?= __('Points') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($fomulaHeads as $fomulaHead): ?>
+                        <tr id="tr_<?php echo $fomulaHead->id;?>">
+                            <td>
+                                <?php if($fomulaHead->required == 0): ?>
+                                <p>
+                                    <input type="checkbox" id="selected_<?php echo $fomulaHead->id; ?>" name="selected[<?php echo $fomulaHead->id; ?>]" onchange="changeCheckButton(<?php echo $fomulaHead->id; ?>);"/>
+                                    <label for="selected_<?php echo $fomulaHead->id; ?>"></label>
+                                </p>
+                                <?php else: ?>
+                                <p class="red-text">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                </p>
+                                <input id="selected_<?php echo $fomulaHead->id; ?>" type="hidden" name="selected[<?php echo $fomulaHead->id; ?>]" value="on" checked="checked"/>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <p>
+                                    <?php echo $fomulaHead->item_description; ?>
+                                </p>
+                            </td>
+                            
+                            <?php if($fomulaHead->allocation->allocation_type!=0):?>
+                            <td>
+                                <input id="new_value_<?php echo $fomulaHead->id; ?>" type="number" name="new_value[<?php echo $fomulaHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $fomulaHead->id; ?>);" value="<?php echo isset($selectedValues[$fomulaHead->id]) ? $selectedValues[$fomulaHead->id] : ''; ?>" min="0">
+                            </td>
+                            <td>
+                                %
+                            </td>
+                            <?php elseif($fomulaHead->allocation->allocation_type==0): ?>
+                            <td class="no-old" colspan="2">
+                                <select id="new_value_<?php echo $fomulaHead->id; ?>" name="new_value[<?php echo $fomulaHead->id; ?>]" onchange="evalAjax(<?php echo $fomulaHead->id; ?>);">
+                                    <option value="" disabled selected>Select</option>
+                                    <?php foreach ($fomulaHead->allocation->allocation_items as $allocation_item):?>
+                                        <option class="new_value_<?php echo $allocation_item->id;?>" value="<?php echo $allocation_item->id;?>" <?php echo (isset($selectedValues[$fomulaHead->id] ) && $selectedValues[$fomulaHead->id] == $allocation_item->id ) ? 'selected' : '' ;?> ><?php echo $allocation_item->text;?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <input id="old_value_<?php echo $fomulaHead->id; ?>" type="hidden" name="old_value[<?php echo $fomulaHead->id; ?>]" value="0">
+                            </td>
+                            <?php endif; ?>
+                            
+                            <td>
+                                <p id="point_<?php echo $fomulaHead->id; ?>">
+                                    <?= __('-') ?>
+                                </p>
+                            </td>
+                        </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <?php endforeach; ?>
+
+    <div class="row fixed-button">
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'save', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('Save and Suspend') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'submit', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('Submit') ?></button>
+    </div>
+
+</form>
+
+
+<script type="text/javascript">
+
+    function changeCheckButton(head_id){
+        if($('#selected_' + head_id).attr('checked') == 'checked'){
+            $('#selected_' + head_id).removeAttr('checked');
+            successRow(head_id);
+        }else{
+            $('#selected_' + head_id).attr('checked', true);
+            evalAjax(head_id);
+        }
+    }
+
+    function evalAjax(head_id) {
+        var newValue = $('#new_value_'+head_id).val();
+
+        if(newValue == null || newValue.length == 0 ){
+            $('#point_' + head_id).text('-');
+            if($('#selected_' + head_id).attr('checked') == 'checked'){
+                alertRow(head_id);
+            }
+            return;
+        }
+
+        $.ajax({
+            url: "<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'evaluate']);?>",
+            type: "post",
+            data: { 
+                head_id: head_id,
+                newValue : newValue,
+             },
+            dataType: "json",
+            success : function(response){
+                $('#point_' + response.head_id).text(response.data.point);
+                $('#selected_' + response.head_id).attr('checked', true);
+                successRow(response.head_id);
+            },
+        });
+    }
+
+    $(function(){
+        <?php if(isset($fomula->fomula_items)): ?>
+        <?php foreach ($fomula->fomula_items as $fomula_item):?>
+            $('#selected_<?php echo $fomula_item->head_id;?>').attr("checked", "checked");
+        <?php endforeach; ?>
+        <?php endif;?>
+
+        <?php foreach ($fomulaHeadsMap as $fomulaHeads): ?>
+            <?php foreach ($fomulaHeads as $fomulaHead): ?>
+                evalAjax(<?php echo $fomulaHead->id;?>);
+            <?php endforeach ?>    
+        <?php endforeach ?>
+    });
+
+</script>

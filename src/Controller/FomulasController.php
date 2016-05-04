@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
+use Cake\I18n\Time;
 
 /**
  * Fomulas Controller
@@ -11,48 +13,45 @@ use App\Controller\AppController;
 class FomulasController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Company']
-        ];
-        $fomulas = $this->paginate($this->Fomulas);
+    public function beforeFilter(Event $event){
+        parent::beforeFilter($event);
 
-        $this->set(compact('fomulas'));
-        $this->set('_serialize', ['fomulas']);
+        //TODO
+        //自社のID以外にアクセスが来た場合は強制リダイレクト
+        $this->_validateId($event);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Fomula id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    private function _validateId(Event $event){
+        if(isset($event->subject()->request->params['pass'][0])){
+            $id = $event->subject()->request->params['pass'][0];
+        }else if(isset($this->request->data['id'])){
+            $id = $this->request->data['id'];
+        }else if(isset($this->request->query['id'])){
+            $id = $this->request->query['id'];
+        }else{
+            return;
+        }
+
+        $fomula = $this->Fomulas->get($id);
+        if($this->getAuthedUserId() != $fomula->company_id){
+            $this->Flash->error(__('Invalid Access'));
+            $this->redirect(['controller' => 'Top', 'action' => 'index']);
+        }
+    }
+
+
     public function view($id = null)
     {
         $fomula = $this->Fomulas->get($id, [
-            'contain' => ['Company', 'FomulaItems']
+            'contain' => ['Companies', 'FomulaItems' => ['FomulaHeads']]
         ]);
-
         $this->set('fomula', $fomula);
-        $this->set('_serialize', ['fomula']);
-    }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $this->_setFomulaHeads();
-        $this->_setUnitMap();
+        foreach ($fomula->fomula_items as $fomula_item) {
+            $answers[$fomula_item->fomula_head->large_type][] = $fomula_item;
+        }
+        $this->set('answers', $answers);
+
     }
 
     private function _setFomulaHeads(){
@@ -63,61 +62,117 @@ class FomulasController extends AppController
             $fomulaHeadsMap[$fomulaHead->large_type][] = $fomulaHead;
         }
         $this->set('fomulaHeadsMap', $fomulaHeadsMap);
+        return $fomulaHeadsMap;
     }
+
 
     public function evaluate(){
 
-        $id = $this->request->data['id'];
+        $head_id = $this->request->data['head_id'];
 
-        $json = json_encode(['id' => $id ,'data' => ['result' => 'OK', 'point' => 'OK' ]]);
+        $json = json_encode(['head_id' => $head_id ,'data' => ['result' => 'OK', 'point' => 'OK' ]]);
         echo $json;
 
         $this->autoRender = false;
     }
 
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Fomula id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $fomula = $this->Fomulas->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $fomula = $this->Fomulas->patchEntity($fomula, $this->request->data);
-            if ($this->Fomulas->save($fomula)) {
-                $this->Flash->success(__('The fomula has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The fomula could not be saved. Please, try again.'));
+    public function edit($id = null){
+        if($id == null){
+            $fomula = $this->Fomulas->newEntity();
+            $this->set('title', __('New Formula Evaluation'));
+        }else{
+            $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['FomulaHeads', 'Units']]]);
+            $this->set('title', __('Edit Formula Evaluation'));
+
+            foreach ($fomula->fomula_items as $fomula_item) {
+                $selectedValues[$fomula_item->head_id] = $fomula_item->value;
             }
+            $this->set('selectedValues', $selectedValues);
         }
-        $company = $this->Fomulas->Company->find('list', ['limit' => 200]);
-        $this->set(compact('fomula', 'company'));
-        $this->set('_serialize', ['fomula']);
+        $this->set('fomula', $fomula);
+
+        $this->_setEvaluationHeads();
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Fomula id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    private function _saveData($id, $data){
+        
+        if($id == null){
+            $fomula = $this->Fomulas->newEntity();
+            $company_id = $this->getAuthedUserId();
+            $fomula->company_id = $company_id;
+        }else{
+            $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['FomulaHeads', 'Units']]]);
+        }
+
+        $fomula->operator_name = $data['operator_name'];
+        $fomula = $this->Fomulas->save($fomula);
+
+        if($fomula == null){
+            $this->Flash->error(__('Server Error:1'));
+            return null;
+        }
+        
+        $this->loadModel('FomulaItems');
+        $this->FomulaItems->deleteAll(['fomula_id' => $fomula->id]);
+        foreach ($data['selected'] as $key => $value) {
+            $fomulaItems = $this->FomulaItems->newEntity();
+            $fomulaItems->value = isset($data['new_value'][$key]) ? $data['new_value'][$key] : null;
+            $fomulaItems->head_id = $key;
+            $fomulaItems->fomula_id = $fomula->id;
+            if(!$this->FomulaItems->save($fomulaItems)){
+                $this->Flash->error(__('Server Error:2'));
+                return null;
+            }
+        }
+
+        $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['FomulaHeads', 'Units']]]);
+        return $fomula;
+    }
+
+    public function save($id = null){
+        $data = $this->request->data;
+        $fomula = $this->_saveData($id, $data);
+
+        if($fomula == null){
+            $this->Flash->error(__('Invalid Access.'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        $this->Flash->success(__('Fomula has been saved.'));
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+    }
+
+    public function submit($id = null){
+        $data = $this->request->data;
+        $fomula = $this->_saveData($id, $data);
+        if($fomula == null){
+            $this->Flash->error(__('Invalid Access.'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+        return $this->redirect(['controller' => 'Fomulas', 'action' => 'view', $id]);
+    }
+
+    private function _setEvaluationHeads(){
+        $this->loadModel("FomulaHeads");
+        $fomulaHeads = $this->FomulaHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
+
+        foreach ($fomulaHeads as $fomulaHead) {
+            $fomulaHeadsMap[$fomulaHead->large_type][] = $fomulaHead;
+        }
+
+        $this->set('fomulaHeadsMap', $fomulaHeadsMap);
+        return $fomulaHeadsMap;
+    }
+
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
         $fomula = $this->Fomulas->get($id);
         if ($this->Fomulas->delete($fomula)) {
             $this->Flash->success(__('The fomula has been deleted.'));
         } else {
             $this->Flash->error(__('The fomula could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 }

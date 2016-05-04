@@ -134,8 +134,59 @@ table.table-for-product > thead > tr > th:nth-child(6){
 	width: 10%;
 }
 
-table.table-for-product > tbody > tr > th:nth-child(7){
+table.table-for-product > thead > tr > th:nth-child(7){
 	width: 10%;
+}
+
+table.table-for-fomula > thead > tr > th:nth-child(1){
+	width: 5%;
+}
+
+table.table-for-fomula > tbody > tr > td:nth-child(1) > p{
+	text-align: center;
+}
+
+table.table-for-fomula > thead > tr > th:nth-child(2){
+	width: 45%;
+}
+table.table-for-fomula > thead > tr > th:nth-child(3){
+	width: 35%;
+}
+table.table-for-fomula > thead > tr > th:nth-child(4){
+	width: 5%;
+}
+table.table-for-fomula > thead > tr > th:nth-child(5){
+	width: 10%;
+}
+
+
+
+
+table.table-for-productlist > thead > tr > th:nth-child(1){
+	width: 25%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(2){
+	width: 20%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(3){
+	width: 20%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(4){
+	width: 20%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(5){
+	width: 15%;
+}
+
+table.table-for-fomulalist > thead > tr > th:nth-child(1){
+	width: 35%;
+}
+table.table-for-fomulalist > thead > tr > th:nth-child(2){
+	width: 50%;
+}
+
+table.table-for-fomulalist > thead > tr > th:nth-child(3){
+	width: 15%;
 }
 
 

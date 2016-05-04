@@ -1,9 +1,15 @@
-
-
 function reloadNavi(){
-	console.log('reload');
 	$('ul#slide-out.side-nav.fixed').css('transform','none');
 }
+
+function alertRow(id){
+    $('#tr_' + id).attr("class", "red lighten-4");
+}
+
+function successRow(id){
+    $('#tr_' + id).attr("class", "");
+}
+
 
 $(function() {
 	$('#sorter').tablesorter();
@@ -26,7 +32,7 @@ $(function() {
 	  $(this).parents('form').attr('action', $(this).data('action'));
 	  $(this).parents('form').submit();
 	});
-	
+
 });
 
 

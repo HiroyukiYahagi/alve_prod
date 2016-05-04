@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col s4">
                     <label><?= __('Product Name') ?></label>
-                    <p><?php echo $product->name;?></p>
+                    <p><?php echo $product->product_name;?></p>
                 </div>
                 <div class="col s4">
                     <label><?= __('Model Number') ?></label>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col s4">
                     <label><?= __('Product Type') ?></label>
-                    <p><?php echo $product->type;?></p>
+                    <p><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></p>
                 </div>
             </div>
             <div class="row">
@@ -96,7 +96,7 @@
     </div>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register']);?>"><?= __('Go to register') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('Go to register') ?></button>
     </div>
 </form>
 
@@ -110,7 +110,7 @@ $(function() {
 
     var labels = [];
     var dataset_data = [];
-    <?php foreach ($results as $key => $value): ?>
+    <?php foreach ($scores as $key => $value): ?>
         labels.push("<?php echo $key;?>");
         dataset_data.push("<?php echo $value;?>");
     <?php endforeach ?>

@@ -4,7 +4,7 @@
 </blockquote>
 
 
-<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register']);?>">
+<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>">
 	<input type="hidden" name="id" value="<?php echo $product->id;?>">
 	<input type="hidden" name="status" value="true">
     <div class="row">
@@ -37,9 +37,9 @@
                         </div>
                     </div>
                     <div class="row">
-                    	<div class="input-field col s6">
+                    	<div class="col s6">
                     		<label for="company_url"><?= __('Company URL') ?></label>
-                            <input id="company_url" type="text" name="company[url]" class="validate" value="<?php echo $product->company->url;?>" />
+                            <p id="company_url"><?php echo $product->company->url;?></p>
                     	</div>
                     </div>
                     <div class="row">

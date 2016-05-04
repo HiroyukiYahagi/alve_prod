@@ -13,11 +13,8 @@ class ProductsController extends AppController
 {
 
     public function beforeFilter(Event $event){
-        // 上位クラスの機能を使用
         parent::beforeFilter($event);
-        // ユーザーによるログアウトを許可する
         $this->Auth->allow(['search']);
-
 
         //TODO
         //自社のプロダクトID以外にアクセスが来た場合は強制リダイレクト
@@ -61,12 +58,22 @@ class ProductsController extends AppController
 
     public function view($id = null)
     {
-        $product = $this->Products->get($id, [
-            'contain' => ['Companies', 'Types', 'Evaluations']
-        ]);
-
+        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ], 'Types']] );
         $this->set('product', $product);
-        $this->set('_serialize', ['product']);
+
+        //set answer
+        if (isset($product->evaluations[0])) {
+            foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
+                $answers[$evaluation_item->evaluation_head->large_type][] = $evaluation_item->evaluation_head;
+            }
+            $this->set('answersMap', $answers);
+
+            $scores = $this->_scoring($product->evaluations[0]->evaluation_items);
+            $this->set('scores', $scores);
+        }else{
+            $this->Flash->error(__('Invalid Access'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }    
     }
 
     private function _setEvaluationHeads(){
@@ -98,12 +105,16 @@ class ProductsController extends AppController
             ]);
             $this->set('product', $product);
 
+
+            $selectedUnits=null;
+            $selectedValues=null;
+            $selectedCompValues=null;
             foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
                 $selectedUnits[$evaluation_item->head_id] = $evaluation_item->unit_id;
                 $selectedValues[$evaluation_item->head_id] = $evaluation_item->value;
                 $selectedCompValues[$evaluation_item->head_id] = $evaluation_item->compared_value;
             }
-            
+
             $this->set('selectedUnits', $selectedUnits);
             $this->set('selectedValues', $selectedValues);
             $this->set('selectedCompValues', $selectedCompValues);
@@ -172,26 +183,33 @@ class ProductsController extends AppController
         return ['result' => '-', 'point' => '-'];
     }
 
-    private function _validateProductEvaluation($data){
-        if ($article->errors()) {
-            foreach ($article->errors() as $key => $error) {
-                $this->Flash->error(__('Error:').$error);
-            }
+    private function _validateProductEvaluation($product){
+
+        if (!isset($product->evaluations[0]))    
             return false;
+
+        foreach ($product->evaluations[0]->evaluation_items as $key => $evaluation_item) {
+            if ($evaluation_item->value == null
+                || $evaluation_item->compared_value == null
+                || count($evaluation_item->value) == 0
+                || count($evaluation_item->compared_value) == 0
+                ) {
+                return false;
+            }
         }
+        
         return true;
     }
 
-    private function _saveData($data){
+    private function _saveData($id, $data){
         $companyId = $this->getAuthedUserId();
-        if(!isset($data['id'])){
+        if(!isset($id)){
             $product = $this->Products->newEntity();
             $product->company_id = $companyId;
         }else{
-            $id = $data['id'];
             $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
         }
-        $product = $this->Products->patchEntity($product,$data);
+        $product = $this->Products->patchEntity($product, $data);
 
         if(!$this->Products->save($product)){
             $this->Flash->error(__('Server Error'));
@@ -230,7 +248,7 @@ class ProductsController extends AppController
             );
         }
 
-        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
+        $product = $this->Products->get($product->id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
         return $product;
     }
 
@@ -255,13 +273,13 @@ class ProductsController extends AppController
         if(!$this->EvaluationItems->save($evaluationItem)){
             $this->Flash->error(__('Server Error'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
-        }   
+        }
 
     }
 
-    public function save(){
+    public function save($id = null){
         $data = $this->request->data;
-        $product = $this->_saveData($data);
+        $product = $this->_saveData($id, $data);
         if($product == null){
             $this->Flash->error(__('Invalid Access.'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
@@ -272,48 +290,71 @@ class ProductsController extends AppController
     }
 
 
-    public function submit(){
+    public function submit($id = null){
         $data = $this->request->data;
-        $product = $this->_saveData($data);
+        $product = $this->_saveData($id, $data);
         if($product == null){
             $this->Flash->error(__('Invalid Access.'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
-        if(!$this->_validateProductEvaluation($data)){
+        if(!$this->_validateProductEvaluation($product)){
             $this->Flash->error(__('Not completed.'));
-            return $this->redirect(['controller' => 'Products', 'action' => 'edit'], $product->id);
+            return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
 
-        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ], 'Types']] );
+        $product = $this->Products->get($product->id, ['contain' => ['Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ], 'Types']] );
         $this->set('product', $product);
 
         //set answer
-        $answers = $this->_setEvaluationHeads();
-        $this->set('answersMap', $answers);
+        if (isset($product->evaluations[0])) {
+            foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
+                $answers[$evaluation_item->evaluation_head->large_type][] = $evaluation_item->evaluation_head;
+            }
+            $this->set('answersMap', $answers);
 
-        //set results
-        $results = [
-            '省エネルギー' => '2',
-            'リデュース' => '3',
-            'リユース' => '2.5',
-            'リサイクル' => '3',
-            '環境・安全' => '1',
-            '情報提供' => '0',
-            '情報提供' => '-1'
-        ];
-        $this->set('results', $results);
+            $scores = $this->_scoring($product->evaluations[0]->evaluation_items);
+            $this->set('scores', $scores);
+        }
 
         $this->render('view');
     }
 
-    public function register(){
-        $data = $this->request->data;
-        $id = $data['id'];
+    private function _scoring($evaluationItems){
+        $this->loadModel('EvaluationHeads');
+        $evaluationHeads = $this->EvaluationHeads->find()->all()->toArray();
 
+        foreach ($evaluationHeads as $evaluationHead) {
+            $answers[$evaluationHead->large_type][$evaluationHead->small_type]['count'] = 0;
+            $answers[$evaluationHead->large_type][$evaluationHead->small_type]['value'] = 0;
+        }
+
+        foreach ($evaluationItems as $evaluationItem){
+            $evaluationHead = $evaluationItem->evaluation_head;
+            $answers[$evaluationHead->large_type][$evaluationHead->small_type]['value'] += $this->_evaluateValues($evaluationHead->id, $evaluationItem->value, $evaluationItem->compared_value)['point'];
+            $answers[$evaluationHead->large_type][$evaluationHead->small_type]['count'] += 1;
+        }
+
+        $scores = null;
+        foreach ($answers as $key => $answer) {
+            $sum = 0;
+            $count = 0;
+            foreach ($answer as $itemKey => $item) {
+                $sum += $item['value'];
+                $count += $item['count'] != 0 ? $item['count'] : 1;
+            }
+            $scores[$key] = $sum / ($count == 0 ? 1: $count);
+        }
+
+        return $scores;
+    }
+
+    public function register($id = null){
+        $data = $this->request->data;
         $product = $this->Products->get($id, [
             'contain' => ['Companies', 'Types', 'Evaluations']
         ]);
+
         $this->set('product', $product);
 
         $this->loadModel('Types');
@@ -321,16 +362,17 @@ class ProductsController extends AppController
         $this->set('types', $types->toArray());
 
         if(isset($data['status'])){
+            //確認ページへ
+            $product = $this->Products->patchEntity($product, $data['product']);
+            $product = $this->Products->save($product);
             $evaluation_type = $data['evaluation_type'];
             $this->set('evaluation_type', $evaluation_type);
             $this->render('confirm');
         }
-
     }
 
-    public function publish(){
+    public function publish($id = null){
         $data = $this->request->data;
-        $id = $data['id'];
         $product = $this->Products->get($id);
         $product->published = 1;
         if($this->Products->save($product)){
@@ -343,22 +385,14 @@ class ProductsController extends AppController
     }
 
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Product id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
         $product = $this->Products->get($id);
         if ($this->Products->delete($product)) {
             $this->Flash->success(__('The product has been deleted.'));
         } else {
             $this->Flash->error(__('The product could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 }

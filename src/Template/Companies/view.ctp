@@ -47,11 +47,11 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Editing Data') ?>
+					<?= __('Saved Data') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-0">
+				<table id="sorter" class="tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
 							<th><?= __('Product Name') ?></th>
@@ -64,7 +64,9 @@
 					<tbody>
 						<?php foreach ($editingProducts as $product): ?>
 							<tr>
-								<td><?php echo $product->product_name; ?></td>
+								<td>
+									<?php echo $product->product_name; ?>
+								</td>
 								<td><?php echo $product->model_number; ?></td>
 								<td><?php echo $product->modified; ?></td>
 								<td><?php echo $product->operator_name; ?></td>
@@ -88,11 +90,11 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Saved Data') ?>
+					<?= __('Published Data') ?>
 				</h6>
 			</div>
 			<?php if(isset($completedProducts) && count($completedProducts) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-0">
+				<table id="sorter" class="tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
 							<th><?= __('Product Name') ?></th>
@@ -105,7 +107,10 @@
 					<tbody>
 						<?php foreach ($completedProducts as $product): ?>
 							<tr>
-								<td><?php echo $product->product_name; ?></td>
+								<td>								<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
+										<?php echo $product->product_name; ?>
+									</a>
+								</td>
 								<td><?php echo $product->model_number; ?></td>
 								<td><?php echo $product->modified; ?></td>
 								<td><?php echo $product->operator_name; ?></td>
@@ -113,7 +118,7 @@
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 								</td>
@@ -143,26 +148,28 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Editing Data') ?>
+					<?= __('Saved Data') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingFomulas) && count($editingFomulas) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-2">
+				<table id="sorter" class="tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
 							<th><?= __('Save Date') ?></th>
+							<th><?= __('Period') ?></th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ($editingFomulas as $fomula): ?>
 							<tr>
-								<td><?php echo $fomula->operator_name; ?></td>
+								<td><?php echo $fomula->modified; ?></td>
+								<td><?php echo $fomula->formula_start." ~ ".$fomula->formula_end; ?></td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $product->id ]);?>'>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 
@@ -178,17 +185,15 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Saved Data') ?>
+					<?= __('Published Data') ?>
 				</h6>
 			</div>
 			<?php if(isset($completedFomula) && count($completedFomula) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-2">
+				<table id="sorter" class="tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
-							<th><?= __('ID') ?></th>
 							<th><?= __('Save Date') ?></th>
 							<th><?= __('Period') ?></th>
-							<th><?= __('In Charge') ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -199,10 +204,10 @@
 								<td><?php echo $fomula->period; ?></td>
 								<td><?php echo $fomula->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $product->id ]);?>'>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 								</td>

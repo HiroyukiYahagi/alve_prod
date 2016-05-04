@@ -34,8 +34,8 @@ class CompaniesController extends AppController
             'contain' => ['Fomulas' => ['FomulaItems'], 'Products' => ['Types', 'Evaluations']]
         ]);
 
-        $completedProducts = array();
-        $editingProducts = array();
+        $completedProducts = null;
+        $editingProducts = null;
         foreach ($company->products as $product) {
             if($product->published == 1)
                 $completedProducts[] = $product;
@@ -46,6 +46,17 @@ class CompaniesController extends AppController
         $this->set('completedProducts', $completedProducts);
         $this->set('editingProducts', $editingProducts);
 
+
+        $completedFomulas = null;
+        $editingFomulas = null;
+        foreach ($company->fomulas as $fomula) {
+            if($fomula->published == 1)
+                $completedFomulas[] = $fomula;
+            else
+                $editingFomulas[] = $fomula;
+        }
+        $this->set('completedFomulas', $completedFomulas);
+        $this->set('editingFomulas', $editingFomulas);
 
         $this->set('company', $company);
         $this->set('_serialize', ['company']);

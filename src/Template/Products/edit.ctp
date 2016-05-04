@@ -1,7 +1,9 @@
 <h4><?php echo $title; ?></h4>
 
 <form method="post" action="">
-    <input type="hidden" name="id" value="<?php echo $product->id;?>"/>
+    <?php if(isset($product)):?>
+        <input type="hidden" name="id" value="<?php echo $product->id;?>"/>
+    <?php endif;?>
     <div class="row">
         <div class="col s12">
             <h5>
@@ -37,7 +39,7 @@
                             <select id="types" name="type_id">
                                 <option value="" disabled selected><?= __('Please Select Input Types') ?></option>
                                 <?php foreach ($types as $type):?>
-                                    <option value="<?php echo $type->id;?>" <?php echo $type->id==$product->type_id ? 'selected': ''; ?> ><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
+                                    <option value="<?php echo $type->id;?>" <?php echo isset($product)&&($type->id==$product->type_id) ? 'selected': ''; ?> ><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
                                 <?php endforeach; ?>
                             </select>
                             <label><?= __('Product Type') ?></label>
@@ -119,18 +121,18 @@
 
                         <?php foreach ($evaluationHeads as $evaluationHead): ?>
 
-                        <tr>
+                        <tr id="tr_<?php echo $evaluationHead->id;?>">
                             <td>
                                 <?php if($evaluationHead->required == 0): ?>
                                 <p>
-                                    <input type="checkbox" id="selected_<?php echo $evaluationHead->id; ?>" name="selected[<?php echo $evaluationHead->id; ?>]"  />
+                                    <input type="checkbox" id="selected_<?php echo $evaluationHead->id; ?>" name="selected[<?php echo $evaluationHead->id; ?>]" onchange="changeCheckButton(<?php echo $evaluationHead->id; ?>);"/>
                                     <label for="selected_<?php echo $evaluationHead->id; ?>"></label>
                                 </p>
                                 <?php else: ?>
                                 <p class="red-text">
                                     <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                 </p>
-                                <input type="hidden" name="selected[<?php echo $evaluationHead->id; ?>]" value="on" />
+                                <input id="selected_<?php echo $evaluationHead->id; ?>" type="hidden" name="selected[<?php echo $evaluationHead->id; ?>]" value="on" checked="checked"/>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -206,15 +208,25 @@
     <?php endforeach; ?>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save']);?>"><?= __('Save and Suspend') ?></button>
-         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit']);?>"><?= __('Submit') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>"><?= __('Save and Suspend') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>"><?= __('Submit') ?></button>
     </div>
 
 </form>
 
 
 <script type="text/javascript">
-    
+
+    function changeCheckButton(id){
+        if($('#selected_' + id).attr('checked') == 'checked'){
+            $('#selected_' + id).removeAttr('checked');
+            successRow(id);
+        }else{
+            $('#selected_' + id).attr('checked', true);
+            evalAjax(id);
+        }
+    }
+
     function evalAjax(evaluation_id) {
         var newValue = $('#new_value_'+evaluation_id).val();
         var oldValue = $('#old_value_'+evaluation_id).val();
@@ -222,6 +234,9 @@
         if(newValue == null || oldValue==null || newValue.length == 0 || oldValue.length == 0){
             $('#result_' + evaluation_id).text('-');
             $('#point_' + evaluation_id).text('-');
+            if($('#selected_' + evaluation_id).attr('checked') == 'checked'){
+                alertRow(evaluation_id);
+            }
             return;
         }
 
@@ -237,7 +252,8 @@
             success : function(response){
                 $('#result_' + response.evaluation_id).text(response.data.result);
                 $('#point_' + response.evaluation_id).text(response.data.point);
-                $('#selected_' + response.evaluation_id).attr('checked', 'checked');
+                $('#selected_' + response.evaluation_id).attr('checked', true);
+                successRow(response.evaluation_id);
             },
         });
     }
