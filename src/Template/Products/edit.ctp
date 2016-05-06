@@ -12,14 +12,36 @@
             </h5>
             <div class="card">
                 <div class="card-content">
+
                     <div class="row">
-                        <div class="input-field col s6">  
+                        <div class="input-field col s6">
                             <label for="operator_name">
                                 <?= __('Operator Name') ?>
                             </label>
-                            <input id="operator_name" type="text" name="operator_name" class="validate" required value="<?php echo isset($product->operator_name) ? $product->operator_name: ''; ?>">
+                            <input id="operator_name" type="text" name="operator_name" class="validate" value="<?php echo isset($product->operator_name) ? $product->operator_name : '' ;?>"/>
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="operator_department">
+                                <?= __('Operator Department') ?>
+                            </label>
+                            <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="operator_tel">
+                                <?= __('Operator TEL') ?>
+                            </label>
+                            <input id="operator_tel" type="text" name="operator_tel" class="validate" value="<?php echo isset($product->operator_tel) ? $product->operator_tel : '' ;?>"/>
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="operator_email">
+                                <?= __('Operator Email') ?>
+                            </label>
+                            <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '';?>"/>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -58,6 +80,18 @@
                             <input id="model_number" type="text" name="model_number" class="validate" required value="<?php echo isset($product->model_number) ? $product->model_number: ''; ?>"/>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-field col s12">     
+                            <label for="product_info_url"><?= __('Product Infomation URL') ?></label>
+                            <input id="product_info_url" type="text" name="product_info_url" class="validate" value="<?php echo isset($product->product_info_url) ? $product->product_info_url: ''; ?>"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">     
+                            <label for="sales_date"><?= __('Sales Date') ?></label>
+                            <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate" required value="<?php echo isset($product->sales_date) ? $product->sales_date: ''; ?>"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,22 +103,71 @@
             </h5>
             <div class="card">
                 <div class="card-content">
+
                     <div class="row">
-                        <div class="input-field col s12">
-                            <label for="compared_product_name"><?= __('Product Name') ?></label>
-                            <input id="compared_product_name" type="text" name="compared_product_name" class="validate" value="<?php echo isset($product->evaluations[0]->operator_name) ? $product->evaluations[0]->operator_name: ''; ?>" />
+                        <div class=" col s12">
+                            <label>
+                                <?= __('Evaluation Type') ?>
+                            </label>
+                            <p onclick="changeEvaluationType(0);">
+                                <input name="evaluation_type" type="radio" id="evaluation_type_comp" checked value="0"/>
+                                <label for="evaluation_type_comp"><?= __('Compared with the following product')?></label>
+                            </p>
+                            <p onclick="changeEvaluationType(1);">
+                                <input name="evaluation_type" type="radio" id="evaluation_type_none" value="1"/>
+                                <label for="evaluation_type_none"><?= __('Compared with target value')?></label>
+                            </p>
+
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">     
-                            <label for="compared_model_number"><?= __('Model Number') ?></label>
-                            <input id="compared_model_number" type="text" name="compared_model_number" class="validate" value="<?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>"/>
+                    <div id="compared-option">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <label for="compared_product_name"><?= __('Product Name') ?></label>
+                                <input id="compared_product_name" type="text" name="compared_product_name" class="validate" value="<?php echo isset($product->evaluations[0]->compared_product_name) ? $product->evaluations[0]->compared_product_name: ''; ?>" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">     
+                                <label for="compared_model_number"><?= __('Model Number') ?></label>
+                                <input id="compared_model_number" type="text" name="compared_model_number" class="validate" value="<?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col s12">
+            <h5>
+                <i class="fa fa-user fa-with" aria-hidden="true"></i>
+                <?= __('Others') ?>
+            </h5>
+            <div class="card">
+                <div class="card-content">
+
+                    <div class="row">
+                        <div class="col s6">     
+                            <label for="latest_fomula"><?= __('Latest Formula Date') ?></label>
+                            <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate" required value="<?php echo isset($product->latest_fomula) ? $product->latest_fomula: ''; ?>"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">     
+                            <label for="product_comment"><?= __('Comment') ?></label>
+                            <textarea id="product_comment" class="materialize-textarea" type="text" name="product_comment" class="validate"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <div class="row">
         <div class="col s12">
@@ -216,6 +299,15 @@
 
 
 <script type="text/javascript">
+    function changeEvaluationType(mode){
+        if(mode == 0){
+            $('#compared-option').show();
+        }else{
+            $('#compared-option').hide();
+            $('#compared_product_name').val(null);
+            $('#compared_model_number').val(null);
+        }
+    }
 
     function changeCheckButton(id){
         if($('#selected_' + id).attr('checked') == 'checked'){

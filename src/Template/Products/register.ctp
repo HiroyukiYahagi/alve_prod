@@ -1,92 +1,88 @@
-<h4><?= __('Product Register Form') ?></h4>
+<h4><?= __('Register') ?></h4>
 <blockquote>
-	情報更新時は、前回登録時の内容が記載されていますので、必要に応じ修正してください。
+    この製品の情報を公開します。正しく入力されているかを確認してください。<br/>
+    <i class="fa fa-exclamation-triangle fa-with" aria-hidden="true"></i>公開される項目
 </blockquote>
 
-
-<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>">
-	<input type="hidden" name="id" value="<?php echo $product->id;?>">
-	<input type="hidden" name="status" value="true">
+<form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish', $product->id]);?>">
+    <input type="hidden" name="id" value="<?php echo $product->id;?>">
     <div class="row">
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
                 <?= __('Company Info') ?>
             </h5>
-    		<blockquote>
-				<i class="fa fa-star fa-with" aria-hidden="true"></i>入力必須項目<br/>
-				<i class="fa fa-exclamation-triangle fa-with" aria-hidden="true"></i>登録製品一覧のページに表示される項目
-			</blockquote>
-
             <div class="card">
                 <div class="card-content">
                     <div class="row">
                         <div class="col s6">
-                        	<label for="company_name">
-                        		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        		<?= __('Company Name') ?>
-                        	</label>
+                            <label for="company_name">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Company Name') ?>
+                            </label>
                             <p><?php echo $product->company->company_name;?></p>
                         </div>
                         <div class="col s6">
-                        	<label for="company_name_kana">
-                        		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        		<?= __('Company Name ( kana )') ?>
-                        	</label>
-                            <p><?php echo $product->company->company_name_kana;?></p>
+                            <label for="name_kana">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Company Name ( kana )') ?>
+                            </label>
+                            <p><?php echo $product->company->name_kana;?></p>
                         </div>
                     </div>
                     <div class="row">
-                    	<div class="col s6">
-                    		<label for="company_url"><?= __('Company URL') ?></label>
-                            <p id="company_url"><?php echo $product->company->url;?></p>
-                    	</div>
+                        <div class="col s6">
+                            <label for="company_url"><?= __('Company URL') ?></label>
+                            <p id="company_url">
+                                <?php echo $product->company->url;?>
+                            </p>
+                        </div>
                     </div>
                     <div class="row">
-                    	<div class="input-field col s6">
-                    		<label for="operator_name">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Operator Name') ?>
-                    		</label>
-                            <input id="operator_name" type="text" name="product[operator_name]" class="validate" value="<?php echo $product->operator_name;?>"/>
-                    	</div>
-                    	<div class="input-field col s6">
-                    		<label for="operator_department">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Operator Department') ?>
-                    		</label>
-                            <input id="operator_department" type="text" name="product[operator_department]" class="validate" value="<?php echo $product->operator_department;?>" />
-                    	</div>
+                        <div class="col s6">
+                            <label for="operator_name">
+                                <?= __('Operator Name') ?>
+                            </label>
+                            <p id="operator_name"><?php echo $product->operator_name;?></p>
+                        </div>
+                        <div class="col s6">
+                            <label for="operator_department">
+                                <?= __('Operator Department') ?>
+                            </label>
+                            <p id="operator_department"><?php echo $product->operator_department;?>
+                            </p>
+                        </div>
                     </div>
                     <div class="row">
-                    	<div class="input-field col s6">
-                    		<label for="operator_tel">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Operator TEL') ?>
-                    		</label>
-                            <input id="operator_tel" type="text" name="product[operator_tel]" class="validate" value="<?php echo $product->operator_tel;?>"/>
-                    	</div>
-                    	<div class="input-field col s6">
-                    		<label for="operator_email">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Operator Email') ?>
-                    		</label>
-                            <input id="operator_email" type="text" name="product[operator_email]" class="validate" value="<?php echo $product->operator_email;?>"/>
-                    	</div>
+                        <div class="col s6">
+                            <label for="operator_tel">
+                                <?= __('Operator TEL') ?>
+                            </label>
+                            <p id="operator_tel"><?php echo $product->operator_tel;?>
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label for="operator_email">
+                                <?= __('Operator Email') ?>
+                            </label>
+                            <p id="operator_email">
+                                <?php echo $product->operator_email;?>
+                            </p>
+                        </div>
                     </div>
                     <div class="row">
-                    	<div class="col s6">
-                    		<label for="latest_fomula">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                        		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    			<?= __('Latest Fomula Date') ?>
-                    		</label>
-                            <input id="latest_fomula" type="date" class="datepicker" name="product[latest_fomula]">
-                    	</div>
+                        <div class="col s6">
+                            <label for="latest_fomula">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Latest Fomula Date') ?>
+                            </label>
+                            <p>
+                                <?php echo $product->latest_fomula; ?>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-
 
         </div>
     </div>
@@ -98,105 +94,102 @@
                 <i class="fa fa-cog fa-with" aria-hidden="true"></i>
                 <?= __('Product Info') ?>
             </h5>
-			<blockquote>
-				<i class="fa fa-star fa-with" aria-hidden="true"></i>入力/選択必須項目<br/>
-				<i class="fa fa-exclamation-triangle fa-with" aria-hidden="true"></i>登録製品一覧のページに表示される項目
-			</blockquote>
 
             <div class="card">
                 <div class="card-content">
 
                     <div class="row">
-						<div class="input-field col s6">
-							<select>
-								<?php foreach ($types as $type):?>
-								<option <?php echo $type->id==$product->type_id ? 'selected': '';?> value="<?php echo $type->id;?>"><?php echo $type->type_name.' '.$type->fomula.' '.$type->purpose; ?></option>
-								<?php endforeach;?>
-							</select>
-							<label>
-                    	   		<i class="fa fa-star" aria-hidden="true"></i>
-		                		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-								<?= __('Product Type')?>
-							</label>
-						</div>
-                    </div>
-
-                    <div class="row">
                         <div class="col s6">
-                        	<label for="product_name">
-                    	   		<i class="fa fa-star" aria-hidden="true"></i>
-		                		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        		<?= __('Product Name') ?>
-                        	</label>
-                        	<input id="product_name" type="text" name="product[product_name]" class="validate" value="<?php echo $product->product_name;?>" />
-                        </div>
-                        <div class="col s6">
-                        	<label for="model_number">
-                    	   		<i class="fa fa-star" aria-hidden="true"></i>
-		                		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        		<?= __('Model Number') ?>
-                        	</label>
-                        	<input id="model_number" type="text" name="product[model_number]" class="validate" value="<?php echo $product->model_number;?>" />
+                            <label>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Product Type')?>
+                            </label>
+                            <p>
+                                <?php echo $types[$product->type_id]->type_name;?>
+                            </p>
                         </div>
                     </div>
 
                     <div class="row">
-                    	<div class="input-field col s12">
-                    		<label for="product_comment"><?= __('Product Comment') ?></label>
-                            <textarea id="product_comment" class="materialize-textarea" name="product[product_comment]"><?php echo $product->product_comment;?></textarea>
-                    	</div>
+                        <div class="col s6">
+                            <label for="product_name">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Product Name') ?>
+                            </label>
+                            <p id="product_name"><?php echo $product->product_name;?></p>
+                        </div>
+                        <div class="col s6">
+                            <label for="model_number">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Model Number') ?>
+                            </label>
+                            <p id="model_number"><?php echo $product->model_number;?></p>
+                        </div>
                     </div>
 
                     <div class="row">
-                    	<div class="input-field col s6">
-                        	<label for="product_info_url">
-                        		<?= __('Product URL') ?>
-                        	</label>
-                        	<input id="product_info_url" type="text" name="product[product_info_url]" class="validate" value="<?php echo $product->product_info_url;?>" />
-                    	</div>
-                    	<div class="input-field col s6">
-                        	<label for="sales_date">
-                    	   		<i class="fa fa-star" aria-hidden="true"></i>
-		                		<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        		<?= __('Sales Date') ?>
-                        	</label>
-                        	<input id="sales_date" type="text" name="product[sales_date]" class="validate" value="<?php echo $product->sales_date;?>" />
-                    	</div>
+                        <div class="col s12">
+                            <label for="product_comment"><?= __('Product Comment') ?></label>
+                            <p id="product_comment"><?php echo $product->product_comment;?></p>
+                        </div>
                     </div>
 
                     <div class="row">
-                    	<div class="col s6">
-                    	   	<label>
-                    	   		<i class="fa fa-star" aria-hidden="true"></i>
-		                		<?= __('Evaluation Type') ?>
-		                	</label>
-							<p onclick="changeEvaluationType(0);">
-						    	<input name="evaluation_type" type="radio" id="evaluation_type_comp" checked value="0"/>
-						    	<label for="evaluation_type_comp"><?= __('Compared with the following product')?></label>
-					    	</p>
-					    	<p onclick="changeEvaluationType(1);">
-						    	<input name="evaluation_type" type="radio" id="evaluation_type_none" value="1"/>
-						    	<label for="evaluation_type_none"><?= __('Compared with target value')?></label>
-						    </p>
-                    	</div>
+                        <div class=" col s6">
+                            <label for="product_info_url">
+                                <?= __('Product URL') ?>
+                            </label>
+                            <p id="product_info_url"><?php echo $product->product_info_url;?></p>
+                        </div>
+                        <div class="col s6">
+                            <label for="sales_date">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                <?= __('Sales Date') ?>
+                            </label>
+                            <p id="sales_date"><?php echo $product->sales_date;?></p>
+                        </div>
                     </div>
 
+
+                    <?php if($evaluation_type):?>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <?= __('Evaluation Type') ?>
+                            </label>
+                            <p>
+                                <?= __('Compared with the following product')?>
+                            </p>
+                        </div>
+                    </div>
                     <div id="compared-option" class="row">
-                    	<div class="input-field col s6">
-                    		<label for="compared_product_name">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Compared Product Name') ?>
-                    		</label>
-                            <input id="compared_product_name" type="text" name="evaluation[compared_product_name]" class="validate" value="">
-                    	</div>
-                    	<div class="input-field col s6">
-                    		<label for="compared_model_number">
-                    			<i class="fa fa-star" aria-hidden="true"></i>
-                    			<?= __('Compared Product Model Number') ?>
-                    		</label>
-                            <input id="compared_model_number" type="text" name="evaluation[compared_model_number]" class="validate" value=""/>
-                    	</div>
+                        <div class="col s6">
+                            <label for="compared_product_name">
+                                <?= __('Compared Product Name') ?>
+                            </label>
+                            <p id="compared_product_name"></p>
+                        </div>
+                        <div class=" col s6">
+                            <label for="compared_model_number">
+                                <?= __('Compared Product Model Number') ?>
+                            </label>
+                            <p id="compared_model_number"></p>
+                        </div>
                     </div>
+
+                    <?php else:?>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <?= __('Evaluation Type') ?>
+                            </label>
+                            <p>
+                                <?= __('Compared with target value')?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <?php endif;?>
 
                 </div>
             </div>
@@ -204,23 +197,19 @@
         </div>
     </div>
 
-	<blockquote>
-		製品評価結果に関わるデータは提出不要ですが、自社でしっかり保管しておく必要があります。
-	</blockquote>
-
-	<button class="submit btn waves-effect waves-light green" type="submit">
-		<?= __('Confirm') ?>
-	</button>
+    <button class="submit btn waves-effect waves-light green" type="submit">
+        <?= __('Submit') ?>
+    </button>
 
 </form>
 
 
 <script type="text/javascript">
 function changeEvaluationType(mode){
-	if(mode == 0){
-		$('#compared-option').show();
-	}else{
-		$('#compared-option').hide();
-	}
+    if(mode == 0){
+        $('#compared-option').show();
+    }else{
+        $('#compared-option').hide();
+    }
 }
 </script>

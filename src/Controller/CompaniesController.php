@@ -19,13 +19,7 @@ class CompaniesController extends AppController
         $this->Auth->allow(['login', 'logout', 'register']);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Company id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+
     public function view()
     {
         $id = $this->getAuthedUserId();
@@ -50,7 +44,7 @@ class CompaniesController extends AppController
         $completedFomulas = null;
         $editingFomulas = null;
         foreach ($company->fomulas as $fomula) {
-            if($fomula->published == 1)
+            if($fomula->completed == 1)
                 $completedFomulas[] = $fomula;
             else
                 $editingFomulas[] = $fomula;
@@ -99,13 +93,6 @@ class CompaniesController extends AppController
     }
 
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Company id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
     public function edit($id = null)
     {
         $company = $this->Companies->get($id, [

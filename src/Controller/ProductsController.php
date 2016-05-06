@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 
 /**
  * Products Controller
@@ -211,6 +212,10 @@ class ProductsController extends AppController
         }
         $product = $this->Products->patchEntity($product, $data);
 
+        //日付関係
+        $product->sales_date = $data['sales_date'];
+        //var_dump($product->sales_date);
+
         if(!$this->Products->save($product)){
             $this->Flash->error(__('Server Error'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
@@ -361,14 +366,8 @@ class ProductsController extends AppController
         $types = $this->Types->find()->all();
         $this->set('types', $types->toArray());
 
-        if(isset($data['status'])){
-            //確認ページへ
-            $product = $this->Products->patchEntity($product, $data['product']);
-            $product = $this->Products->save($product);
-            $evaluation_type = $data['evaluation_type'];
-            $this->set('evaluation_type', $evaluation_type);
-            $this->render('confirm');
-        }
+        $evaluation_type = isset($product->compared_product_name) && isset($product->compared_model_number);
+        $this->set('evaluation_type', $evaluation_type);
     }
 
     public function publish($id = null){
@@ -384,6 +383,13 @@ class ProductsController extends AppController
         }
     }
 
+    public function unpublish($id = null)
+    {
+        $product = $this->Products->get($id);
+        $product->published = 0;
+        $this->Products->save($product);
+        return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+    }
 
     public function delete($id = null)
     {

@@ -118,8 +118,8 @@
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
-										<i class="fa fa-sm fa-trash"></i>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "unpublish", $product->id ]);?>'>
+										<i class="fa fa-sm fa-undo"></i>
 									</a>
 								</td>
 							</tr>
@@ -164,7 +164,7 @@
 						<?php foreach ($editingFomulas as $fomula): ?>
 							<tr>
 								<td><?php echo $fomula->modified; ?></td>
-								<td><?php echo $fomula->formula_start." ~ ".$fomula->formula_end; ?></td>
+								<td><?php echo $fomula->fomula_start." ~ ".$fomula->fomula_end; ?></td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
@@ -188,7 +188,7 @@
 					<?= __('Published Data') ?>
 				</h6>
 			</div>
-			<?php if(isset($completedFomula) && count($completedFomula) != 0): ?>
+			<?php if(isset($completedFomulas) && count($completedFomulas) != 0): ?>
 				<table id="sorter" class="tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
@@ -198,17 +198,20 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($completedFomula as $fomula): ?>
+						<?php foreach ($completedFomulas as $fomula): ?>
 							<tr>
-								<td><?php echo $fomula->modified; ?></td>
-								<td><?php echo $fomula->period; ?></td>
-								<td><?php echo $fomula->operator_name; ?></td>
+								<td>
+									<a href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "view", $fomula->id ]);?>'>
+									<?php echo $fomula->modified; ?>
+									</a>
+								</td>
+								<td><?php echo $fomula->fomula_start." ~ ".$fomula->fomula_end; ?></td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>'>
-										<i class="fa fa-sm fa-trash"></i>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "unpublish", $fomula->id ]);?>'>
+										<i class="fa fa-sm fa-undo"></i>
 									</a>
 								</td>
 							</tr>

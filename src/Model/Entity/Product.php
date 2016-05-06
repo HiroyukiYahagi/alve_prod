@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
 /**
  * Product Entity.
@@ -37,4 +38,51 @@ class Product extends Entity
         '*' => true,
         'id' => false,
     ];
+
+
+    protected function _getCreated($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
+    }
+    protected function _getModified($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
+    }
+
+    protected function _getSalesDate($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd');   
+        }
+        return $value;
+    }
+
+    protected function _getLatestFomula($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd');   
+        }
+        return $value;
+    }
+
+    protected function _setSalesDate($value){
+        if ($value != null && is_string($value)) {
+            $value = new Time($value, 'Asia/Tokyo');
+        }
+        return $value;
+    }
+
+
+    protected function _setLatestFomula($value){
+        if ($value != null && is_string($value)) {
+            $value = new Time($value, 'Asia/Tokyo');
+        }
+        return $value;
+    }
 }

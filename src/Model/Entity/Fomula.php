@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
 /**
  * Fomula Entity.
@@ -33,4 +34,50 @@ class Fomula extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    protected function _getCreated($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
+    }
+
+    protected function _getModified($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
+    }
+
+    protected function _getFomulaStart($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd');   
+        }
+        return $value;
+    }
+
+    protected function _getFomulaEnd($value){
+        if ($value != null) {
+            $value = new Time($value,'Asia/Tokyo');
+            $value->setToStringFormat('yyyy-MM-dd');   
+        }
+        return $value;
+    }
+
+    protected function _setFomulaStart($value){
+        if ($value != null && is_string($value)) {
+            $value = new Time($value, 'Asia/Tokyo');
+        }
+        return $value;
+    }
+
+    protected function _setFomulaEnd($value){
+        if ($value != null && is_string($value)) {
+            $value = new Time($value, 'Asia/Tokyo');
+        }
+        return $value;
+    }
 }

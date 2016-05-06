@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\I18n\Time;
 
 /**
  * Company Entity.
@@ -50,5 +51,24 @@ class Company extends Entity
     protected function _setPassword($password)
     {
         return (new DefaultPasswordHasher)->hash($password);
+    }
+
+
+    protected function _getCreated($value){
+        if ($value != null) {
+            $value = new Time($value);
+            $value->timezone = 'Asia/Tokyo';
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
+    }
+
+    protected function _getModified($value){
+        if ($value != null) {
+            $value = new Time($value);
+            $value->timezone = 'Asia/Tokyo';
+            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
+        }
+        return $value;
     }
 }
