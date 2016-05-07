@@ -52,23 +52,4 @@ class Company extends Entity
     {
         return (new DefaultPasswordHasher)->hash($password);
     }
-
-
-    protected function _getCreated($value){
-        if ($value != null) {
-            $value = new Time($value);
-            $value->timezone = 'Asia/Tokyo';
-            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
-        }
-        return $value;
-    }
-
-    protected function _getModified($value){
-        if ($value != null) {
-            $value = new Time($value);
-            $value->timezone = 'Asia/Tokyo';
-            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
-        }
-        return $value;
-    }
 }

@@ -168,12 +168,12 @@ class FomulasController extends AppController
         }
 
         $fomula->operator_name = $data['operator_name'];
-        $fomula->fomula_start = new Time($data['fomula_start']);
-        $fomula->fomula_end = new Time($data['fomula_end']);
+        $fomula->fomula_start = $data['fomula_start'];
+        $fomula->fomula_end = $data['fomula_end'];
         $fomula = $this->Fomulas->save($fomula);
 
         if($fomula == null){
-            $this->Flash->error(__('Server Error:1'));
+            $this->Flash->error(__('Server Error'));
             return null;
         }
         
@@ -185,7 +185,7 @@ class FomulasController extends AppController
             $fomulaItems->head_id = $key;
             $fomulaItems->fomula_id = $fomula->id;
             if(!$this->FomulaItems->save($fomulaItems)){
-                $this->Flash->error(__('Server Error:2'));
+                $this->Flash->error(__('Server Error'));
                 return null;
             }
         }

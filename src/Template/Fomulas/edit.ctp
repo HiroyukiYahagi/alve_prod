@@ -35,13 +35,13 @@
                             <label for="fomula_start">
                                 <?= __('Fomula Start') ?>
                             </label>
-                            <input id="fomula_start" name="fomula_start" type="date" class="datepicker">
+                             <input id="fomula_start" name="fomula_start" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>"/>
                         </div>
                         <div class="col s6">
                             <label for="fomula_end">
                                 <?= __('Fomula End') ?>
                             </label>
-                            <input id="fomula_end" name="fomula_end" type="date" class="datepicker">
+                            <input id="fomula_end" name="fomula_end" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>"/>
                         </div>
                     </div>
                 </div>

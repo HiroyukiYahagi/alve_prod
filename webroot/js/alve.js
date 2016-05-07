@@ -12,7 +12,7 @@ function successRow(id){
 
 
 $(function() {
-	$('#sorter').tablesorter();
+	$('.sorter').tablesorter();
 
 	$('.button-collapse').sideNav({
 		menuWidth: 240,

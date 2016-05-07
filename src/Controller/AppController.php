@@ -106,6 +106,7 @@ class AppController extends Controller
         }
 
         $this->set('isAuth', $this->isAuthed());
+        $this->set('authedId', $this->getAuthedUserId());
     }
 
     protected function isAdmin(){

@@ -4,48 +4,6 @@
     <?php if(isset($product)):?>
         <input type="hidden" name="id" value="<?php echo $product->id;?>"/>
     <?php endif;?>
-    <div class="row">
-        <div class="col s12">
-            <h5>
-                <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Operator Info') ?>
-            </h5>
-            <div class="card">
-                <div class="card-content">
-
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <label for="operator_name">
-                                <?= __('Operator Name') ?>
-                            </label>
-                            <input id="operator_name" type="text" name="operator_name" class="validate" value="<?php echo isset($product->operator_name) ? $product->operator_name : '' ;?>"/>
-                        </div>
-                        <div class="input-field col s6">
-                            <label for="operator_department">
-                                <?= __('Operator Department') ?>
-                            </label>
-                            <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <label for="operator_tel">
-                                <?= __('Operator TEL') ?>
-                            </label>
-                            <input id="operator_tel" type="text" name="operator_tel" class="validate" value="<?php echo isset($product->operator_tel) ? $product->operator_tel : '' ;?>"/>
-                        </div>
-                        <div class="input-field col s6">
-                            <label for="operator_email">
-                                <?= __('Operator Email') ?>
-                            </label>
-                            <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '';?>"/>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col s6">
@@ -89,7 +47,7 @@
                     <div class="row">
                         <div class="col s12">     
                             <label for="sales_date"><?= __('Sales Date') ?></label>
-                            <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate" required value="<?php echo isset($product->sales_date) ? $product->sales_date: ''; ?>"/>
+                            <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->sales_date) ? $product->sales_date : null ])->render();?>"/>
                         </div>
                     </div>
                 </div>
@@ -144,6 +102,50 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
+                <?= __('Operator Info') ?>
+            </h5>
+            <div class="card">
+                <div class="card-content">
+
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="operator_name">
+                                <?= __('Operator Name') ?>
+                            </label>
+                            <input id="operator_name" type="text" name="operator_name" class="validate" value="<?php echo isset($product->operator_name) ? $product->operator_name : '' ;?>"/>
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="operator_department">
+                                <?= __('Operator Department') ?>
+                            </label>
+                            <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="operator_tel">
+                                <?= __('Operator TEL') ?>
+                            </label>
+                            <input id="operator_tel" type="text" name="operator_tel" class="validate" value="<?php echo isset($product->operator_tel) ? $product->operator_tel : '' ;?>"/>
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="operator_email">
+                                <?= __('Operator Email') ?>
+                            </label>
+                            <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '';?>"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col s12">
+            <h5>
+                <i class="fa fa-user fa-with" aria-hidden="true"></i>
                 <?= __('Others') ?>
             </h5>
             <div class="card">
@@ -152,7 +154,7 @@
                     <div class="row">
                         <div class="col s6">     
                             <label for="latest_fomula"><?= __('Latest Formula Date') ?></label>
-                            <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate" required value="<?php echo isset($product->latest_fomula) ? $product->latest_fomula: ''; ?>"/>
+                            <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->latest_fomula) ? $product->latest_fomula : null ])->render();?>"/>
                         </div>
                     </div>
                     <div class="row">

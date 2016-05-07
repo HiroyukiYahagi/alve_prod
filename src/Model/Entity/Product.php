@@ -39,49 +39,20 @@ class Product extends Entity
         'id' => false,
     ];
 
-
-    protected function _getCreated($value){
-        if ($value != null) {
-            $value = new Time($value,'Asia/Tokyo');
-            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
-        }
-        return $value;
-    }
-    protected function _getModified($value){
-        if ($value != null) {
-            $value = new Time($value,'Asia/Tokyo');
-            $value->setToStringFormat('yyyy-MM-dd HH:mm');   
-        }
-        return $value;
-    }
-
-    protected function _getSalesDate($value){
-        if ($value != null) {
-            $value = new Time($value,'Asia/Tokyo');
-            $value->setToStringFormat('yyyy-MM-dd');   
-        }
-        return $value;
-    }
-
-    protected function _getLatestFomula($value){
-        if ($value != null) {
-            $value = new Time($value,'Asia/Tokyo');
-            $value->setToStringFormat('yyyy-MM-dd');   
-        }
-        return $value;
-    }
-
     protected function _setSalesDate($value){
         if ($value != null && is_string($value)) {
             $value = new Time($value, 'Asia/Tokyo');
+            $value->hour = 0;
+            $value->minute = 0;
         }
         return $value;
     }
-
 
     protected function _setLatestFomula($value){
         if ($value != null && is_string($value)) {
             $value = new Time($value, 'Asia/Tokyo');
+            $value->hour = 0;
+            $value->minute = 0;
         }
         return $value;
     }

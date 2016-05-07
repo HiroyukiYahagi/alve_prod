@@ -1,16 +1,24 @@
 <h4><?= __('Evaluation Result') ?></h4>
 
 <div class="row">
-    <h5>
-        <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-        <?= __('Evaluation Infomation') ?>
-    </h5>
+    <div class="title-and-item">
+        <h5 class="card-title grey-text text-darken-4">
+            <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+            <?= __('Evaluation Infomation') ?>
+        </h5>
+        <a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $fomula->id ]);?>'>
+            <i class="fa fa-pencil-square-o"></i>
+        </a>
+    </div>
+
     <div class="card">
         <div class="card-content">
             <div class="row">
                 <div class="col s12">
                     <label><?= __('Formula Period') ?></label>
-                    <p><?php echo $fomula->fomula_start;?> ~ <?php echo $fomula->fomula_end;?></p>
+                    <p>
+                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -20,7 +28,9 @@
                 </div>
                 <div class="col s4">
                     <label><?= __('Last Edit Date') ?></label>
-                    <p><?php echo $fomula->modified;?></p>
+                    <p>
+                        <?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $fomula->modified ])->render();?>
+                    </p>
                 </div>
             </div>
         </div>

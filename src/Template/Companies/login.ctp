@@ -12,7 +12,7 @@
 			</div>
 			<div class="row">
 				<div class="input-field col s12">
-					<input id="password" name="password" type="password" class="validate" minlength="8" required>
+					<input id="password" name="password" type="password" class="validate"  required>
 					<label for="password">Password 8文字以上入力してください</label>
 				</div>
 			</div>

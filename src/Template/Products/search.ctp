@@ -62,7 +62,7 @@ $cakeDescription = 'Alve';
 
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <select id="options" multiple name="options">
+                                    <select id="options" multiple name="options[]">
                                         <option value="" disabled selected><?= __('Please Select Input Types') ?></option>
                                         <?php foreach ($types as $type):?>
                                             <option value="<?php echo $type->id;?>"><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
@@ -80,43 +80,60 @@ $cakeDescription = 'Alve';
         </div>
     </div>
 
-    <?php if(isset($results)): ?>
+    <?php if(count($products)): ?>
         <div class="row">
-            <div class="card s6 offset-s3">
-                <div class="card-content">
-                    <table id="sorter" class="tablesorter white striped z-depth-2">
-                        <thead>
+            <div class="col s10 offset-s1">
+                <table class="sorter tablesorter white striped z-depth-2">
+                    <thead>
+                        <tr>
+                            <th><?= __('Registered Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Updated Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Type') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Manufacturer') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Product Name') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Model Number') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('Sale Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($products as $product): ?>
                             <tr>
-                                <th><?= __('ID') ?></th>
-                                <th><?= __('Registered Date') ?></th>
-                                <th><?= __('Updated Date') ?></th>
-                                <th><?= __('Type') ?></th>
-                                <th><?= __('Manufacturer') ?></th>
-                                <th><?= __('Product Name') ?></th>
-                                <th><?= __('Model Number') ?></th>
-                                <th><?= __('Sale Date') ?></th>
+                                <td>
+                                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->created ])->render();?>
+                                </td>
+                                <td>
+                                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->modified ])->render();?>
+                                </td>
+                                <td><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></td>
+                                <td>
+                                    <?php if(strlen($product->company->url) != 0):?>
+                                    <a href="<?php echo $product->company->url; ?>">
+                                        <?php echo $product->company->company_name;?>
+                                    </a>
+                                    <?php else: ?>
+                                    <?php echo $product->company->company_name;?>  
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if(strlen($product->product_info_url) != 0):?>
+                                    <a href="<?php echo $product->product_info_url; ?>">
+                                        <?php echo $product->product_name;?>  
+
+                                    </a>
+                                    <?php else: ?>
+                                    <?php echo $product->product_name;?>  
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $product->model_number;?></td>
+                                <td>
+                                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->sales_date ])->render();?>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($products as $product): ?>
-                                <tr>
-                                    <td><?php echo $product->product_id;?></td>
-                                    <td><?php echo $product->created;?></td>
-                                    <td><?php echo $product->modified;?></td>
-                                    <td><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></td>
-                                    <td><?php echo $product->company->name;?></td>
-                                    <td><?php echo $product->product_name;?></td>
-                                    <td><?php echo $product->model_number;?></td>
-                                    <td><?php echo $product->sales_date;?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+                        <?php endforeach; ?>
                     </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-
-
     <?php endif; ?>
 
 

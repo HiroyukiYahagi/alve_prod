@@ -1,10 +1,16 @@
 <h4><?= __('Evaluation Result') ?></h4>
 
 <div class="row">
-    <h5>
-        <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-        <?= __('Evaluation Infomation') ?>
-    </h5>
+    <div class="title-and-item">
+        <h5 class="card-title grey-text text-darken-4">
+            <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+            <?= __('Product Infomation') ?>
+        </h5>
+        <a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>'>
+            <i class="fa fa-pencil-square-o"></i>
+        </a>
+    </div>
+
     <div class="card">
         <div class="card-content">
             <div class="row">
@@ -23,20 +29,80 @@
                     <p><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></p>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Operator Name') ?></label>
-                    <p><?php echo $product->operator_name;?></p>
+                    <label><?= __('Product Info URL') ?></label>
+                    <p>
+                        <?php echo isset($product->product_info_url) ? $product->product_info_url: ''; ?>
+                    </p>
                 </div>
                 <div class="col s4">
+                    <label><?= __('Sales Date') ?></label>
+                    <p>
+                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->sales_date ])->render();?>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Compared Product') ?></label>
+                    <p>
+                        <?php echo (isset($product->evaluations[0]->compared_product_name) && count($product->evaluations[0]->compared_product_name) == 0) ? $product->evaluations[0]->compared_product_name: __('Compared with target value'); ?>
+                    </p>
+                </div>
+                <div class="col s4">
+                    <p>
+                        <?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s4">
                     <label><?= __('Last Edit Date') ?></label>
-                    <p><?php echo $product->modified;?></p>
+                    <p>
+                    <?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+<div class="row">
+    <h5>
+        <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+        <?= __('Operator Infomation') ?>
+    </h5>
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Operator Name') ?></label>
+                    <p><?php echo $product->operator_name;?></p>
+                </div>
+                <div class="col s4">
+                    <label><?= __('Operator Department') ?></label>
+                    <p><?php echo $product->operator_department;?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('Operator TEL') ?></label>
+                    <p><?php echo $product->operator_tel;?></p>
+                </div>
+                <div class="col s4">
+                    <label><?= __('Operator Email') ?></label>
+                    <p><?php echo $product->operator_email;?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="row">
@@ -88,7 +154,7 @@
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf']);?>"><?= __('Create PDF Sheat') ?></button>
+                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('Create PDF Sheat') ?></button>
                     </div>
                 </div>
             </div>

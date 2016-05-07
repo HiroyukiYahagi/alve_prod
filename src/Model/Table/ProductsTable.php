@@ -94,6 +94,15 @@ class ProductsTable extends Table
 
     public function findByConditions($condition, $options)
     {
-        return null;
+        $query = $this->find()->contain(['Types', 'Companies'])->where(['published' => 1]);
+
+        if($condition!=null){
+            $query->where(['product_name LIKE' => '%'.$condition.'%' ]);
+        }
+        if($options!=null){
+            $query->where(['Types.id IN' => $options ]);
+        }
+        
+        return $query->all()->toArray();
     }
 }

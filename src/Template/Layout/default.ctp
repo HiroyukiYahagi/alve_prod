@@ -50,7 +50,7 @@ $cakeDescription = 'Alve';
             <span class="green-text">環境配慮バルブ登録システム</span>
         </a>
         <ul id="slide-out" class="side-nav fixed">
-            <?= $this->cell('Nav', ['isAuth' => isset($isAuth) ? $isAuth : false])->render();?>
+            <?= $this->cell('Nav', ['isAuth' => isset($isAuth) ? $isAuth : false , 'authedId' => $authedId ])->render();?>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse green-text"><i class="fa fa-bars fa-3x fa-with"></i></a>
     </nav>

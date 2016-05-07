@@ -1,0 +1,1 @@
+<?php echo isset($data)? $data->i18nFormat('yyyy-MM-dd HH:mm', 'Asia/Tokyo', 'ja-JP'): '' ; ?>

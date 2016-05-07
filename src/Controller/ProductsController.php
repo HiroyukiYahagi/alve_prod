@@ -48,9 +48,12 @@ class ProductsController extends AppController
         $this->set('types', $types);
 
         $data = $this->request->query;
-        if ($this->request->is('get') && isset($data['condition'])) {
-            $products = $this->Products->findByConditions($data['condition'], isset($data['options'])? $data['options'] : null );
-            $this->set('products', $products);            
+        if(
+            (isset($data['condition']) && strlen($data['condition']) > 0) 
+            || isset($data['options'])
+            ){
+            $products = $this->Products->findByConditions(strlen($data['condition']) > 0 ? $data['condition']: null , isset($data['options'])? $data['options'] : null );
+            $this->set('products', $products);
         }
 
         $this->viewBuilder()->layout(false);
@@ -214,6 +217,7 @@ class ProductsController extends AppController
 
         //日付関係
         $product->sales_date = $data['sales_date'];
+        $product->latest_fomula = $data['latest_fomula'];
         //var_dump($product->sales_date);
 
         if(!$this->Products->save($product)){
@@ -308,21 +312,8 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
 
-        $product = $this->Products->get($product->id, ['contain' => ['Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ], 'Types']] );
-        $this->set('product', $product);
+        return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
 
-        //set answer
-        if (isset($product->evaluations[0])) {
-            foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
-                $answers[$evaluation_item->evaluation_head->large_type][] = $evaluation_item->evaluation_head;
-            }
-            $this->set('answersMap', $answers);
-
-            $scores = $this->_scoring($product->evaluations[0]->evaluation_items);
-            $this->set('scores', $scores);
-        }
-
-        $this->render('view');
     }
 
     private function _scoring($evaluationItems){
@@ -400,5 +391,28 @@ class ProductsController extends AppController
             $this->Flash->error(__('The product could not be deleted. Please, try again.'));
         }
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+    }
+
+    public function createPdf($id = null)
+    {
+        $product = $this->Products->get($id, ['contain' => ['Companies', 'Types', 'Evaluations']]);
+        $product_info = $this->request->data['product_info'];
+        $product->product_comment = $product_info;
+        $product = $this->Products->save($product);
+        $this->set('product', $product);
+
+        $reported = $this->request->data['reported'];
+        foreach ($reported as $key => $value) {
+            $keyArr[] = $key;
+        }
+        $this->loadModel('EvaluationHeads');
+        $evaluationHeads = $this->EvaluationHeads->find()->where(['id IN' => $keyArr ])->all()->toArray();
+        $this->set('evaluationHeads', $evaluationHeads);
+
+
+        $this->response->type('pdf');
+        $this->response->charset('UTF-8');
+        $this->response->download('receipt.pdf');
+        $this->viewBuilder()->layout(false);
     }
 }

@@ -51,7 +51,7 @@
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-0 table-for-productlist">
+				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
 							<th><?= __('Product Name') ?></th>
@@ -68,7 +68,9 @@
 									<?php echo $product->product_name; ?>
 								</td>
 								<td><?php echo $product->model_number; ?></td>
-								<td><?php echo $product->modified; ?></td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
+								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
@@ -94,7 +96,7 @@
 				</h6>
 			</div>
 			<?php if(isset($completedProducts) && count($completedProducts) != 0): ?>
-				<table id="sorter" class="tablesorter white striped z-depth-0 table-for-productlist">
+				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
 							<th><?= __('Product Name') ?></th>
@@ -112,7 +114,9 @@
 									</a>
 								</td>
 								<td><?php echo $product->model_number; ?></td>
-								<td><?php echo $product->modified; ?></td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
+								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
@@ -152,7 +156,7 @@
 				</h6>
 			</div>
 			<?php if(isset($editingFomulas) && count($editingFomulas) != 0): ?>
-				<table id="sorter" class="tablesorter white striped table-for-fomulalist">
+				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
 							<th><?= __('Save Date') ?></th>
@@ -163,8 +167,12 @@
 					<tbody>
 						<?php foreach ($editingFomulas as $fomula): ?>
 							<tr>
-								<td><?php echo $fomula->modified; ?></td>
-								<td><?php echo $fomula->fomula_start." ~ ".$fomula->fomula_end; ?></td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $fomula->modified ])->render();?>
+								</td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
+								</td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>
@@ -189,7 +197,7 @@
 				</h6>
 			</div>
 			<?php if(isset($completedFomulas) && count($completedFomulas) != 0): ?>
-				<table id="sorter" class="tablesorter white striped table-for-fomulalist">
+				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
 							<th><?= __('Save Date') ?></th>
@@ -202,10 +210,12 @@
 							<tr>
 								<td>
 									<a href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "view", $fomula->id ]);?>'>
-									<?php echo $fomula->modified; ?>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $fomula->modified ])->render();?>
 									</a>
 								</td>
-								<td><?php echo $fomula->fomula_start." ~ ".$fomula->fomula_end; ?></td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
+								</td>
 								<td>
 									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
 										<i class="fa fa-sm fa-pencil-square-o"></i>

@@ -1,7 +1,6 @@
 <h4><?= __('Register') ?></h4>
 <blockquote>
-    この製品の情報を公開します。正しく入力されているかを確認してください。<br/>
-    <i class="fa fa-exclamation-triangle fa-with" aria-hidden="true"></i>公開される項目
+    以下の情報が公開されます。正しく入力されているかを確認してください。
 </blockquote>
 
 <form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish', $product->id]);?>">
@@ -17,14 +16,12 @@
                     <div class="row">
                         <div class="col s6">
                             <label for="company_name">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Company Name') ?>
                             </label>
                             <p><?php echo $product->company->company_name;?></p>
                         </div>
                         <div class="col s6">
                             <label for="name_kana">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Company Name ( kana )') ?>
                             </label>
                             <p><?php echo $product->company->name_kana;?></p>
@@ -40,44 +37,11 @@
                     </div>
                     <div class="row">
                         <div class="col s6">
-                            <label for="operator_name">
-                                <?= __('Operator Name') ?>
-                            </label>
-                            <p id="operator_name"><?php echo $product->operator_name;?></p>
-                        </div>
-                        <div class="col s6">
-                            <label for="operator_department">
-                                <?= __('Operator Department') ?>
-                            </label>
-                            <p id="operator_department"><?php echo $product->operator_department;?>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s6">
-                            <label for="operator_tel">
-                                <?= __('Operator TEL') ?>
-                            </label>
-                            <p id="operator_tel"><?php echo $product->operator_tel;?>
-                            </p>
-                        </div>
-                        <div class="col s6">
-                            <label for="operator_email">
-                                <?= __('Operator Email') ?>
-                            </label>
-                            <p id="operator_email">
-                                <?php echo $product->operator_email;?>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s6">
                             <label for="latest_fomula">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Latest Fomula Date') ?>
                             </label>
                             <p>
-                                <?php echo $product->latest_fomula; ?>
+                                <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->latest_fomula ])->render();?>
                             </p>
                         </div>
                     </div>
@@ -101,7 +65,6 @@
                     <div class="row">
                         <div class="col s6">
                             <label>
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Product Type')?>
                             </label>
                             <p>
@@ -113,27 +76,17 @@
                     <div class="row">
                         <div class="col s6">
                             <label for="product_name">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Product Name') ?>
                             </label>
                             <p id="product_name"><?php echo $product->product_name;?></p>
                         </div>
                         <div class="col s6">
                             <label for="model_number">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Model Number') ?>
                             </label>
                             <p id="model_number"><?php echo $product->model_number;?></p>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col s12">
-                            <label for="product_comment"><?= __('Product Comment') ?></label>
-                            <p id="product_comment"><?php echo $product->product_comment;?></p>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class=" col s6">
                             <label for="product_info_url">
@@ -143,10 +96,11 @@
                         </div>
                         <div class="col s6">
                             <label for="sales_date">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                 <?= __('Sales Date') ?>
                             </label>
-                            <p id="sales_date"><?php echo $product->sales_date;?></p>
+                            <p id="sales_date">
+                                <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->sales_date ])->render();?>
+                            </p>
                         </div>
                     </div>
 
