@@ -50,7 +50,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('保存済みの製品') ?>
+					<?= __('保存済みのデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
@@ -202,7 +202,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('保存済みの評価') ?>
+					<?= __('保存済みのデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingFomulas) && count($editingFomulas) != 0): ?>
@@ -243,7 +243,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('公開中の評価') ?>
+					<?= __('評価済みのデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($completedFomulas) && count($completedFomulas) != 0): ?>
