@@ -234,7 +234,7 @@ class FomulasController extends AppController
             $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
-        return $this->redirect(['controller' => 'Fomulas', 'action' => 'view', $id]);
+        return $this->redirect(['controller' => 'Fomulas', 'action' => 'view', $fomula->id]);
     }
 
     private function _setEvaluationHeads(){

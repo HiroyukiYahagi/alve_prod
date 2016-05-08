@@ -86,8 +86,8 @@
                                     <label for="selected_<?php echo $fomulaHead->id; ?>"></label>
                                 </p>
                                 <?php else: ?>
-                                <p class="red-text">
-                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                <p>
+                                    <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 </p>
                                 <input id="selected_<?php echo $fomulaHead->id; ?>" type="hidden" name="selected[<?php echo $fomulaHead->id; ?>]" value="on" checked="checked"/>
                                 <?php endif; ?>

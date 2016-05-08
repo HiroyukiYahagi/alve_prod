@@ -1,5 +1,9 @@
 <h4><?php echo $title; ?></h4>
 
+<blockquote>
+    <i class="fa fa-star fa-with" aria-hidden="true"></i>入力必須項目
+</blockquote>
+
 <form method="post" action="">
     <?php if(isset($product)):?>
         <input type="hidden" name="id" value="<?php echo $product->id;?>"/>
@@ -22,19 +26,19 @@
                                     <option value="<?php echo $type->id;?>" <?php echo isset($product)&&($type->id==$product->type_id) ? 'selected': ''; ?> ><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <label><?= __('製品種別') ?></label>
+                            <label><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品種別') ?></label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <label for="product_name"><?= __('製品名') ?></label>
+                            <label for="product_name"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品名') ?></label>
                             <input id="product_name" type="text" name="product_name" class="validate" required value="<?php echo isset($product->product_name) ? $product->product_name: ''; ?>" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="model_number"><?= __('型番') ?></label>
+                            <label for="model_number"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('型番') ?></label>
                             <input id="model_number" type="text" name="model_number" class="validate" required value="<?php echo isset($product->model_number) ? $product->model_number: ''; ?>"/>
                         </div>
                     </div>
@@ -46,7 +50,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12">     
-                            <label for="sales_date"><?= __('発売日') ?></label>
+                            <label for="sales_date"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('発売日') ?></label>
                             <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->sales_date) ? $product->sales_date : null ])->render();?>"/>
                         </div>
                     </div>
@@ -153,7 +157,7 @@
 
                     <div class="row">
                         <div class="col s6">     
-                            <label for="latest_fomula"><?= __('最近のしくみ評価実施日') ?></label>
+                            <label for="latest_fomula"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('最近のしくみ評価実施日') ?></label>
                             <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->latest_fomula) ? $product->latest_fomula : null ])->render();?>"/>
                         </div>
                     </div>
@@ -214,8 +218,8 @@
                                     <label for="selected_<?php echo $evaluationHead->id; ?>"></label>
                                 </p>
                                 <?php else: ?>
-                                <p class="red-text">
-                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                <p>
+                                    <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 </p>
                                 <input id="selected_<?php echo $evaluationHead->id; ?>" type="hidden" name="selected[<?php echo $evaluationHead->id; ?>]" value="on" checked="checked"/>
                                 <?php endif; ?>

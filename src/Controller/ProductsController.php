@@ -192,6 +192,19 @@ class ProductsController extends AppController
         if (!isset($product->evaluations[0]))    
             return false;
 
+        if (!isset($product->type))    
+            return false;
+
+        if (!isset($product->product_name) || strlen($product->product_name) == 0)
+            return false;
+        if (!isset($product->model_number) || strlen($product->model_number) == 0)
+            return false;
+
+        if (!isset($product->sales_date))
+            return false;
+        if (!isset($product->latest_fomula))
+            return false;
+
         foreach ($product->evaluations[0]->evaluation_items as $key => $evaluation_item) {
             if ($evaluation_item->value == null
                 || $evaluation_item->compared_value == null

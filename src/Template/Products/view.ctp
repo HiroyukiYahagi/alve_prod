@@ -154,7 +154,7 @@
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('PDFシートを作成する') ?></button>
+                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('結果シート(PDF)を作成する') ?></button>
                     </div>
                 </div>
             </div>
