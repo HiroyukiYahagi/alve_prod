@@ -53,4 +53,12 @@ class Fomula extends Entity
         }
         return $value;
     }
+
+    public function set($property, $value = null, array $options = [])
+    {
+        if(is_string($value)){
+            $value = htmlspecialchars($value, ENT_QUOTES);
+        }
+        parent::set($property, $value, $options);
+    }
 }

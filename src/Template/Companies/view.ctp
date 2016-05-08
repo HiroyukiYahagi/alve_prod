@@ -13,6 +13,9 @@
 				<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>'>
 					<i class="fa fa-pencil-square-o"></i>
 				</a>
+				<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>'>
+					<i class="fa fa-key" aria-hidden="true"></i>
+				</a>
 			</div>
 
 			<label><?= __('E-mail') ?></label>

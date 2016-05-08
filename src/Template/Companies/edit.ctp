@@ -1,6 +1,5 @@
 <h4><?= __('Edit Info') ?></h4>
 
-
 <div class="content">
     <div class="card">
         <form action='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>' method='post'>

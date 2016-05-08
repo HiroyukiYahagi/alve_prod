@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 /**
  * Companies Controller
@@ -17,8 +18,28 @@ class CompaniesController extends AppController
         parent::beforeFilter($event);
         // ユーザーによるログアウトを許可する
         $this->Auth->allow(['login', 'logout', 'register']);
+
+         //TODO
+        //自社のプロダクトID以外にアクセスが来た場合は強制リダイレクト
+        $this->_validateId($event);
     }
 
+    private function _validateId(Event $event){
+        if(isset($event->subject()->request->params['pass'][0])){
+            $id = $event->subject()->request->params['pass'][0];
+        }else if(isset($this->request->data['id'])){
+            $id = $this->request->data['id'];
+        }else if(isset($this->request->query['id'])){
+            $id = $this->request->query['id'];
+        }else{
+            return;
+        }
+
+        if($this->getAuthedUserId() != $id){
+            $this->Flash->error(__('Invalid Access'));
+            $this->redirect(['controller' => 'Top', 'action' => 'index']);
+        }
+    }
 
     public function view()
     {
@@ -54,8 +75,8 @@ class CompaniesController extends AppController
 
         $this->set('company', $company);
         $this->set('_serialize', ['company']);
-    }
 
+    }
 
     public function login(){
         if ($this->request->is('post')) {
@@ -83,15 +104,62 @@ class CompaniesController extends AppController
             $company->email = $data['email'];
             $company->password = $data['password'];
             if ($this->Companies->save($company)) {
-                $this->Flash->success(__('register successful'));
-                $this->Auth->setUser($company->toArray());
-                return $this->redirect($this->Auth->redirectUrl());
+                //$this->_sendRegisterMail($company);
+                $this->Flash->success(__('Register mail has been sent.'));
+                return $this->redirect(['action' => 'login']);
             }else{
                 $this->Flash->error(__('register error'));
             }
         }
     }
 
+    public function test(){
+        //$this->_sendMail("yahagi1989@gmail.com", "testmail", "test messages");
+        
+    }
+
+    private function _sendRegisterMail($company){
+        $defaultPassword = $this->_makeRandStr(10);
+        $company->password = $defaultPassword;
+        $this->Companies->save($company);
+        $email = $company->email;
+
+        $message = <<< EOF
+この度は環境配慮バルブ登録システムに新規登録いただきありがとうございます。
+
+----------------------------------
+登録情報
+----------------------------------
+ユーザ名(メールアドレス): $email
+一時パスワード: $defaultPassword
+
+*このメールへの返信は必要ありません。
+*このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+        
+        $title = "環境配慮バルブ登録システム新規登録確認メッセージ";
+        $this->_sendMail($email, $title, $message);
+    }
+
+    private function _makeRandStr($length) {
+        $str = array_merge(range('a', 'z'), range('0', '9'), range('A', 'Z'));
+        $r_str = null;
+        for ($i = 0; $i < $length; $i++) {
+            $r_str .= $str[rand(0, count($str) - 1)];
+        }
+        return $r_str;
+    }
+
+    private function _sendMail($toAddress, $title, $message){
+        $email = new Email('default');
+        $email->to($toAddress)->subject($title)->send($message);
+    }
 
     public function edit($id = null)
     {
@@ -115,6 +183,31 @@ class CompaniesController extends AppController
         $this->set('_serialize', ['company']);
     }
 
+    public function editPassword($id = null){
+        $company = $this->Companies->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->data;
+            if( strlen($data['password']) == 0 || $data['password'] != $data['password-again'] ){
+                $this->Flash->error(__('Please Input Same Password.'));
+                return $this->redirect($this->referer());
+            }
+            $company = $this->Companies->patchEntity($company, $data);
+            $result = $this->Companies->save($company);
+            
+            if ($result) {
+                $this->Flash->success(__('The company has been saved.'));
+                return $this->redirect(['action' => 'view']);
+            } else {
+                foreach ($company->errors() as $key => $value) {
+                    $this->Flash->error($key.__(' is Invalid.'));   
+                }
+            }
+        }
+        $this->set(compact('company'));
+        $this->set('_serialize', ['company']);
+    }
 
     public function delete($id = null)
     {

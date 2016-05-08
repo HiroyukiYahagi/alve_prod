@@ -29,45 +29,46 @@ class AppController extends Controller
 {
 
     public $components = [
-        'Flash',
-        'RequestHandler',
+  'Flash',
+  'RequestHandler',
         //'Security',
-        'Auth' => [
-            // ログイン後の画面
-           'loginAction'=>[
-              'controller'=>'Companies',
-              'action'=>'login'
-            ],
+  'Auth' => [
+              // ログイン後の画面
+    'loginAction'=>[
+    'controller'=>'Companies',
+    'action'=>'login'
+    ],
 
-            'loginRedirect' => [
-                'controller' => 'Companies',
-                'action' => 'view',
-            ],
+    'loginRedirect' => [
+    'controller' => 'Companies',
+    'action' => 'view',
+    ],
 
-            // ログアウト後の画面→ログインページへ遷移
-            'logoutRedirect' => [
-                'controller' => 'Top',
-                'action' => 'index',
-            ],
+              // ログアウト後の画面→ログインページへ遷移
+    'logoutRedirect' => [
+    'controller' => 'Top',
+    'action' => 'index',
+    ],
 
-            // 認証情報
-            'authenticate' => [
-                'Form' => [
-                    // 使用モデル
-                    'userModel' => 'Companies',
-                    // フィールド
-                    'fields' => [
-                        'username' => 'email',
-                        'password' => 'password'
-                    ],
-                    // パスワード認証方法
-                    'passwordHasher' => [
-                        'className' => 'Default',
-                    ]
-                ]
-            ],
+              // 認証情報
+    'authenticate' => [
+      'Form' => [
+                          // 使用モデル
+        'userModel' => 'Companies',
+                          // フィールド
+        'fields' => [
+          'username' => 'email',
+          'password' => 'password'
+          ],
+                          // パスワード認証方法
+        'passwordHasher' => [
+          'className' => 'Default',
+          ]
         ]
-    ];
+      ],
+    ]
+  ];
+
 
     /**
      * Initialization hook method.
@@ -80,15 +81,14 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        parent::initialize();
+      parent::initialize();
 
         // $this->loadComponent('RequestHandler');
         // $this->loadComponent('Flash');
     }
 
-
     public function beforeFilter(Event $event){
-      
+
     }
 
     /**
@@ -97,46 +97,46 @@ class AppController extends Controller
      * @param \Cake\Event\Event $event The beforeRender event.
      * @return void
      */
-    public function beforeRender(Event $event)
-    {
-        if (!array_key_exists('_serialize', $this->viewVars) &&
-            in_array($this->response->type(), ['application/json', 'application/xml'])
+  public function beforeRender(Event $event)
+  {
+    if (!array_key_exists('_serialize', $this->viewVars) &&
+        in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
-            $this->set('_serialize', true);
-        }
-
-        $this->set('isAuth', $this->isAuthed());
-        $this->set('authedId', $this->getAuthedUserId());
+        $this->set('_serialize', true);
     }
 
-    protected function isAdmin(){
-        $id = $this->getAuthedUserId();
-        $this->loadModule('Company');
-        $company = $this->Companies->get($id);
-        return ($company->isAdmin == 1);
+    $this->set('isAuth', $this->isAuthed());
+    $this->set('authedId', $this->getAuthedUserId());
+  }
+
+  protected function isAdmin(){
+    $id = $this->getAuthedUserId();
+    $this->loadModule('Company');
+    $company = $this->Companies->get($id);
+    return ($company->isAdmin == 1);
+  }
+
+  protected function isAuthed(){
+    if($this->getAuthedUserId() != null)
+      return true;
+    else
+      return false;
+  }
+
+  protected function getAuthedUserId(){
+    return $this->Auth->user()['id'];
+  }
+
+
+  protected function _setUnitMap(){
+    $this->loadModel("Units");
+    $units = $this->Units->find('all');
+
+    foreach ($units as $unit) {
+      $unitMap[$unit['category']][] = $unit;
     }
 
-    protected function isAuthed(){
-      if($this->getAuthedUserId() != null)
-        return true;
-      else
-        return false;
-    }
-
-    protected function getAuthedUserId(){
-        return $this->Auth->user()['id'];
-    }
-
-
-    protected function _setUnitMap(){
-        $this->loadModel("Units");
-        $units = $this->Units->find('all');
-
-        foreach ($units as $unit) {
-            $unitMap[$unit['category']][] = $unit;
-        }
-
-        $this->set('units', $unitMap);
-    }
+    $this->set('units', $unitMap);
+  }
 
 }

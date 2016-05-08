@@ -3,26 +3,15 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\I18n\Time;
 
 /**
- * Company Entity.
+ * Admin Entity.
  *
  * @property int $id
- * @property string $name
+ * @property string $username
  * @property string $password
- * @property int $deleted
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
- * @property int $is_admin
- * @property string $company_name
- * @property string $url
- * @property string $tel
- * @property string $email
- * @property \App\Model\Entity\Fomula[] $fomulas
- * @property \App\Model\Entity\Product[] $products
  */
-class Company extends Entity
+class Admin extends Entity
 {
 
     /**
@@ -60,5 +49,4 @@ class Company extends Entity
         }
         parent::set($property, $value, $options);
     }
-
 }
