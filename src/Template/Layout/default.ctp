@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'Alve';
+$cakeDescription = 'Alve -環境配慮バルブ登録システム-';
 ?>
 <!DOCTYPE html>
 <html>

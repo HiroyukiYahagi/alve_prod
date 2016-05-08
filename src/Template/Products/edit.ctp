@@ -9,7 +9,7 @@
         <div class="col s6">
             <h5>
                 <i class="fa fa-cog fa-with" aria-hidden="true"></i>
-                <?= __('Product Info') ?>
+                <?= __('製品情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
@@ -17,36 +17,36 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <select id="types" name="type_id">
-                                <option value="" disabled selected><?= __('Please Select Input Types') ?></option>
+                                <option value="" disabled selected><?= __('製品種別を選択してください') ?></option>
                                 <?php foreach ($types as $type):?>
                                     <option value="<?php echo $type->id;?>" <?php echo isset($product)&&($type->id==$product->type_id) ? 'selected': ''; ?> ><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <label><?= __('Product Type') ?></label>
+                            <label><?= __('製品種別') ?></label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <label for="product_name"><?= __('Product Name') ?></label>
+                            <label for="product_name"><?= __('製品名') ?></label>
                             <input id="product_name" type="text" name="product_name" class="validate" required value="<?php echo isset($product->product_name) ? $product->product_name: ''; ?>" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="model_number"><?= __('Model Number') ?></label>
+                            <label for="model_number"><?= __('型番') ?></label>
                             <input id="model_number" type="text" name="model_number" class="validate" required value="<?php echo isset($product->model_number) ? $product->model_number: ''; ?>"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="product_info_url"><?= __('Product Infomation URL') ?></label>
+                            <label for="product_info_url"><?= __('製品HP URL') ?></label>
                             <input id="product_info_url" type="text" name="product_info_url" class="validate" value="<?php echo isset($product->product_info_url) ? $product->product_info_url: ''; ?>"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12">     
-                            <label for="sales_date"><?= __('Sales Date') ?></label>
+                            <label for="sales_date"><?= __('発売日') ?></label>
                             <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->sales_date) ? $product->sales_date : null ])->render();?>"/>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
         <div class="col s6">
             <h5>
                 <i class="fa fa-cog fa-with" aria-hidden="true"></i>
-                <?= __('Compared Product') ?>
+                <?= __('比較対象製品情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
@@ -65,15 +65,15 @@
                     <div class="row">
                         <div class=" col s12">
                             <label>
-                                <?= __('Evaluation Type') ?>
+                                <?= __('比較方法') ?>
                             </label>
                             <p onclick="changeEvaluationType(0);">
                                 <input name="evaluation_type" type="radio" id="evaluation_type_comp" checked value="0"/>
-                                <label for="evaluation_type_comp"><?= __('Compared with the following product')?></label>
+                                <label for="evaluation_type_comp"><?= __('他製品と比較して評価')?></label>
                             </p>
                             <p onclick="changeEvaluationType(1);">
                                 <input name="evaluation_type" type="radio" id="evaluation_type_none" value="1"/>
-                                <label for="evaluation_type_none"><?= __('Compared with target value')?></label>
+                                <label for="evaluation_type_none"><?= __('目標値と比較して評価')?></label>
                             </p>
 
                         </div>
@@ -81,13 +81,13 @@
                     <div id="compared-option">
                         <div class="row">
                             <div class="input-field col s12">
-                                <label for="compared_product_name"><?= __('Product Name') ?></label>
+                                <label for="compared_product_name"><?= __('製品名') ?></label>
                                 <input id="compared_product_name" type="text" name="compared_product_name" class="validate" value="<?php echo isset($product->evaluations[0]->compared_product_name) ? $product->evaluations[0]->compared_product_name: ''; ?>" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">     
-                                <label for="compared_model_number"><?= __('Model Number') ?></label>
+                                <label for="compared_model_number"><?= __('型番') ?></label>
                                 <input id="compared_model_number" type="text" name="compared_model_number" class="validate" value="<?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>"/>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Operator Info') ?>
+                <?= __('作業者情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
@@ -110,13 +110,13 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="operator_name">
-                                <?= __('Operator Name') ?>
+                                <?= __('作業者名') ?>
                             </label>
                             <input id="operator_name" type="text" name="operator_name" class="validate" value="<?php echo isset($product->operator_name) ? $product->operator_name : '' ;?>"/>
                         </div>
                         <div class="input-field col s6">
                             <label for="operator_department">
-                                <?= __('Operator Department') ?>
+                                <?= __('作業部門') ?>
                             </label>
                             <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
                         </div>
@@ -124,13 +124,13 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="operator_tel">
-                                <?= __('Operator TEL') ?>
+                                <?= __('作業者 TEL') ?>
                             </label>
                             <input id="operator_tel" type="text" name="operator_tel" class="validate" value="<?php echo isset($product->operator_tel) ? $product->operator_tel : '' ;?>"/>
                         </div>
                         <div class="input-field col s6">
                             <label for="operator_email">
-                                <?= __('Operator Email') ?>
+                                <?= __('作業者 Email') ?>
                             </label>
                             <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '';?>"/>
                         </div>
@@ -146,20 +146,20 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Others') ?>
+                <?= __('その他') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
 
                     <div class="row">
                         <div class="col s6">     
-                            <label for="latest_fomula"><?= __('Latest Formula Date') ?></label>
+                            <label for="latest_fomula"><?= __('最近のしくみ評価実施日') ?></label>
                             <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->latest_fomula) ? $product->latest_fomula : null ])->render();?>"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="product_comment"><?= __('Comment') ?></label>
+                            <label for="product_comment"><?= __('製品コメント') ?></label>
                             <textarea id="product_comment" class="materialize-textarea" type="text" name="product_comment" class="validate"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-line-chart fa-with" aria-hidden="true"></i>
-                <?= __('Evaluation') ?>
+                <?= __('評価') ?>
             </h5>
         </div>
     </div>
@@ -192,13 +192,13 @@
                 <table class="tablesorter white striped z-depth-2 table-for-product">
                     <thead>
                         <tr>
-                            <th><?= __('Selected') ?></th>
-                            <th><?= __('Title') ?></th>
-                            <th><?= __('Units') ?></th>
-                            <th><?= __('New') ?></th>
-                            <th><?= __('Old') ?></th>
-                            <th><?= __('Results') ?></th>
-                            <th><?= __('Points') ?></th>
+                            <th><?= __('選択') ?></th>
+                            <th><?= __('項目') ?></th>
+                            <th><?= __('単位') ?></th>
+                            <th><?= __('値') ?></th>
+                            <th><?= __('比較値') ?></th>
+                            <th><?= __('結果') ?></th>
+                            <th><?= __('得点') ?></th>
                         </tr>
                     </thead>
 
@@ -229,13 +229,13 @@
                                 </p>
                                 <div id="detail_modal_<?php echo $evaluationHead->id; ?>" class="modal">
                                     <div class="modal-content">
-                                        <h5><?= __('Criteria')?></h5>
+                                        <h5><?= __('判断基準')?></h5>
                                         <p><?php echo $evaluationHead->item_criteria; ?></p>
-                                        <h5><?= __('Options')?></h5>
+                                        <h5><?= __('その他情報')?></h5>
                                         <p><?php echo $evaluationHead->options; ?></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?= __('Confirm') ?></a>
+                                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?= __('確認') ?></a>
                                     </div>
                                 </div>
                             </td>
@@ -257,7 +257,7 @@
                             <?php elseif($evaluationHead->allocation->allocation_type==0): ?>
                             <td class="no-old" colspan="2">
                                 <select id="new_value_<?php echo $evaluationHead->id; ?>" name="new_value[<?php echo $evaluationHead->id; ?>]" onchange="evalAjax(<?php echo $evaluationHead->id; ?>);">
-                                    <option value="" disabled selected>Select</option>
+                                    <option value="" disabled selected>選択してください</option>
                                     <?php foreach ($evaluationHead->allocation->allocation_items as $allocation_item):?>
                                         <option class="new_value_<?php echo $allocation_item->id;?>" value="<?php echo $allocation_item->id;?>" <?php echo (isset($selectedValues[$evaluationHead->id] ) && $selectedValues[$evaluationHead->id] == $allocation_item->id ) ? 'selected' : '' ;?> ><?php echo $allocation_item->text;?></option>
                                     <?php endforeach; ?>
@@ -293,8 +293,8 @@
     <?php endforeach; ?>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>"><?= __('Save and Suspend') ?></button>
-         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>"><?= __('Submit') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>"><?= __('保存して中断') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>"><?= __('登録') ?></button>
     </div>
 
 </form>

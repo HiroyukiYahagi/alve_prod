@@ -1,6 +1,6 @@
-<h4><?= __('Register') ?></h4>
+<h4><?= __('登録') ?></h4>
 <blockquote>
-    以下の情報が公開されます。正しく入力されているかを確認してください。
+    <?= __('以下の情報が公開されます。正しく入力されているかを確認してください。')?>
 </blockquote>
 
 <form method="post" action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish', $product->id]);?>">
@@ -16,20 +16,20 @@
                     <div class="row">
                         <div class="col s6">
                             <label for="company_name">
-                                <?= __('Company Name') ?>
+                                <?= __('会社名') ?>
                             </label>
                             <p><?php echo $product->company->company_name;?></p>
                         </div>
                         <div class="col s6">
                             <label for="name_kana">
-                                <?= __('Company Name ( kana )') ?>
+                                <?= __('会社名 ( カナ )') ?>
                             </label>
                             <p><?php echo $product->company->name_kana;?></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s6">
-                            <label for="company_url"><?= __('Company URL') ?></label>
+                            <label for="company_url"><?= __('会社HP URL') ?></label>
                             <p id="company_url">
                                 <?php echo $product->company->url;?>
                             </p>
@@ -38,7 +38,7 @@
                     <div class="row">
                         <div class="col s6">
                             <label for="latest_fomula">
-                                <?= __('Latest Fomula Date') ?>
+                                <?= __('最近のしくみ評価実施日') ?>
                             </label>
                             <p>
                                 <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->latest_fomula ])->render();?>
@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col s6">
                             <label>
-                                <?= __('Product Type')?>
+                                <?= __('製品種別')?>
                             </label>
                             <p>
                                 <?php echo $types[$product->type_id]->type_name;?>
@@ -76,13 +76,13 @@
                     <div class="row">
                         <div class="col s6">
                             <label for="product_name">
-                                <?= __('Product Name') ?>
+                                <?= __('製品名') ?>
                             </label>
                             <p id="product_name"><?php echo $product->product_name;?></p>
                         </div>
                         <div class="col s6">
                             <label for="model_number">
-                                <?= __('Model Number') ?>
+                                <?= __('型番') ?>
                             </label>
                             <p id="model_number"><?php echo $product->model_number;?></p>
                         </div>
@@ -90,13 +90,13 @@
                     <div class="row">
                         <div class=" col s6">
                             <label for="product_info_url">
-                                <?= __('Product URL') ?>
+                                <?= __('製品HP URL') ?>
                             </label>
                             <p id="product_info_url"><?php echo $product->product_info_url;?></p>
                         </div>
                         <div class="col s6">
                             <label for="sales_date">
-                                <?= __('Sales Date') ?>
+                                <?= __('発売日') ?>
                             </label>
                             <p id="sales_date">
                                 <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->sales_date ])->render();?>
@@ -109,23 +109,23 @@
                     <div class="row">
                         <div class="col s6">
                             <label>
-                                <?= __('Evaluation Type') ?>
+                                <?= __('評価方法') ?>
                             </label>
                             <p>
-                                <?= __('Compared with the following product')?>
+                                <?= __('他製品と比較して評価')?>
                             </p>
                         </div>
                     </div>
                     <div id="compared-option" class="row">
                         <div class="col s6">
                             <label for="compared_product_name">
-                                <?= __('Compared Product Name') ?>
+                                <?= __('比較対象製品名') ?>
                             </label>
                             <p id="compared_product_name"></p>
                         </div>
                         <div class=" col s6">
                             <label for="compared_model_number">
-                                <?= __('Compared Product Model Number') ?>
+                                <?= __('比較対象製品型番') ?>
                             </label>
                             <p id="compared_model_number"></p>
                         </div>
@@ -135,10 +135,10 @@
                     <div class="row">
                         <div class="col s6">
                             <label>
-                                <?= __('Evaluation Type') ?>
+                                <?= __('評価方法') ?>
                             </label>
                             <p>
-                                <?= __('Compared with target value')?>
+                                <?= __('目標値と比較して評価')?>
                             </p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
     </div>
 
     <button class="submit btn waves-effect waves-light green" type="submit">
-        <?= __('Submit') ?>
+        <?= __('登録') ?>
     </button>
 
 </form>

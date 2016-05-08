@@ -34,7 +34,7 @@ class FomulasController extends AppController
 
         $fomula = $this->Fomulas->get($id);
         if($this->getAuthedUserId() != $fomula->company_id){
-            $this->Flash->error(__('Invalid Access'));
+            $this->Flash->error(__('不正なアクセスです'));
             $this->redirect(['controller' => 'Top', 'action' => 'index']);
         }
     }
@@ -142,10 +142,10 @@ class FomulasController extends AppController
     public function edit($id = null){
         if($id == null){
             $fomula = $this->Fomulas->newEntity();
-            $this->set('title', __('New Formula Evaluation'));
+            $this->set('title', __('新規しくみ評価'));
         }else{
             $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['FomulaHeads', 'Units']]]);
-            $this->set('title', __('Edit Formula Evaluation'));
+            $this->set('title', __('しくみ評価の編集'));
 
             foreach ($fomula->fomula_items as $fomula_item) {
                 $selectedValues[$fomula_item->head_id] = $fomula_item->value;
@@ -173,7 +173,7 @@ class FomulasController extends AppController
         $fomula = $this->Fomulas->save($fomula);
 
         if($fomula == null){
-            $this->Flash->error(__('Server Error'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return null;
         }
         
@@ -185,7 +185,7 @@ class FomulasController extends AppController
             $fomulaItems->head_id = $key;
             $fomulaItems->fomula_id = $fomula->id;
             if(!$this->FomulaItems->save($fomulaItems)){
-                $this->Flash->error(__('Server Error'));
+                $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
                 return null;
             }
         }
@@ -198,11 +198,11 @@ class FomulasController extends AppController
         $data = $this->request->data;
         $fomula = $this->_saveData($id, $data);
         if($fomula == null){
-            $this->Flash->error(__('Invalid Access.'));
+            $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
-        $this->Flash->success(__('Fomula has been saved.'));
+        $this->Flash->success(__('しくみ評価が保存されました'));
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 
@@ -223,7 +223,7 @@ class FomulasController extends AppController
         $fomula = $this->_saveData($id, $data);
 
         if(!$this->_validateFomulaEvaluation($fomula)){
-            $this->Flash->error(__('Not completed.'));
+            $this->Flash->error(__('必須項目が入力されていません。入力した内容を確認してください。'));
             return $this->redirect(['controller' => 'Fomulas', 'action' => 'edit', $fomula->id]);
         }
 
@@ -231,7 +231,7 @@ class FomulasController extends AppController
         $fomula = $this->Fomulas->save($fomula);
 
         if($fomula == null){
-            $this->Flash->error(__('Invalid Access.'));
+            $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
         return $this->redirect(['controller' => 'Fomulas', 'action' => 'view', $id]);
@@ -261,9 +261,9 @@ class FomulasController extends AppController
     {
         $fomula = $this->Fomulas->get($id);
         if ($this->Fomulas->delete($fomula)) {
-            $this->Flash->success(__('The fomula has been deleted.'));
+            $this->Flash->success(__('しくみ評価が削除されました'));
         } else {
-            $this->Flash->error(__('The fomula could not be deleted. Please, try again.'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
         }
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }

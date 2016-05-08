@@ -49,15 +49,21 @@ class CompaniesController extends AppController
             'contain' => ['Fomulas' => ['FomulaItems'], 'Products' => ['Types', 'Evaluations']]
         ]);
 
+        $publishedProducts = null;
         $completedProducts = null;
         $editingProducts = null;
         foreach ($company->products as $product) {
-            if($product->published == 1)
+            if($product->published == 1){
+                $publishedProducts[] = $product;
+            }else if(isset($product->evaluations[0]) && $product->evaluations[0]->completed == 1 ){
                 $completedProducts[] = $product;
-            else
+            }else{
                 $editingProducts[] = $product;
+            }
 
         }
+
+        $this->set('publishedProducts', $publishedProducts);
         $this->set('completedProducts', $completedProducts);
         $this->set('editingProducts', $editingProducts);
 
@@ -82,11 +88,11 @@ class CompaniesController extends AppController
         if ($this->request->is('post')) {
             $company = $this->Auth->identify();
             if ($company) {
-                $this->Flash->success(__('login successful'));
+                $this->Flash->success(__('ログインしました'));
                 $this->Auth->setUser($company);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Flash->error(__('Email or password is incorrect'));
+                $this->Flash->error(__('メールアドレスかパスワードが間違っています'));
             }
         }
     }
@@ -105,10 +111,11 @@ class CompaniesController extends AppController
             $company->password = $data['password'];
             if ($this->Companies->save($company)) {
                 //$this->_sendRegisterMail($company);
-                $this->Flash->success(__('Register mail has been sent.'));
+                //$this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
+                $this->Flash->success(__('新規登録されました'));
                 return $this->redirect(['action' => 'login']);
             }else{
-                $this->Flash->error(__('register error'));
+                $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             }
         }
     }
@@ -171,11 +178,11 @@ EOF;
             $result = $this->Companies->save($company);
             //var_dump($result);
             if ($result) {
-                $this->Flash->success(__('The company has been saved.'));
+                $this->Flash->success(__('会社情報が更新されました'));
                 return $this->redirect(['action' => 'view']);
             } else {
                 foreach ($company->errors() as $key => $value) {
-                    $this->Flash->error($key.__(' is Invalid.'));   
+                    $this->Flash->error($key.__(' が無効な値です。入力した値を確認してください。'));   
                 }
             }
         }
@@ -190,18 +197,18 @@ EOF;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->data;
             if( strlen($data['password']) == 0 || $data['password'] != $data['password-again'] ){
-                $this->Flash->error(__('Please Input Same Password.'));
+                $this->Flash->error(__('同じ値を入力してください。'));
                 return $this->redirect($this->referer());
             }
             $company = $this->Companies->patchEntity($company, $data);
             $result = $this->Companies->save($company);
             
             if ($result) {
-                $this->Flash->success(__('The company has been saved.'));
+                $this->Flash->success(__('パスワードが更新されました。'));
                 return $this->redirect(['action' => 'view']);
             } else {
                 foreach ($company->errors() as $key => $value) {
-                    $this->Flash->error($key.__(' is Invalid.'));   
+                    $this->Flash->error($key.__(' が無効な値です。入力した値を確認してください。'));   
                 }
             }
         }
@@ -214,9 +221,9 @@ EOF;
         $this->request->allowMethod(['post', 'delete']);
         $company = $this->Companies->get($id);
         if ($this->Companies->delete($company)) {
-            $this->Flash->success(__('The company has been deleted.'));
+            $this->Flash->success(__('会社情報が削除されました。'));
         } else {
-            $this->Flash->error(__('The company could not be deleted. Please, try again.'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
         }
         return $this->redirect(['action' => 'index']);
     }

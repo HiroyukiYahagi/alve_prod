@@ -1,10 +1,10 @@
-<h4><?= __('Evaluation Result') ?></h4>
+<h4><?= __('評価結果') ?></h4>
 
 <div class="row">
     <div class="title-and-item">
         <h5 class="card-title grey-text text-darken-4">
             <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-            <?= __('Product Infomation') ?>
+            <?= __('製品情報') ?>
         </h5>
         <a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>'>
             <i class="fa fa-pencil-square-o"></i>
@@ -15,30 +15,30 @@
         <div class="card-content">
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Product Name') ?></label>
+                    <label><?= __('製品名') ?></label>
                     <p><?php echo $product->product_name;?></p>
                 </div>
                 <div class="col s4">
-                    <label><?= __('Model Number') ?></label>
+                    <label><?= __('型番') ?></label>
                     <p><?php echo $product->model_number;?></p>
                 </div>
             </div>
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Product Type') ?></label>
+                    <label><?= __('製品種別') ?></label>
                     <p><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Product Info URL') ?></label>
+                    <label><?= __('製品HP URL') ?></label>
                     <p>
                         <?php echo isset($product->product_info_url) ? $product->product_info_url: ''; ?>
                     </p>
                 </div>
                 <div class="col s4">
-                    <label><?= __('Sales Date') ?></label>
+                    <label><?= __('発売日') ?></label>
                     <p>
                     <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->sales_date ])->render();?>
                     </p>
@@ -48,9 +48,9 @@
 
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Compared Product') ?></label>
+                    <label><?= __('比較対象製品') ?></label>
                     <p>
-                        <?php echo (isset($product->evaluations[0]->compared_product_name) && count($product->evaluations[0]->compared_product_name) == 0) ? $product->evaluations[0]->compared_product_name: __('Compared with target value'); ?>
+                        <?php echo (isset($product->evaluations[0]->compared_product_name) && count($product->evaluations[0]->compared_product_name) == 0) ? $product->evaluations[0]->compared_product_name: __('目標値と比較して評価'); ?>
                     </p>
                 </div>
                 <div class="col s4">
@@ -62,7 +62,7 @@
 
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Last Edit Date') ?></label>
+                    <label><?= __('最終更新日') ?></label>
                     <p>
                     <?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
                     </p>
@@ -76,27 +76,27 @@
 <div class="row">
     <h5>
         <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-        <?= __('Operator Infomation') ?>
+        <?= __('作業者情報') ?>
     </h5>
     <div class="card">
         <div class="card-content">
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Operator Name') ?></label>
+                    <label><?= __('作業者名') ?></label>
                     <p><?php echo $product->operator_name;?></p>
                 </div>
                 <div class="col s4">
-                    <label><?= __('Operator Department') ?></label>
+                    <label><?= __('作業部門') ?></label>
                     <p><?php echo $product->operator_department;?></p>
                 </div>
             </div>
             <div class="row">
                 <div class="col s4">
-                    <label><?= __('Operator TEL') ?></label>
+                    <label><?= __('作業者 TEL') ?></label>
                     <p><?php echo $product->operator_tel;?></p>
                 </div>
                 <div class="col s4">
-                    <label><?= __('Operator Email') ?></label>
+                    <label><?= __('作業者 Email') ?></label>
                     <p><?php echo $product->operator_email;?></p>
                 </div>
             </div>
@@ -108,7 +108,7 @@
 <div class="row">
     <h5>
         <i class="fa fa-line-chart fa-with" aria-hidden="true"></i>
-        <?= __('Evaluation Result') ?>
+        <?= __('結果') ?>
     </h5>
 
     <div class="card">
@@ -128,7 +128,7 @@
     <div class="row">
         <h5>
             <i class="fa fa-file fa-with" aria-hidden="true"></i>
-            <?= __('Create Result Sheat') ?>
+            <?= __('結果シート') ?>
         </h5>
         <div class="card">
             <div class="card-content">
@@ -148,13 +148,13 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea id="product_info" class="materialize-textarea" name="product_info"><?php echo $product->product_comment;?></textarea>
-                        <label for="product_info"><?= __('Product Information') ?></label>
+                        <label for="product_info"><?= __('製品コメント') ?></label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('Create PDF Sheat') ?></button>
+                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('PDFシートを作成する') ?></button>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
     </div>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('Go to register') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('製品情報を公開する') ?></button>
     </div>
 </form>
 
@@ -185,7 +185,7 @@ $(function() {
         labels: labels,
         datasets: [
             {
-                label: "<?= __('Evaluation Result')?>",
+                label: "<?= __('評価結果')?>",
                 backgroundColor: "rgba(76,175,80,0.2)",
                 borderColor: "rgba(76,175,80,1)",
                 pointBackgroundColor: "rgba(76,175,80,1)",

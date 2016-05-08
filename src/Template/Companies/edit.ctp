@@ -1,4 +1,4 @@
-<h4><?= __('Edit Info') ?></h4>
+<h4><?= __('会社情報の編集') ?></h4>
 
 <div class="content">
     <div class="card">
@@ -6,11 +6,11 @@
             <div class="card-content">
                 <div class="row">
                     <div class="input text">
-                        <label for="company-name" class="active"><?= __('Company') ?></label>
+                        <label for="company-name" class="active"><?= __('会社名') ?></label>
                         <input type="text" name="company_name" maxlength="256" id="company-name" value="<?php echo $company->company_name;?>">
                     </div>
                     <div class="input text">
-                        <label for="name_kana" class="active"><?= __('Company Name (Kana)') ?></label>
+                        <label for="name_kana" class="active"><?= __('会社名 (カナ)') ?></label>
                         <input type="text" name="name_kana" maxlength="256" id="name_kana" value="<?php echo $company->name_kana;?>">
                     </div>
                     <div class="input email">
@@ -18,7 +18,7 @@
                         <input type="email" name="email" maxlength="256" id="email" value="<?php echo $company->email;?>">
                     </div>
                     <div class="input textarea">
-                        <label for="url" class="active"><?= __('URL') ?></label>
+                        <label for="url" class="active"><?= __('会社HP URL') ?></label>
                         <input type="text" name="url" id="url" value="<?php echo $company->url;?>">
                     </div>
                     <div class="input tel">

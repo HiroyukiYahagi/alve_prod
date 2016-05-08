@@ -5,14 +5,14 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Operator Info') ?>
+                <?= __('作業者情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
                     <div class="row">
                         <div class="input-field col s6">  
                             <label for="operator_name">
-                                <?= __('Operator Name') ?>
+                                <?= __('作業者名') ?>
                             </label>
                             <input id="operator_name" type="text" name="operator_name" class="validate" required value="<?php echo isset($fomula->operator_name) ? $fomula->operator_name : ''; ?>">
                         </div>
@@ -26,20 +26,20 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Evaluation Info') ?>
+                <?= __('評価情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
                     <div class="row">
                         <div class="col s6">  
                             <label for="fomula_start">
-                                <?= __('Fomula Start') ?>
+                                <?= __('評価期間開始日') ?>
                             </label>
                              <input id="fomula_start" name="fomula_start" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>"/>
                         </div>
                         <div class="col s6">
                             <label for="fomula_end">
-                                <?= __('Fomula End') ?>
+                                <?= __('評価期間終了日') ?>
                             </label>
                             <input id="fomula_end" name="fomula_end" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>"/>
                         </div>
@@ -53,7 +53,7 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-line-chart fa-with" aria-hidden="true"></i>
-                <?= __('Evaluation') ?>
+                <?= __('評価') ?>
             </h5>
         </div>
     </div>
@@ -69,11 +69,11 @@
                 <table class="tablesorter white striped z-depth-2 table-for-fomula">
                     <thead>
                         <tr>
-                            <th><?= __('Selected') ?></th>
-                            <th><?= __('Title') ?></th>
-                            <th><?= __('Value') ?></th>
+                            <th><?= __('選択') ?></th>
+                            <th><?= __('項目') ?></th>
+                            <th><?= __('値') ?></th>
                             <th></th>
-                            <th><?= __('Points') ?></th>
+                            <th><?= __('得点') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,7 +108,7 @@
                             <?php elseif($fomulaHead->allocation->allocation_type==0): ?>
                             <td class="no-old" colspan="2">
                                 <select id="new_value_<?php echo $fomulaHead->id; ?>" name="new_value[<?php echo $fomulaHead->id; ?>]" onchange="evalAjax(<?php echo $fomulaHead->id; ?>);">
-                                    <option value="" disabled selected>Select</option>
+                                    <option value="" disabled selected>選択してください</option>
                                     <?php foreach ($fomulaHead->allocation->allocation_items as $allocation_item):?>
                                         <option class="new_value_<?php echo $allocation_item->id;?>" value="<?php echo $allocation_item->id;?>" <?php echo (isset($selectedValues[$fomulaHead->id] ) && $selectedValues[$fomulaHead->id] == $allocation_item->id ) ? 'selected' : '' ;?> ><?php echo $allocation_item->text;?></option>
                                     <?php endforeach; ?>
@@ -134,8 +134,8 @@
     <?php endforeach; ?>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'save', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('Save and Suspend') ?></button>
-         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'submit', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('Submit') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'save', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('保存して中断') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'submit', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('登録') ?></button>
     </div>
 
 </form>

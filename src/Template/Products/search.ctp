@@ -1,5 +1,5 @@
 <?php
-$cakeDescription = 'Alve';
+$cakeDescription = 'Alve -環境配慮バルブ検索システム-';
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +40,7 @@ $cakeDescription = 'Alve';
     <div class="row">
         <div class="col s6 offset-s3">
 
-            <h4><?= __('Product Search') ?></h4>
+            <h4><?= __('製品検索') ?></h4>
             <blockquote>
                 【ご注意】<br/>
                 ここに掲載されている製品は、会員企業が当工業会の定める評価項目に沿ってアセスメントを行い、自社従来製品又は新規設計目標値と比較し、環境側面で改善をしていると自己評価した製品です。<br/>
@@ -56,23 +56,23 @@ $cakeDescription = 'Alve';
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input id="condition" type="text" class="validate" name="condition" required>
-                                    <label for="condition"><?= __('Search Conditions') ?></label>
+                                    <label for="condition"><?= __('検索条件') ?></label>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="input-field col s12">
                                     <select id="options" multiple name="options[]">
-                                        <option value="" disabled selected><?= __('Please Select Input Types') ?></option>
+                                        <option value="" disabled selected><?= __('製品種別を選択してください') ?></option>
                                         <?php foreach ($types as $type):?>
                                             <option value="<?php echo $type->id;?>"><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
                                         <?php endforeach; ?>
                                     </select>
-                                    <label><?= __('Product Type') ?></label>
+                                    <label><?= __('製品種別') ?></label>
                                 </div>
                             </div>
 
-                            <button class="btn waves-effect waves-light green" type="submit" name="action"><?= __('Search') ?></button>
+                            <button class="btn waves-effect waves-light green" type="submit" name="action"><?= __('検索') ?></button>
                         </div>
                     </form>
                 </div>
@@ -86,13 +86,13 @@ $cakeDescription = 'Alve';
                 <table class="sorter tablesorter white striped z-depth-2">
                     <thead>
                         <tr>
-                            <th><?= __('Registered Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Updated Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Type') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Manufacturer') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Product Name') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Model Number') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-                            <th><?= __('Sale Date') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('登録日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('製品種別') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('会社名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+                            <th><?= __('営業日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
                     <tbody>

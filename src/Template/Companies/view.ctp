@@ -1,9 +1,9 @@
-<h4><?= __('My Page') ?></h4>
+<h4><?= __('マイページ') ?></h4>
 
 <div class="row">
 	<h5>
 		<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-		<?= __('Company Infomation') ?>
+		<?= __('会社情報') ?>
 	</h5>
 	<div class="card">
 		<div class="card-content">
@@ -21,16 +21,16 @@
 			<label><?= __('E-mail') ?></label>
 			<p><?php echo $company->email;?></p>
 
-			<label><?= __('URL') ?></label>
+			<label><?= __('会社HP URL') ?></label>
 			<p><?php echo $company->url;?></p>
 
 			<label><?= __('TEL') ?></label>
 			<p><?php echo $company->tel;?></p>
 		</div>
 		<div class="card-action">
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('Label Download') ?></a>
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('Disclosure Request') ?></a>
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('Terms of service') ?></a>
+			<a href="#" class="waves-effect waves-light btn grey"><?= __('ラベルデータ') ?></a>
+			<a href="#" class="waves-effect waves-light btn grey"><?= __('評価結果開示フォーマット') ?></a>
+			<a href="#" class="waves-effect waves-light btn grey"><?= __('利用規約') ?></a>
 		</div>
 	</div>
 </div>
@@ -40,7 +40,7 @@
 	<div class="title-and-item">
 		<h5>
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
-			<?= __('Product Evaluation') ?>
+			<?= __('製品評価') ?>
 		</h5>
 		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>'>
 			<i class="fa fa-plus"></i>
@@ -50,17 +50,17 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Saved Data') ?>
+					<?= __('保存済みの製品') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
 				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
-							<th><?= __('Product Name') ?></th>
-							<th><?= __('Model Number') ?></th>
-							<th><?= __('Save Date') ?></th>
-							<th><?= __('In Charge') ?></th>
+							<th><?= __('製品名') ?></th>
+							<th><?= __('型番') ?></th>
+							<th><?= __('最終更新日') ?></th>
+							<th><?= __('作業者') ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -89,30 +89,77 @@
 					</tbody>
 				</table>
 			<?php else: ?>
-				<p><?= __('There is no data.') ?></p>
+				<p><?= __('データがありません。') ?></p>
 			<?php endif; ?>
 		</div>
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Published Data') ?>
+					<?= __('評価済みのデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($completedProducts) && count($completedProducts) != 0): ?>
 				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
-							<th><?= __('Product Name') ?></th>
-							<th><?= __('Model Number') ?></th>
-							<th><?= __('Save Date') ?></th>
-							<th><?= __('In Charge') ?></th>
+							<th><?= __('製品名') ?></th>
+							<th><?= __('型番') ?></th>
+							<th><?= __('最終更新日') ?></th>
+							<th><?= __('作業者') ?></th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ($completedProducts as $product): ?>
 							<tr>
-								<td>								<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
+								<td>
+									<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
+										<?php echo $product->product_name; ?>
+									</a>
+								</td>
+								<td><?php echo $product->model_number; ?></td>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
+								</td>
+								<td><?php echo $product->operator_name; ?></td>
+								<td>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
+										<i class="fa fa-sm fa-pencil-square-o"></i>
+									</a>
+									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
+										<i class="fa fa-sm fa-trash"></i>
+									</a>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else: ?>
+				<p><?= __('データがありません。') ?></p>
+			<?php endif; ?>
+		</div>
+		<div class="card-content">
+			<div class="title-and-item">
+				<h6 class="card-title grey-text text-darken-4">
+					<?= __('公開中のデータ') ?>
+				</h6>
+			</div>
+			<?php if(isset($publishedProducts) && count($publishedProducts) != 0): ?>
+				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
+					<thead>
+						<tr>
+							<th><?= __('製品名') ?></th>
+							<th><?= __('型番') ?></th>
+							<th><?= __('最終更新日') ?></th>
+							<th><?= __('作業者') ?></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($publishedProducts as $product): ?>
+							<tr>
+								<td>
+									<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
 										<?php echo $product->product_name; ?>
 									</a>
 								</td>
@@ -134,7 +181,7 @@
 					</tbody>
 				</table>
 			<?php else: ?>
-				<p><?= __('There is no data.') ?></p>
+				<p><?= __('データがありません。') ?></p>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -145,7 +192,7 @@
 	<div class="title-and-item">
 		<h5>
 			<i class="fa fa-filter fa-with" aria-hidden="true"></i>
-			<?= __('Folumas Evaluation') ?>
+			<?= __('しくみ評価') ?>
 		</h5>
 		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "edit" ]);?>'>
 			<i class="fa fa-plus"></i>
@@ -155,15 +202,15 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Saved Data') ?>
+					<?= __('保存済みの評価') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingFomulas) && count($editingFomulas) != 0): ?>
 				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
-							<th><?= __('Save Date') ?></th>
-							<th><?= __('Period') ?></th>
+							<th><?= __('最終更新日') ?></th>
+							<th><?= __('評価期間') ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -190,21 +237,21 @@
 					</tbody>
 				</table>
 			<?php else: ?>
-				<p><?= __('There is no data.') ?></p>
+				<p><?= __('データがありません。') ?></p>
 			<?php endif; ?>
 		</div>
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('Published Data') ?>
+					<?= __('公開中の評価') ?>
 				</h6>
 			</div>
 			<?php if(isset($completedFomulas) && count($completedFomulas) != 0): ?>
 				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
-							<th><?= __('Save Date') ?></th>
-							<th><?= __('Period') ?></th>
+							<th><?= __('最終更新日') ?></th>
+							<th><?= __('評価期間') ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -232,7 +279,7 @@
 					</tbody>
 				</table>
 			<?php else: ?>
-				<p><?= __('There is no data.') ?></p>
+				<p><?= __('データがありません。') ?></p>
 			<?php endif; ?>
 		</div>
 	</div>

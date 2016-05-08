@@ -35,7 +35,7 @@ class ProductsController extends AppController
 
         $product = $this->Products->get($id);
         if($this->getAuthedUserId() != $product->company_id){
-            $this->Flash->error(__('Invalid Access'));
+            $this->Flash->error(__('不正なアクセスです'));
             $this->redirect(['controller' => 'Top', 'action' => 'index']);
         }
     }
@@ -75,7 +75,7 @@ class ProductsController extends AppController
             $scores = $this->_scoring($product->evaluations[0]->evaluation_items);
             $this->set('scores', $scores);
         }else{
-            $this->Flash->error(__('Invalid Access'));
+            $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }    
     }
@@ -101,9 +101,9 @@ class ProductsController extends AppController
         $this->_setUnitMap();
 
         if($id == null){
-            $this->set('title', __('New Product'));
+            $this->set('title', __('新製品の登録'));
         }else{
-            $this->set('title', __('Edit Product'));
+            $this->set('title', __('製品情報の編集'));
             $product = $this->Products->get($id, [
                 'contain' => ['Types', 'Evaluations' => [ 'EvaluationItems' => ['Units'] ] ]
             ]);
@@ -221,7 +221,7 @@ class ProductsController extends AppController
         //var_dump($product->sales_date);
 
         if(!$this->Products->save($product)){
-            $this->Flash->error(__('Server Error'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
@@ -240,7 +240,7 @@ class ProductsController extends AppController
         
         $evaluation = $this->Evaluations->save($evaluation);
         if(!$evaluation){
-            $this->Flash->error(__('Server Error'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
@@ -280,7 +280,7 @@ class ProductsController extends AppController
         $evaluationItem->compared_value = $oldValue;
 
         if(!$this->EvaluationItems->save($evaluationItem)){
-            $this->Flash->error(__('Server Error'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
@@ -290,11 +290,11 @@ class ProductsController extends AppController
         $data = $this->request->data;
         $product = $this->_saveData($id, $data);
         if($product == null){
-            $this->Flash->error(__('Invalid Access.'));
+            $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
-        $this->Flash->success(__('Product has been saved.'));
+        $this->Flash->success(__('製品情報が保存されました'));
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
 
@@ -303,14 +303,18 @@ class ProductsController extends AppController
         $data = $this->request->data;
         $product = $this->_saveData($id, $data);
         if($product == null){
-            $this->Flash->error(__('Invalid Access.'));
+            $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
         if(!$this->_validateProductEvaluation($product)){
-            $this->Flash->error(__('Not completed.'));
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
+
+        $product->evaluations[0]->completed = 1;
+        $this->loadModel('Evaluations');
+        $this->Evaluations->save($product->evaluations[0]);
 
         return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
 
@@ -366,10 +370,10 @@ class ProductsController extends AppController
         $product = $this->Products->get($id);
         $product->published = 1;
         if($this->Products->save($product)){
-            $this->Flash->success(__('Successfully Published'));
+            $this->Flash->success(__('製品情報が更新されました'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }else{
-            $this->Flash->error(__('Please Inform Administrator'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
     }
@@ -386,9 +390,9 @@ class ProductsController extends AppController
     {
         $product = $this->Products->get($id);
         if ($this->Products->delete($product)) {
-            $this->Flash->success(__('The product has been deleted.'));
+            $this->Flash->success(__('製品情報が削除されました'));
         } else {
-            $this->Flash->error(__('The product could not be deleted. Please, try again.'));
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
         }
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }

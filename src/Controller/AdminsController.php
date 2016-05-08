@@ -71,16 +71,16 @@ class AdminsController extends AppController
         if ($this->request->is('post')) {
             $admin = $this->Auth->identify();
             if ($admin) {
-                $this->Flash->success(__('login successful'));
+                $this->Flash->success(__('ログインしました'));
                 $this->Auth->setUser($admin);
                 return $this->redirect(['action' => 'view' , $admin['id']]);
             } else {
                 if($this->Admins->find()->count() == 0){
                     $this->_register();
-                    $this->Flash->success(__('This is first login. User(admin/admin) created'));
+                    $this->Flash->success(__('初回ログインのため管理用ユーザが作成されました。'));
                     return $this->redirect(['action' => 'login']);
                 }else{
-                    $this->Flash->error(__('UserName or password is incorrect'));
+                    $this->Flash->error(__('ユーザ名かパスワードが間違っています'));
                 }
             }
         }
@@ -125,10 +125,10 @@ class AdminsController extends AppController
         if ($this->request->is('post')) {
             $admin = $this->Admins->patchEntity($admin, $this->request->data);
             if ($this->Admins->save($admin)) {
-                $this->Flash->success(__('The admin has been saved.'));
+                $this->Flash->success(__('管理者情報が編集されました。'));
                 return $this->redirect(['action' => 'view', $admin->id]);
             } else {
-                $this->Flash->error(__('The admin could not be saved. Please, try again.'));
+                $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             }
         }
         $this->set(compact('admin'));
@@ -144,10 +144,10 @@ class AdminsController extends AppController
         if ($this->request->is('post')) {
             $company = $this->Companies->patchEntity($company, $this->request->data);
             if ($this->Companies->save($company)) {
-                $this->Flash->success(__('The Company has been reseted.'));
+                $this->Flash->success(__('パスワードが更新されました。'));
                 return $this->redirect(['action' => 'view']);
             } else {
-                $this->Flash->error(__('The Company could not be saved. Please, try again.'));
+                $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             }
         }
         $this->set('company', $company);
@@ -158,7 +158,7 @@ class AdminsController extends AppController
         $this->loadModel('Companies');
         $company = $this->Companies->get($id);
         $this->Companies->delete($company);
-        $this->Flash->success(__('Company is successfully deleted.'));
+        $this->Flash->success(__('会社情報が削除されました。'));
         return $this->redirect(['action' => 'view']);
     }    
 }
