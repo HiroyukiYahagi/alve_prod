@@ -48,12 +48,10 @@ class ProductsController extends AppController
         $this->set('types', $types);
 
         $data = $this->request->query;
-        if(
-            (isset($data['condition']) && strlen($data['condition']) > 0) 
-            || isset($data['options'])
-            ){
-            $products = $this->Products->findByConditions(strlen($data['condition']) > 0 ? $data['condition']: null , isset($data['options'])? $data['options'] : null );
+        if(isset($data['options'])){
+            $products = $this->Products->findByConditions(null , isset($data['options'])? $data['options'] : null );
             $this->set('products', $products);
+            $this->set('query', array_flip($data['options']));
         }
 
         $this->viewBuilder()->layout(false);

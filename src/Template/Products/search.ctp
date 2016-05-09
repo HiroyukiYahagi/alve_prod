@@ -52,20 +52,16 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
                 <div class="card">
                     <form method="get" action="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>">
                         <div class="card-content">
-
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="condition" type="text" class="validate" name="condition" required>
-                                    <label for="condition"><?= __('検索条件') ?></label>
-                                </div>
-                            </div>
-
                             <div class="row">
                                 <div class="input-field col s12">
                                     <select id="options" multiple name="options[]">
                                         <option value="" disabled selected><?= __('製品種別を選択してください') ?></option>
                                         <?php foreach ($types as $type):?>
+                                            <?php if(isset($query[$type->id])): ?>
+                                            <option value="<?php echo $type->id;?>" selected><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
+                                            <?php else: ?>
                                             <option value="<?php echo $type->id;?>"><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                     <label><?= __('製品種別') ?></label>
@@ -80,7 +76,7 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
         </div>
     </div>
 
-    <?php if(count($products)): ?>
+    <?php if(isset($products)): ?>
         <div class="row">
             <div class="col s10 offset-s1">
                 <table class="sorter tablesorter white striped z-depth-2">

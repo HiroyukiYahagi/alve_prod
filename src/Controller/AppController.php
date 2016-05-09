@@ -88,7 +88,21 @@ class AppController extends Controller
     }
 
     public function beforeFilter(Event $event){
+       if($this->_getAuthModel($event) != $this->_getAuthedModel()){
+          return $this->Auth->logout();
+       }
+    }
 
+    private function _getAuthModel(Event $event){
+      return $this->Auth->config()["authenticate"]["Form"]["userModel"];
+    }
+
+    private function _getAuthedModel(){
+      if(isset($this->Auth->user()['username'])){
+        return "Admins";
+      }else{
+        return "Companies";
+      }
     }
 
     /**
@@ -107,13 +121,6 @@ class AppController extends Controller
 
     $this->set('isAuth', $this->isAuthed());
     $this->set('authedId', $this->getAuthedUserId());
-  }
-
-  protected function isAdmin(){
-    $id = $this->getAuthedUserId();
-    $this->loadModule('Company');
-    $company = $this->Companies->get($id);
-    return ($company->isAdmin == 1);
   }
 
   protected function isAuthed(){
