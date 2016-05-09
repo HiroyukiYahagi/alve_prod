@@ -120,11 +120,6 @@ class CompaniesController extends AppController
         }
     }
 
-    public function test(){
-        //$this->_sendMail("yahagi1989@gmail.com", "testmail", "test messages");
-        
-    }
-
     private function _sendRegisterMail($company){
         $defaultPassword = $this->_makeRandStr(10);
         $company->password = $defaultPassword;

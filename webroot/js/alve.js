@@ -10,6 +10,13 @@ function successRow(id){
     $('#tr_' + id).attr("class", "");
 }
 
+function confirmDelete(){
+    if(confirm("データを削除しますがよろしいですか？")) {
+	    location.href = $(this).attr('href');
+	} else {
+	    return false;
+	}
+}
 
 $(function() {
 	$('.sorter').tablesorter();

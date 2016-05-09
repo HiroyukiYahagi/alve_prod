@@ -10,10 +10,10 @@
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4"><?php echo $company->company_name; ?></h6>
 				<p><?php echo $company->name_kana;?></p>
-				<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>'>
+				<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 					<i class="fa fa-pencil-square-o"></i>
 				</a>
-				<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>'>
+				<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('パスワード変更')?>">
 					<i class="fa fa-key" aria-hidden="true"></i>
 				</a>
 			</div>
@@ -42,7 +42,7 @@
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
 			<?= __('製品評価') ?>
 		</h5>
-		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>'>
+		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>' data-delay="10" data-tooltip="<?= __('新規作成')?>">
 			<i class="fa fa-plus"></i>
 		</a>
 	</div>
@@ -76,10 +76,10 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 
@@ -123,10 +123,10 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 								</td>
@@ -169,10 +169,10 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "unpublish", $product->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "unpublish", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('非公開')?>">
 										<i class="fa fa-sm fa-undo"></i>
 									</a>
 								</td>
@@ -194,7 +194,7 @@
 			<i class="fa fa-filter fa-with" aria-hidden="true"></i>
 			<?= __('しくみ評価') ?>
 		</h5>
-		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "edit" ]);?>'>
+		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "edit" ]);?>' data-delay="10" data-tooltip="<?= __('新規作成')?>">
 			<i class="fa fa-plus"></i>
 		</a>
 	</div>
@@ -224,10 +224,10 @@
 									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
 								</td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
 
@@ -267,11 +267,11 @@
 									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
 								</td>
 								<td>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>'>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>"> 
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "unpublish", $fomula->id ]);?>'>
-										<i class="fa fa-sm fa-undo"></i>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
+										<i class="fa fa-sm fa-trash"></i>
 									</a>
 								</td>
 							</tr>

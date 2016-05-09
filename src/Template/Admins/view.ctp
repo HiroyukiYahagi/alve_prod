@@ -6,7 +6,7 @@
 			<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
 			<?= __('管理者情報') ?>
 		</h5>
-		<a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "edit" , $admin->id ]);?>'>
+		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "edit" , $admin->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 			<i class="fa fa-pencil-square-o"></i>
 		</a>
 	</div>
@@ -49,10 +49,10 @@
 						<?php echo $company->email;?>  
                     </td>
                     <td>
-						<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "editCompany", $company->id ]);?>'>
+						<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "editCompany", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('パスワード変更')?>">
 							<i class="fa fa-sm fa-pencil-square-o"></i>
 						</a>
-						<a class="btn-floating btn grey" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "deleteCompany", $company->id ]);?>'>
+						<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "deleteCompany", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 							<i class="fa fa-sm fa-trash"></i>
 						</a>
                     </td>
