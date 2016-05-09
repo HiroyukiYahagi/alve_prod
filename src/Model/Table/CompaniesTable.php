@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 
 use Cake\Datasource\EntityInterface;
 
+use SoftDelete\Model\Table\SoftDeleteTrait;
+
 /**
  * Companies Model
  *
@@ -17,6 +19,8 @@ use Cake\Datasource\EntityInterface;
  */
 class CompaniesTable extends Table
 {
+    use SoftDeleteTrait;
+    protected $softDeleteField = 'deleted';
 
     /**
      * Initialize method

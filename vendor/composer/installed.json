@@ -1263,24 +1263,70 @@
         ]
     },
     {
-        "name": "tecnick.com/tcpdf",
-        "version": "6.2.11",
-        "version_normalized": "6.2.11.0",
+        "name": "pgbi/cakephp3-soft-delete",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/tecnickcom/TCPDF.git",
-            "reference": "354433a33946ae7497c3eab291eaaf814bccbfab"
+            "url": "https://github.com/PGBI/cakephp3-soft-delete.git",
+            "reference": "c25a9c350b5bd06ded3d8509c8866e3e2c6c1ee8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/354433a33946ae7497c3eab291eaaf814bccbfab",
-            "reference": "354433a33946ae7497c3eab291eaaf814bccbfab",
+            "url": "https://api.github.com/repos/PGBI/cakephp3-soft-delete/zipball/c25a9c350b5bd06ded3d8509c8866e3e2c6c1ee8",
+            "reference": "c25a9c350b5bd06ded3d8509c8866e3e2c6c1ee8",
+            "shasum": ""
+        },
+        "require": {
+            "cakephp/cakephp": "~3.0",
+            "cakephp/plugin-installer": "*",
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2015-10-26 17:57:43",
+        "type": "cakephp-plugin",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "SoftDelete\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "SoftDelete plugin for CakePHP",
+        "homepage": "https://github.com/pgbi/cakephp3-soft-delete",
+        "keywords": [
+            "cakephp",
+            "cakephp 3",
+            "deletable",
+            "delete",
+            "plugin",
+            "soft"
+        ]
+    },
+    {
+        "name": "tecnickcom/tcpdf",
+        "version": "6.2.12",
+        "version_normalized": "6.2.12.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tecnickcom/TCPDF.git",
+            "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
+            "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-08-02 12:30:27",
+        "time": "2015-09-12 10:08:34",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1325,7 +1371,6 @@
             "pdf",
             "pdf417",
             "qrcode"
-        ],
-        "abandoned": "tecnickcom/tcpdf"
+        ]
     }
 ]

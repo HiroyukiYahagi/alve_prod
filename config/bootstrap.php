@@ -220,3 +220,7 @@ Type::build('date')
 Type::build('datetime')
     ->useImmutable()
     ->useLocaleParser();
+
+
+//add
+Plugin::load('SoftDelete');
