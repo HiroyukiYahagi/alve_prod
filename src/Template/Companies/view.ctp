@@ -57,10 +57,10 @@
 				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
-							<th><?= __('製品名') ?></th>
-							<th><?= __('型番') ?></th>
-							<th><?= __('最終更新日') ?></th>
-							<th><?= __('作業者') ?></th>
+							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -102,10 +102,10 @@
 				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
-							<th><?= __('製品名') ?></th>
-							<th><?= __('型番') ?></th>
-							<th><?= __('最終更新日') ?></th>
-							<th><?= __('作業者') ?></th>
+							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -148,10 +148,10 @@
 				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
 					<thead>
 						<tr>
-							<th><?= __('製品名') ?></th>
-							<th><?= __('型番') ?></th>
-							<th><?= __('最終更新日') ?></th>
-							<th><?= __('作業者') ?></th>
+							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -209,8 +209,8 @@
 				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
-							<th><?= __('最終更新日') ?></th>
-							<th><?= __('評価期間') ?></th>
+							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('評価期間') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -250,8 +250,8 @@
 				<table class="sorter tablesorter white striped table-for-fomulalist">
 					<thead>
 						<tr>
-							<th><?= __('最終更新日') ?></th>
-							<th><?= __('評価期間') ?></th>
+							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('評価期間') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
 					</thead>
