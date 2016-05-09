@@ -109,9 +109,9 @@ class CompaniesController extends AppController
             $company->email = $data['email'];
             $company->password = $data['password'];
             if ($this->Companies->save($company)) {
-                //$this->_sendRegisterMail($company);
-                //$this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
-                $this->Flash->success(__('新規登録されました'));
+                $this->_sendRegisterMail($company);
+                $this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
+                //$this->Flash->success(__('新規登録されました'));
                 return $this->redirect(['action' => 'login']);
             }else{
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
