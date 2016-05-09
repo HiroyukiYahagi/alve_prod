@@ -17,7 +17,7 @@ class CompaniesController extends AppController
         // 上位クラスの機能を使用
         parent::beforeFilter($event);
         // ユーザーによるログアウトを許可する
-        $this->Auth->allow(['login', 'logout', 'register', 'test']);
+        $this->Auth->allow(['login', 'logout', 'register', 'resetPassword','test']);
 
          //TODO
         //自社のプロダクトID以外にアクセスが来た場合は強制リダイレクト
@@ -107,7 +107,13 @@ class CompaniesController extends AppController
             $data = $this->request->data;
             $company = $this->Companies->newEntity();
             $company->email = $data['email'];
-            $company->password = $data['password'];
+            $company->company_name = $data['company_name'];
+            // $company->password = $data['password'];
+            if($this->_exitEmail($company->email) != null){
+                $this->Flash->error(__('すでに登録済みのメールアドレスです'));
+                return $this->redirect(['action' => 'login']);
+            }
+
             if ($this->Companies->save($company)) {
                 $this->_sendRegisterMail($company);
                 $this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
@@ -120,8 +126,6 @@ class CompaniesController extends AppController
     }
 
     public function test(){
-        $this->_sendMail("yahagi1989@gmail.com", "testmail", "this is test mail. please ignore.");
-
         $this->autoRender = false;
     }
 
@@ -130,15 +134,18 @@ class CompaniesController extends AppController
         $company->password = $defaultPassword;
         $this->Companies->save($company);
         $email = $company->email;
+        $company_name = $company->company_name;
 
         $message = <<< EOF
+$company_name 様
+
 この度は環境配慮バルブ登録システムに新規登録いただきありがとうございます。
 
 ----------------------------------
 登録情報
 ----------------------------------
 ユーザ名(メールアドレス): $email
-一時パスワード: $defaultPassword
+初期パスワード: $defaultPassword
 
 *このメールへの返信は必要ありません。
 *このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
@@ -149,10 +156,69 @@ class CompaniesController extends AppController
 Copyright c 2016 ●●●●●. All rights reserved.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF;
-        
+
         $title = "環境配慮バルブ登録システム新規登録確認メッセージ";
         $this->_sendMail($email, $title, $message);
     }
+
+    private function _exitEmail($email){
+        $companies = $this->Companies->find()->where(['email' => $email])->all()->toArray();
+        if(count($companies) != 0){
+            return $companies[0];
+        }else{
+            return null;
+        }
+    }
+
+    public function resetPassword(){
+        if ($this->request->is('post')) {
+            if(!isset($this->request->data['email']) || count($this->request->data['email']) <= 0 ){
+                return $this->redirect(['action' => 'register']);
+            }
+            $email = $this->request->data['email'];
+            $company = $this->_exitEmail($email);
+            if($company != null){
+                $this->_sendResetMail($company);
+                $this->Flash->success(__('入力されたメールアドレスに新しいパスワードが送信されました'));
+            }else{
+                $this->Flash->error(__('メールが登録されていません'));
+            }
+            return $this->redirect(['action' => 'login']);
+        }
+    }
+
+    private function _sendResetMail($company){
+        $defaultPassword = $this->_makeRandStr(10);
+        $company->password = $defaultPassword;
+        $this->Companies->save($company);
+        $email = $company->email;
+        $company_name = $company->company_name;
+
+        $message = <<< EOF
+$company_name 様
+
+環境配慮バルブ登録システムのパスワードがリセットされました。
+
+----------------------------------
+登録情報
+----------------------------------
+ユーザ名(メールアドレス): $email
+新しいパスワード: $defaultPassword
+
+*このメールへの返信は必要ありません。
+*このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+
+        $title = "環境配慮バルブ登録システムパスワードリセット確認メッセージ";
+        $this->_sendMail($email, $title, $message);
+    }
+
 
     private function _makeRandStr($length) {
         $str = array_merge(range('a', 'z'), range('0', '9'), range('A', 'Z'));
