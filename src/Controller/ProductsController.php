@@ -13,6 +13,8 @@ use Cake\I18n\Time;
 class ProductsController extends AppController
 {
 
+    public $helpers = ['Csv'];
+
     public function beforeFilter(Event $event){
         parent::beforeFilter($event);
         $this->Auth->allow(['search']);
@@ -55,7 +57,6 @@ class ProductsController extends AppController
         }
 
         $this->viewBuilder()->layout(false);
-
     }
 
     public function view($id = null)
@@ -75,7 +76,7 @@ class ProductsController extends AppController
         }else{
             $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
-        }    
+        }
     }
 
     private function _setEvaluationHeads(){
@@ -429,5 +430,16 @@ class ProductsController extends AppController
         $this->response->charset('UTF-8');
         $this->response->download('receipt.pdf');
         $this->viewBuilder()->layout(false);
+    }
+
+    public function downloadCsv($id){
+
+        $products = $this->Products->get($id, ['contain' => ['Types', 'Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ] ] ]);
+
+        $this->viewBuilder()->layout(false);
+        $filename = "評価データ_".$products->product_name."_".date('Ymd');
+        $th = ['テストID', 'ユーザー名'];
+        $column = ['id', 'username', 'mail_address'];
+        $this -> set(compact('filename', 'th', 'td'));
     }
 }

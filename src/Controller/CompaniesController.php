@@ -17,7 +17,7 @@ class CompaniesController extends AppController
         // 上位クラスの機能を使用
         parent::beforeFilter($event);
         // ユーザーによるログアウトを許可する
-        $this->Auth->allow(['login', 'logout', 'register']);
+        $this->Auth->allow(['login', 'logout', 'register', 'test']);
 
          //TODO
         //自社のプロダクトID以外にアクセスが来た場合は強制リダイレクト
@@ -60,7 +60,6 @@ class CompaniesController extends AppController
             }else{
                 $editingProducts[] = $product;
             }
-
         }
 
         $this->set('publishedProducts', $publishedProducts);
@@ -118,6 +117,12 @@ class CompaniesController extends AppController
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             }
         }
+    }
+
+    public function test(){
+        $this->_sendMail("yahagi1989@gmail.com", "testmail", "this is test mail. please ignore.");
+
+        $this->autoRender = false;
     }
 
     private function _sendRegisterMail($company){
