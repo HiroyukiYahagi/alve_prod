@@ -76,13 +76,15 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+										<i class="fa fa-sm fa-file"></i>
+									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 										<i class="fa fa-sm fa-trash"></i>
 									</a>
-
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -123,6 +125,9 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+										<i class="fa fa-sm fa-file"></i>
+									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
@@ -169,6 +174,9 @@
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+										<i class="fa fa-sm fa-file"></i>
+									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
@@ -224,6 +232,9 @@
 									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
 								</td>
 								<td>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "downloadCsv", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+										<i class="fa fa-sm fa-file"></i>
+									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
@@ -267,6 +278,9 @@
 									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>~<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>
 								</td>
 								<td>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "downloadCsv", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+										<i class="fa fa-sm fa-file"></i>
+									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>"> 
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>

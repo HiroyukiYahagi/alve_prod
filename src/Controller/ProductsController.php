@@ -434,12 +434,54 @@ class ProductsController extends AppController
 
     public function downloadCsv($id){
 
-        $products = $this->Products->get($id, ['contain' => ['Types', 'Evaluations' => ['EvaluationItems' => ['EvaluationHeads'] ] ] ]);
+        $product = $this->Products->get($id, ['contain' => ['Types', 'Evaluations' => ['EvaluationItems' => [ 'Units','EvaluationHeads' => ['Allocations' => ['AllocationItems'] ] ] ] ] ]);
+
+        if(!isset($product->evaluations[0])){
+            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        $filename = "評価データ_".$product->product_name."_".date('Ymd');
+        $this->set('filename', $filename);
+
+        $header = ['大分類', '中分類', '小分類', '項目', '単位', '値', '比較値'];
+        $this->set('header', $header);
+
+        foreach ($product->evaluations[0]->evaluation_items as $key => $evaluationItem) {
+
+            $evaluationHead = $evaluationItem->evaluation_head;
+            $unit = $evaluationItem->unit;
+            $allocation = $evaluationHead->allocation;
+            $allocationType = $allocation->allocation_type;
+            
+            $value = '';
+            $comparedValue = '';
+            if($allocationType != 0){
+                $value = $evaluationItem->value;
+                $comparedValue = $evaluationItem->compared_value;
+            }else{
+                $allocationItems = $allocation->allocation_items;
+                foreach ($allocationItems as $allocationItem) {
+                    if($allocationItem->id == $evaluationItem->value){
+                        $value = $allocationItem->text;
+                    }
+                    if($allocationItem->id == $evaluationItem->compared_value){
+                        $comparedValue = $allocationItem->text;
+                    }
+                }
+            }
+
+            $buffer['large_type'] = $evaluationHead->large_type;
+            $buffer['medium_type'] = $evaluationHead->medium_type;
+            $buffer['small_type'] = $evaluationHead->small_type;
+            $buffer['item_description'] = $evaluationHead->item_description;
+            $buffer['unit'] = !is_null($unit) ? $unit->name : '';
+            $buffer['value'] = $value;
+            $buffer['compared_value'] = $comparedValue;
+            $data[] = $buffer;
+        }
+        $this->set('data', $data);
 
         $this->viewBuilder()->layout(false);
-        $filename = "評価データ_".$products->product_name."_".date('Ymd');
-        $th = ['テストID', 'ユーザー名'];
-        $column = ['id', 'username', 'mail_address'];
-        $this -> set(compact('filename', 'th', 'td'));
     }
 }

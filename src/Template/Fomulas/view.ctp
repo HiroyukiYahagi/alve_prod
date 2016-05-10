@@ -6,7 +6,10 @@
             <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
             <?= __('評価情報') ?>
         </h5>
-        <a class="btn-floating btn-large green" href='<?php echo $this->Url->build(["action" => "edit", $fomula->id ]);?>'>
+        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "downloadCsv", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
+            <i class="fa fa-file"></i>
+        </a>
+        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
             <i class="fa fa-pencil-square-o"></i>
         </a>
     </div>
