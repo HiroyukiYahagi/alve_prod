@@ -43,14 +43,14 @@
                        <?php echo $company->id;?>
                     </td>
                     <td>
-                        <?php echo $company->company_name;?>
+                    	<?php echo $company->company_name;?>
                     </td>
                     <td>
 						<?php echo $company->email;?>  
                     </td>
                     <td>
 						<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "editCompany", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('パスワード変更')?>">
-							<i class="fa fa-sm fa-pencil-square-o"></i>
+							<i class="fa fa-sm fa-key"></i>
 						</a>
 						<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Admins", "action" => "deleteCompany", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
 							<i class="fa fa-sm fa-trash"></i>

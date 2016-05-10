@@ -153,6 +153,30 @@ class AdminsController extends AppController
         $this->set('company', $company);
     }
 
+    // public function viewCompany($id = null)
+    // {
+    //     $this->loadModel('Companies');
+    //     $company = $this->Companies->get($id, ['contain' => ['Products'] ]);
+    //     $this->set('company', $company);
+    // }
+
+    // public function editProduct($id)
+    // {
+    //     $this->loadModel('Products');
+    //     $product = $this->Products->get($id, ['contain' => ['Companies']]);
+    //     $this->set('product', $product);
+
+    //     if ($this->request->is('post')) {
+    //         $product = $this->Products->patchEntity($product, $this->request->data);
+    //         if ($this->Products->save($product)) {
+    //             $this->Flash->success(__('パスワードが更新されました。'));
+    //             return $this->redirect(['action' => 'viewCompany', $product->company->id]);
+    //         } else {
+    //             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
+    //         }
+    //     }
+    // }
+
     public function deleteCompany($id = null)
     {
         $this->loadModel('Companies');
