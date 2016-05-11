@@ -319,6 +319,8 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
+        $this->_changeCompleted($product->evaluations[0], false);
+
         $this->Flash->success(__('製品情報が保存されました'));
         return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
     }
@@ -333,13 +335,12 @@ class ProductsController extends AppController
         }
 
         if(!$this->_validateProductEvaluation($product)){
+            $this->_changeCompleted($product->evaluations[0], false);
             $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
 
-        $product->evaluations[0]->completed = 1;
-        $this->loadModel('Evaluations');
-        $this->Evaluations->save($product->evaluations[0]);
+        $this->_changeCompleted($product->evaluations[0], true);
 
         return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
 
@@ -401,6 +402,17 @@ class ProductsController extends AppController
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
+    }
+
+    private function _changeCompleted($evaluation, $shouldComplete)
+    {
+        if($shouldComplete)
+            $evaluation->completed = 1;
+        else
+            $evaluation->completed = 0;
+
+        $this->loadModel('Evaluations');
+        return $this->Evaluations->save($evaluation);
     }
 
     public function unpublish($id = null)
