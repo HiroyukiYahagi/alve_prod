@@ -9,7 +9,7 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-user fa-with" aria-hidden="true"></i>
-                <?= __('Company Info') ?>
+                <?= __('会社情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
@@ -56,7 +56,7 @@
         <div class="col s12">
             <h5>
                 <i class="fa fa-cog fa-with" aria-hidden="true"></i>
-                <?= __('Product Info') ?>
+                <?= __('製品情報') ?>
             </h5>
 
             <div class="card">

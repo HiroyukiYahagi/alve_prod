@@ -102,13 +102,12 @@ class CompaniesController extends AppController
     }
 
 
-    public function register(){
+    private function register(){
         if ($this->request->is('post')) {
             $data = $this->request->data;
             $company = $this->Companies->newEntity();
             $company->email = $data['email'];
             $company->company_name = $data['company_name'];
-            // $company->password = $data['password'];
             if($this->_exitEmail($company->email) != null){
                 $this->Flash->error(__('すでに登録済みのメールアドレスです'));
                 return $this->redirect(['action' => 'login']);
@@ -117,7 +116,6 @@ class CompaniesController extends AppController
             if ($this->Companies->save($company)) {
                 $this->_sendRegisterMail($company);
                 $this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
-                //$this->Flash->success(__('新規登録されました'));
                 return $this->redirect(['action' => 'login']);
             }else{
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
@@ -173,7 +171,8 @@ EOF;
     public function resetPassword(){
         if ($this->request->is('post')) {
             if(!isset($this->request->data['email']) || count($this->request->data['email']) <= 0 ){
-                return $this->redirect(['action' => 'register']);
+                $this->Flash->success(__('メールアドレスを入力してください'));
+                return $this->redirect(['action' => 'resetPassword']);
             }
             $email = $this->request->data['email'];
             $company = $this->_exitEmail($email);

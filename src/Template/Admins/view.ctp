@@ -22,11 +22,15 @@
 </div>
 
 <div class="row">
-	<h5>
-		<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-		<?= __('登録済みの会社一覧') ?>
-	</h5>	
-
+	<div class="title-and-item">
+		<h5>
+			<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+			<?= __('会社一覧') ?>
+		</h5>	
+		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "addCompany" ]);?>' data-delay="10" data-tooltip="<?= __('新規作成')?>">
+			<i class="fa fa-plus"></i>
+		</a>
+	</div>
 	 <table class="table-for-companieslist sorter tablesorter white striped z-depth-2">
         <thead>
             <tr>

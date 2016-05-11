@@ -184,7 +184,7 @@
         </div>
     </div>
 
-    <?php foreach ($evaluationHeadsMap as $key => $evaluationHeadMeds): ?>
+    <?php foreach ($evaluationHeadsMap as $key => $evaluationHeads): ?>
 
         <div class="row">
             <div class="col s12">
@@ -207,12 +207,6 @@
                     </thead>
 
                     <tbody>
-
-                        <?php foreach ($evaluationHeadMeds as $key => $evaluationHeads): ?>
-
-                        <tr>
-                            <td colspan="7"><b><?php echo $key; ?></b></td>
-                        </tr>
 
                         <?php foreach ($evaluationHeads as $evaluationHead): ?>
 
@@ -295,8 +289,6 @@
 
                         <?php endforeach; ?>
 
-                        <?php endforeach; ?>
-
                     </tbody>
                 </table>
             </div>
@@ -371,12 +363,10 @@
         <?php endforeach; ?>
         <?php endif;?>
 
-        <?php foreach ($evaluationHeadsMap as $evaluationMeds): ?>
-            <?php foreach ($evaluationMeds as $evaluationHead): ?>
-                <?php foreach ($evaluationHeads as $evaluationHead): ?>
-                    evalAjax(<?php echo $evaluationHead->id;?>);
-                <?php endforeach ?>
-            <?php endforeach ?>
+        <?php foreach ($evaluationHeadsMap as $evaluationHeads): ?>
+            <?php foreach ($evaluationHeads as $evaluationHead): ?>
+                evalAjax(<?php echo $evaluationHead->id;?>);
+            <?php endforeach ?>    
         <?php endforeach ?>
     });
 

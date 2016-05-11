@@ -90,13 +90,26 @@ class ProductsController extends AppController
         return $evaluationHeadsMap;
     }
 
+    private function _setEvaluationHeadsDetail(){
+        $this->loadModel("EvaluationHeads");
+        $evaluationHeads = $this->EvaluationHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
+
+        foreach ($evaluationHeads as $evaluationHead) {
+            $evaluationHeadsMap[$evaluationHead->large_type][$evaluationHead->medium_type.' - '.$evaluationHead->small_type][] = $evaluationHead;
+        }
+        $this->set('evaluationHeadsMap', $evaluationHeadsMap);
+        return $evaluationHeadsMap;        
+    }
+
     public function edit($id = null)
     {
         $this->loadModel("Types");
         $types = $this->Types->find();
         $this->set('types', $types);
 
-        $this->_setEvaluationHeads();
+        // TODO
+        // $this->_setEvaluationHeads();
+        $this->_setEvaluationHeadsDetail();
         $this->_setUnitMap();
 
         if($id == null){
@@ -169,11 +182,11 @@ class ProductsController extends AppController
         foreach ($candidates as $candidate) {
             if($candidate->range_max === null || intval($candidate->range_max) > $rate ){
                 if($candidate->range_min === null || intval($candidate->range_min) <= $rate ){
-                    return ['result' => round($rate,1), 'point' => $candidate->point];
+                    return ['result' => round($rate, 1), 'point' => $candidate->point];
                 }
             }
         }
-        return ['result' => $rate, 'point' => '0'];
+        return ['result' => round($rate, 1), 'point' => '0'];
     }
 
     private function _valueEvaluation($newValue, $candidates){

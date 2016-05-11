@@ -177,6 +177,35 @@ class AdminsController extends AppController
     //     }
     // }
 
+    public function addCompany(){
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+            $this->loadModel('Companies');
+            $company = $this->Companies->newEntity();
+            $company = $this->Companies->patchEntity($company, $data);
+            if($this->_existEmail($company->email) != null){
+                $this->Flash->error(__('すでに登録済みのメールアドレスです'));
+                return $this->redirect(['action' => 'view']);
+            }
+            if ($this->Companies->save($company)) {
+                $this->Flash->success(__('新規登録されました'));
+                return $this->redirect(['action' => 'view']);
+            }else{
+                $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
+            }
+        }
+    }
+
+    private function _existEmail($email){
+        $this->loadModel('Companies');
+        $companies = $this->Companies->find()->where(['email' => $email])->all()->toArray();
+        if(count($companies) != 0){
+            return $companies[0];
+        }else{
+            return null;
+        }
+    }
+
     public function deleteCompany($id = null)
     {
         $this->loadModel('Companies');

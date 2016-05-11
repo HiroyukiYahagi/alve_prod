@@ -89,10 +89,21 @@ class FomulasController extends AppController
         foreach ($fomulaHeads as $fomulaHead) {
             $fomulaHeadsMap[$fomulaHead->large_type][] = $fomulaHead;
         }
+
         $this->set('fomulaHeadsMap', $fomulaHeadsMap);
         return $fomulaHeadsMap;
     }
 
+    private function _setFomulaHeadsDetail(){
+        $this->loadModel("FomulaHeads");
+        $fomulaHeads = $this->FomulaHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
+
+        foreach ($fomulaHeads as $fomulaHead) {
+            $fomulaHeadsMap[$fomulaHead->large_type][$fomulaHead->medium_type." - ".$fomulaHead->small_type][] = $fomulaHead;
+        }
+        $this->set('fomulaHeadsMap', $fomulaHeadsMap);
+        return $fomulaHeadsMap;
+    }
 
     public function evaluate(){
 
@@ -154,7 +165,9 @@ class FomulasController extends AppController
         }
         $this->set('fomula', $fomula);
 
-        $this->_setEvaluationHeads();
+        //TODO
+        //$this->_setFomulaHeads();
+        $this->_setFomulaHeadsDetail();
     }
 
     private function _saveData($id, $data){
@@ -208,6 +221,13 @@ class FomulasController extends AppController
 
     private function _validateFomulaEvaluation($fomula)
     {
+        if(!isset($fomula->fomula_start)){
+            return false;
+        }
+        if(!isset($fomula->fomula_end)){
+            return false;
+        }
+
         foreach ($fomula->fomula_items as $fomula_item) {
             if ($fomula_item->value == null
                 || count($fomula_item->value) == 0
@@ -237,17 +257,6 @@ class FomulasController extends AppController
         return $this->redirect(['controller' => 'Fomulas', 'action' => 'view', $fomula->id]);
     }
 
-    private function _setEvaluationHeads(){
-        $this->loadModel("FomulaHeads");
-        $fomulaHeads = $this->FomulaHeads->find('all')->contain(['Allocations' => ['AllocationItems']]);
-
-        foreach ($fomulaHeads as $fomulaHead) {
-            $fomulaHeadsMap[$fomulaHead->large_type][] = $fomulaHead;
-        }
-
-        $this->set('fomulaHeadsMap', $fomulaHeadsMap);
-        return $fomulaHeadsMap;
-    }
 
     public function unpublish($id = null)
     {

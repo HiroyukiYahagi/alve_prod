@@ -1,10 +1,5 @@
 <h4><?php echo $title; ?></h4>
 
-<blockquote>
-    <i class="fa fa-star fa-with" aria-hidden="true"></i>入力必須項目
-</blockquote>
-
-
 <form method="post" action="">
     <div class="row">
         <div class="col s12">
@@ -38,14 +33,12 @@
                     <div class="row">
                         <div class="col s6">  
                             <label for="fomula_start">
-                                <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 <?= __('評価期間開始日') ?>
                             </label>
                              <input id="fomula_start" name="fomula_start" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>"/>
                         </div>
                         <div class="col s6">
                             <label for="fomula_end">
-                                <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 <?= __('評価期間終了日') ?>
                             </label>
                             <input id="fomula_end" name="fomula_end" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>"/>
@@ -65,7 +58,7 @@
         </div>
     </div>
 
-    <?php foreach ($fomulaHeadsMap as $key => $fomulaHeadMeds): ?>
+    <?php foreach ($fomulaHeadsMap as $key => $fomulaHeads): ?>
 
         <div class="row">
             <div class="col s12">
@@ -84,13 +77,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                         <?php foreach ($fomulaHeadMeds as $key => $fomulaHeads): ?>
-
-                        <tr>
-                            <td colspan="5"><b><?php echo $key; ?></b></td>
-                        </tr>
-
                         <?php foreach ($fomulaHeads as $fomulaHead): ?>
                         <tr id="tr_<?php echo $fomulaHead->id;?>">
                             <td>
@@ -138,7 +124,6 @@
                             </td>
                         </tr>
 
-                        <?php endforeach; ?>
                         <?php endforeach; ?>
 
                     </tbody>
@@ -202,12 +187,10 @@
         <?php endforeach; ?>
         <?php endif;?>
 
-        <?php foreach ($fomulaHeadsMap as $fomulaHeadMeds): ?>
-            <?php foreach ($fomulaHeadMeds as $fomulaHeads): ?>
-                <?php foreach ($fomulaHeads as $fomulaHead): ?>
-                    evalAjax(<?php echo $fomulaHead->id;?>);
-                <?php endforeach ?>    
-            <?php endforeach ?>
+        <?php foreach ($fomulaHeadsMap as $fomulaHeads): ?>
+            <?php foreach ($fomulaHeads as $fomulaHead): ?>
+                evalAjax(<?php echo $fomulaHead->id;?>);
+            <?php endforeach ?>    
         <?php endforeach ?>
     });
 
