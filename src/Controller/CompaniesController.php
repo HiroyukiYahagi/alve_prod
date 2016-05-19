@@ -137,7 +137,7 @@ class CompaniesController extends AppController
         $message = <<< EOF
 $company_name 様
 
-この度は環境配慮バルブ登録システムに新規登録いただきありがとうございます。
+この度は環境配慮バルブ登録制度に新規登録いただきありがとうございます。
 
 ----------------------------------
 登録情報
@@ -196,7 +196,7 @@ EOF;
         $message = <<< EOF
 $company_name 様
 
-環境配慮バルブ登録システムのパスワードがリセットされました。
+環境配慮バルブ登録制度のパスワードがリセットされました。
 
 ----------------------------------
 登録情報
@@ -244,6 +244,7 @@ EOF;
             //var_dump($result);
             if ($result) {
                 $this->Flash->success(__('会社情報が更新されました'));
+                $this->_sendEditedMessage($result);
                 return $this->redirect(['action' => 'view']);
             } else {
                 foreach ($company->errors() as $key => $value) {
@@ -270,6 +271,7 @@ EOF;
             
             if ($result) {
                 $this->Flash->success(__('パスワードが更新されました。'));
+                $this->_sendEditedMessage($result);
                 return $this->redirect(['action' => 'view']);
             } else {
                 foreach ($company->errors() as $key => $value) {
@@ -280,6 +282,30 @@ EOF;
         $this->set(compact('company'));
         $this->set('_serialize', ['company']);
     }
+
+    private function _sendEditedMessage($company){
+        $email = $company->email;
+        $company_name = $company->company_name;
+
+        $message = <<< EOF
+$company_name 様
+
+環境配慮バルブ登録制度の会社情報が更新されました。
+
+*このメールへの返信は必要ありません。
+*このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+
+        $title = "環境配慮バルブ登録制度確認メッセージ";
+        $this->_sendMail($email, $title, $message);
+    }
+
 
     public function delete($id = null)
     {

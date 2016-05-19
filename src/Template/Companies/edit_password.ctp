@@ -6,13 +6,13 @@
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="password" name="password" type="password" class="validate" required>
-					<label for="password">パスワード</label>
+					<label for="password">新しいパスワード</label>
 				</div>
 			</div>
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="password-again" name="password-again" type="password" class="validate" required>
-					<label for="password-again">パスワードの再入力</label>
+					<label for="password-again">新しいパスワードの再入力</label>
 				</div>
 			</div>
 			<button class="btn waves-effect waves-light green" type="submit" name="action">送信</button>

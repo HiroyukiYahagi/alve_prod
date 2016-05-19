@@ -23,5 +23,5 @@
 
 
 <a href="<?php echo $this->Url->build(['controller' => 'Companies', 'action' => 'resetPassword']);?>">
-パスワードをお忘れの方へ
+	パスワードをお忘れの方はこちら
 </a>

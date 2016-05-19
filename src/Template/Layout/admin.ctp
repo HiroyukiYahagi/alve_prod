@@ -30,12 +30,15 @@ $cakeDescription = 'Alve';
 
 </head>
 <body class="light-green lighten-5">
-    <nav class="white">
-        <div class="brand-logo center">
-            <?php echo $this->Html->image('logo.png', ['alt' => 'alve']);?>
-            <span class="green-text">環境配慮バルブ登録システム(管理画面)</span>
-        </div>
-    </nav>
+    <div class="navbar-fixed">
+        <nav class="white">
+            <div class="brand-logo">
+                <?php echo $this->Html->image('logo.jpg', ['alt' => 'alve', 'class' => 'logo-img']);?>
+                <?php echo $this->Html->image('logo.png', ['alt' => 'alve', 'class' => 'logo-img']);?>
+                <span class="green-text">環境配慮バルブ登録制度(管理画面)</span>
+            </div>
+        </nav>
+    </div>
     <div class="row">
         <div class="col s8 offset-s2">
         <?= $this->Flash->render() ?>

@@ -177,7 +177,7 @@
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
 										<i class="fa fa-sm fa-file"></i>
 									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('更新')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "unpublish", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('非公開')?>">
@@ -281,7 +281,7 @@
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "downloadCsv", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
 										<i class="fa fa-sm fa-file"></i>
 									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>"> 
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('更新')?>"> 
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "delete", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">

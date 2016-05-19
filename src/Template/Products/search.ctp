@@ -30,15 +30,15 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
 <body class="blue-grey lighten-5">
 
     <nav class="white">
-        <a href="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>" class="brand-logo center">
-            <?php echo $this->Html->image('logo.png', ['alt' => 'alve']);?>
-            <span class="green-text">環境配慮バルブ検索システム</span>
-        </a>
+        <div class="brand-logo">
+            <?php echo $this->Html->image('logo.jpg', ['alt' => 'alve', 'class' => 'logo-img']);?>
+            <span class="green-text">環境配慮バルブ登録制度</span>
+        </div>
     </nav>
 
 
     <div class="row">
-        <div class="col s6 offset-s3">
+        <div class="col s8 offset-s2">
 
             <h4><?= __('製品検索') ?></h4>
             <blockquote>

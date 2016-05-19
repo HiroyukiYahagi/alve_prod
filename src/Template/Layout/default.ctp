@@ -39,26 +39,29 @@ $cakeDescription = 'Alve -環境配慮バルブ登録システム-';
     <!-- custom -->
     <?= $this->Html->css('alve.css') ?>
     <?= $this->Html->script('alve.js') ?>
-
     <?= $this->Html->script('Chart.min.js') ?>
 
 </head>
 <body class="blue-grey lighten-5">
-    <nav class="white">
-        <a href="<?php echo $this->Url->build(["controller" => "Top", "action" => "index" ]);?>" class="brand-logo center">
-            <?php echo $this->Html->image('logo.png', ['alt' => 'alve']);?>
-            <span class="green-text">環境配慮バルブ登録システム</span>
-        </a>
-        <ul id="slide-out" class="side-nav fixed">
-            <?= $this->cell('Nav', ['isAuth' => isset($isAuth) ? $isAuth : false , 'authedId' => $authedId ])->render();?>
-        </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse green-text"><i class="fa fa-bars fa-3x fa-with"></i></a>
-    </nav>
+    <div class="navbar-fixed">
+        <nav class="white z-depth-1">
+            <div class="nav-wrapper">
+                <a href="<?php echo $this->Url->build(["controller" => "Top", "action" => "index" ]);?>" class="brand-logo">
+                    <?php echo $this->Html->image('logo.jpg', ['alt' => 'alve', 'class' => 'logo-img']);?>
+                    <?php echo $this->Html->image('logo.png', ['alt' => 'alve', 'class' => 'logo-img']);?>
+                    <span class="page-title green-text">環境配慮バルブ登録制度</span>
+                </a>
+                <?= $this->cell('Nav', ['isAuth'=> $isAuth, 'authedId' => $authedId ])->render() ?>
+            </div>
 
-    <main>
-        <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
-    </main>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col s8 offset-s2">
+            <?= $this->Flash->render() ?>
+            <?= $this->fetch('content') ?>
+        </div>
+    </div>
 
 </body>
 </html>
