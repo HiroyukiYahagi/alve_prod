@@ -50,20 +50,16 @@ class CompaniesController extends AppController
         ]);
 
         $publishedProducts = null;
-        $completedProducts = null;
         $editingProducts = null;
         foreach ($company->products as $product) {
             if($product->published == 1){
                 $publishedProducts[] = $product;
-            }else if(isset($product->evaluations[0]) && $product->evaluations[0]->completed == 1 ){
-                $completedProducts[] = $product;
             }else{
                 $editingProducts[] = $product;
             }
         }
 
         $this->set('publishedProducts', $publishedProducts);
-        $this->set('completedProducts', $completedProducts);
         $this->set('editingProducts', $editingProducts);
 
 
@@ -123,9 +119,9 @@ class CompaniesController extends AppController
         }
     }
 
-    public function test(){
-        $this->autoRender = false;
-    }
+    // public function test(){
+    //     $this->autoRender = false;
+    // }
 
     private function _sendRegisterMail($company){
         $defaultPassword = $this->_makeRandStr(10);
@@ -142,7 +138,7 @@ $company_name 様
 ----------------------------------
 登録情報
 ----------------------------------
-ユーザ名(メールアドレス): $email
+ログインID(メールアドレス): $email
 初期パスワード: $defaultPassword
 
 *このメールへの返信は必要ありません。
@@ -162,7 +158,7 @@ EOF;
     private function _exitEmail($email){
         $companies = $this->Companies->find()->where(['email' => $email])->all()->toArray();
         if(count($companies) != 0){
-            return $companies[0];
+            return $companies;
         }else{
             return null;
         }
@@ -175,7 +171,7 @@ EOF;
                 return $this->redirect(['action' => 'resetPassword']);
             }
             $email = $this->request->data['email'];
-            $company = $this->_exitEmail($email);
+            $company = $this->_exitEmail($email)[0];
             if($company != null){
                 $this->_sendResetMail($company);
                 $this->Flash->success(__('入力されたメールアドレスに新しいパスワードが送信されました'));
@@ -201,7 +197,7 @@ $company_name 様
 ----------------------------------
 登録情報
 ----------------------------------
-ユーザ名(メールアドレス): $email
+ログインID(メールアドレス): $email
 新しいパスワード: $defaultPassword
 
 *このメールへの返信は必要ありません。
@@ -239,9 +235,17 @@ EOF;
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $company = $this->Companies->patchEntity($company, $this->request->data);
+            $data = $this->request->data;
+
+            //メールアドレスの重複チェック
+            $sames = $this->_exitEmail($data['email']);
+            if( !is_null($sames[0]) && $sames[0]->id != $id ){
+                $this->Flash->error(__('入力したメールアドレスはすでに登録されています'));
+                return $this->redirect(['action' => 'edit', $id]);
+            }
+
+            $company = $this->Companies->patchEntity($company, $data);
             $result = $this->Companies->save($company);
-            //var_dump($result);
             if ($result) {
                 $this->Flash->success(__('会社情報が更新されました'));
                 $this->_sendEditedMessage($result);
@@ -268,9 +272,8 @@ EOF;
             }
             $company = $this->Companies->patchEntity($company, $data);
             $result = $this->Companies->save($company);
-            
             if ($result) {
-                $this->Flash->success(__('パスワードが更新されました。'));
+                $this->Flash->success(__('ログイン情報が更新されました。'));
                 $this->_sendEditedMessage($result);
                 return $this->redirect(['action' => 'view']);
             } else {

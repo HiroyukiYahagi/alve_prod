@@ -53,6 +53,17 @@ class Company extends Entity
         return (new DefaultPasswordHasher)->hash($password);
     }
 
+    public function checkPassword($password){
+        $hashed = (new DefaultPasswordHasher)->hash($password);
+        var_dump($hashed);
+        var_dump($this->password);
+        if($this->password == $hashed){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function set($property, $value = null, array $options = [])
     {
         if(is_string($value)){

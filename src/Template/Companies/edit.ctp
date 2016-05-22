@@ -10,11 +10,11 @@
                         <input type="text" name="company_name" maxlength="256" id="company-name" value="<?php echo $company->company_name;?>">
                     </div>
                     <div class="input text">
-                        <label for="name_kana" class="active"><?= __('会社名 (カナ)') ?></label>
+                        <label for="name_kana" class="active"><?= __('会社名 (カナ) ※カブシキガイシャ等の法人格は不必要です') ?></label>
                         <input type="text" name="name_kana" maxlength="256" id="name_kana" value="<?php echo $company->name_kana;?>">
                     </div>
                     <div class="input email">
-                        <label for="email" class="active"><?= __('Email') ?></label>
+                        <label for="email" class="active"><?= __('ログインID(メールアドレス)') ?></label>
                         <input type="email" name="email" maxlength="256" id="email" value="<?php echo $company->email;?>">
                     </div>
                     <div class="input textarea">

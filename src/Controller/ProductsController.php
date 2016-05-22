@@ -113,9 +113,9 @@ class ProductsController extends AppController
         $this->_setUnitMap();
 
         if($id == null){
-            $this->set('title', __('新製品の登録'));
+            $this->set('title', __('製品評価'));
         }else{
-            $this->set('title', __('製品情報の編集'));
+            $this->set('title', __('製品評価の編集'));
             $product = $this->Products->get($id, [
                 'contain' => ['Types', 'Evaluations' => [ 'EvaluationItems' => ['Units'] ] ]
             ]);
@@ -129,11 +129,13 @@ class ProductsController extends AppController
                 $selectedUnits[$evaluation_item->head_id] = $evaluation_item->unit_id;
                 $selectedValues[$evaluation_item->head_id] = $evaluation_item->value;
                 $selectedCompValues[$evaluation_item->head_id] = $evaluation_item->compared_value;
+                $selectedOptValues[$evaluation_item->head_id] = $evaluation_item->other_unit;
             }
 
             $this->set('selectedUnits', $selectedUnits);
             $this->set('selectedValues', $selectedValues);
             $this->set('selectedCompValues', $selectedCompValues);
+            $this->set('selectedOptValues', $selectedOptValues);
         }
     }
 
@@ -261,6 +263,8 @@ class ProductsController extends AppController
 
         $evaluation->compared_product_name = $data['compared_product_name'];
         $evaluation->compared_model_number = $data['compared_model_number'];
+        $evaluation->compared_url = $data['compared_url'];
+        $evaluation->compared_sales_date = $data['compared_sales_date'];
         $evaluation->completed == 0;
         
         $evaluation = $this->Evaluations->save($evaluation);
@@ -278,7 +282,8 @@ class ProductsController extends AppController
                 $key,
                 isset($data['units'][$key]) ? $data['units'][$key] : null,
                 isset($data['new_value'][$key]) ? $data['new_value'][$key] : null,
-                isset($data['old_value'][$key]) ? $data['old_value'][$key] : null
+                isset($data['old_value'][$key]) ? $data['old_value'][$key] : null,
+                isset($data['other_unit'][$key]) ? $data['other_unit'][$key] : null
             );
         }
 
@@ -286,7 +291,7 @@ class ProductsController extends AppController
         return $product;
     }
 
-    private function _createEvaluationItem($evalId, $evalHeadId, $unit, $newValue, $oldValue){
+    private function _createEvaluationItem($evalId, $evalHeadId, $unit, $newValue, $oldValue, $option){
 
         $this->loadModel('EvaluationItems');
 
@@ -303,6 +308,7 @@ class ProductsController extends AppController
         $evaluationItem->unit_id = $unit;
         $evaluationItem->value = $newValue;
         $evaluationItem->compared_value = $oldValue;
+        $evaluationItem->other_unit = $option;
 
         if(!$this->EvaluationItems->save($evaluationItem)){
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
@@ -342,7 +348,7 @@ class ProductsController extends AppController
 
         $this->_changeCompleted($product->evaluations[0], true);
 
-        return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
+        return $this->redirect(['controller' => 'Products', 'action' => 'register', $product->id]);
 
     }
 
@@ -395,9 +401,14 @@ class ProductsController extends AppController
         $data = $this->request->data;
         $product = $this->Products->get($id);
         $product->published = 1;
+
+        if(!isset($product->published_date)){
+            $product->published_date = new Time('Asia/Tokyo');
+        }
+
         if($this->Products->save($product)){
             $this->Flash->success(__('製品情報が更新されました'));
-            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+            return $this->redirect(['controller' => 'Products', 'action' => 'view', $id]);
         }else{
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);

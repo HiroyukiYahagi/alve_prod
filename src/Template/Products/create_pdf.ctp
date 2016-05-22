@@ -18,11 +18,27 @@ $latestFomula = $product->latest_fomula->i18nFormat('yyyy-MM-dd', 'Asia/Tokyo', 
 $evalCount = count($evaluationHeads);
 $type = $product->type->type_name;
 
+
+
+if(!is_null($product->evaluations[0]->compared_product_name) 
+	&& strlen($product->evaluations[0]->compared_product_name) > 0 ){
+	$productNameComp = $product->evaluations[0]->compared_product_name;
+	$modelNumberComp = $product->evaluations[0]->compared_model_number;
+	$salesDateComp = $product->evaluations[0]->compared_sales_date->i18nFormat('yyyy-MM-dd', 'Asia/Tokyo', 'ja-JP');
+}else{
+ 	$productNameComp = '新規設計目標値と比較';
+	$modelNumberComp = '';
+	$salesDateComp = '';
+}
+
 $html = <<< EOF
 <!DOCTYPE html>
 <html>
+<head>
+	<
+</head>
 <body>
-<table border="1" cellspacing="0">
+<table border="1" cellspacing="0" cellpadding="5">
 	<tbody>
 		<tr>
 			<td colspan="6" style="text-align: center;background-color:black;color:white;">JVMA ラベル制度 登録情報</td>
@@ -31,7 +47,7 @@ $html = <<< EOF
 			<td colspan="1" style="text-align: center;">登録日</td>
 			<td colspan="2" >$createDate</td>
 			<td colspan="1" style="text-align: center;">情報更新日</td>
-			<td colspan="2" >$modifiedDate</td>
+			<td colspan="2">$modifiedDate</td>
 		</tr>
 		<tr>
 			<td colspan="1" style="text-align: center;">メーカー名</td>
@@ -44,9 +60,20 @@ $html = <<< EOF
 		</tr>
 		<tr>
 			<td colspan="1" style="text-align: center;">型番</td>
-			<td colspan="2" >$modelNumber</td>
+			<td colspan="2" >　$modelNumber</td>
 			<td colspan="1" style="text-align: center;">発売時期</td>
 			<td colspan="1" >$salesDate</td>
+		</tr>
+		<tr>
+			<td colspan="1" rowspan="2" style="text-align: center;">比較対象製品</td>
+			<td colspan="1" style="text-align: center;">製品名</td>
+			<td colspan="4" >$productNameComp</td>
+		</tr>
+		<tr>
+			<td colspan="1" style="text-align: center;">型番</td>
+			<td colspan="2" >$modelNumberComp</td>
+			<td colspan="1" style="text-align: center;">発売時期</td>
+			<td colspan="1" >$salesDateComp</td>
 		</tr>
 		<tr>
 			<td colspan="1" rowspan="2" style="text-align: center;">評価実施時期</td>
@@ -78,7 +105,7 @@ $html = <<< EOF
 		</tr>
 	</tbody>
 </table>
-<table border="1" cellspacing="0">
+<table border="1" cellspacing="0" cellpadding="5">
 	<tbody>
 		<tr>
 			<td colspan="2">
@@ -112,7 +139,7 @@ $html .= <<< EOF
 </body>
 </html>
 EOF;
-
+ 
 $pdf->writeHTML($html, true);
 echo $pdf->Output('', 'D');
 ?>

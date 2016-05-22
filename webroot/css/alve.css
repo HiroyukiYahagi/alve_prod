@@ -142,20 +142,25 @@ table.table-for-product > thead > tr > th:nth-child(3){
 }
 
 table.table-for-product > thead > tr > th:nth-child(4){
-	width: 15%;
+	width: 13%;
 }
 
 table.table-for-product > thead > tr > th:nth-child(5){
-	width: 10%;
+	width: 13%;
 }
 
 table.table-for-product > thead > tr > th:nth-child(6){
-	width: 10%;
+	width: 9%;
 }
 
 table.table-for-product > thead > tr > th:nth-child(7){
-	width: 10%;
+	width: 5%;
 }
+
+table.table-for-product > thead > tr > th:nth-child(8){
+	width: 5%;
+}
+
 
 table.table-for-fomula > thead > tr > th:nth-child(1){
 	width: 5%;
@@ -179,33 +184,59 @@ table.table-for-fomula > thead > tr > th:nth-child(5){
 }
 
 
+table.table-for-productlist-edit > thead > tr > th:nth-child(1){
+	width: 30%;
+}
+table.table-for-productlist-edit > thead > tr > th:nth-child(2){
+	width: 25%;
+}
+table.table-for-productlist-edit > thead > tr > th:nth-child(3){
+	width: 15%;
+}
+table.table-for-productlist-edit > thead > tr > th:nth-child(4){
+	width: 15%;
+}
+table.table-for-productlist-edit > thead > tr > th:nth-child(5){
+	width: 15%;
+}
 
 
 table.table-for-productlist > thead > tr > th:nth-child(1){
 	width: 25%;
 }
 table.table-for-productlist > thead > tr > th:nth-child(2){
-	width: 20%;
-}
-table.table-for-productlist > thead > tr > th:nth-child(3){
-	width: 20%;
-}
-table.table-for-productlist > thead > tr > th:nth-child(4){
 	width: 17%;
 }
+table.table-for-productlist > thead > tr > th:nth-child(3){
+	width: 13%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(4){
+	width: 15%;
+}
 table.table-for-productlist > thead > tr > th:nth-child(5){
-	width: 18%;
+	width: 15%;
+}
+table.table-for-productlist > thead > tr > th:nth-child(6){
+	width: 15%;
 }
 
 table.table-for-fomulalist > thead > tr > th:nth-child(1){
 	width: 35%;
 }
 table.table-for-fomulalist > thead > tr > th:nth-child(2){
-	width: 47%;
+	width: 50%;
 }
 
 table.table-for-fomulalist > thead > tr > th:nth-child(3){
-	width: 18%;
+	width: 15%;
 }
+
+
+ul.dropdown-content.select-dropdown > li > span{
+	font-size: 13px;
+	line-height: 15px;
+}
+
+
 
 

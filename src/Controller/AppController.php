@@ -137,10 +137,16 @@ class AppController extends Controller
 
   protected function _setUnitMap(){
     $this->loadModel("Units");
-    $units = $this->Units->find('all');
-
+    $units = $this->Units->find()->all()->toArray();
     foreach ($units as $unit) {
-      $unitMap[$unit['category']][] = $unit;
+      if($unit->category == null){
+        $other = $unit;
+      }else{
+        $unitMap[$unit['category']][] = $unit;
+      }
+    }
+    foreach ($unitMap as $key => $value){
+      $unitMap[$key][] = $other; 
     }
 
     $this->set('units', $unitMap);

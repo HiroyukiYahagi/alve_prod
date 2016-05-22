@@ -38,7 +38,7 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
 
 
     <div class="row">
-        <div class="col s8 offset-s2">
+        <div class="col s10 offset-s1">
 
             <h4><?= __('製品検索') ?></h4>
             <blockquote>

@@ -18,6 +18,14 @@ function confirmDelete(){
 	}
 }
 
+function confirmSend(){
+    if(confirm("通知メールが送信されます。よろしいですか？")) {
+	    location.href = $(this).attr('href');
+	} else {
+	    return false;
+	}
+}
+
 $(function() {
 	$('.sorter').tablesorter();
 

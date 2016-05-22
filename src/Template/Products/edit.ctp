@@ -13,7 +13,7 @@
         <div class="col s6">
             <h5>
                 <i class="fa fa-cog fa-with" aria-hidden="true"></i>
-                <?= __('製品情報') ?>
+                <?= __('評価対象製品情報') ?>
             </h5>
             <div class="card">
                 <div class="card-content">
@@ -73,11 +73,11 @@
                             </label>
                             <p onclick="changeEvaluationType(0);">
                                 <input name="evaluation_type" type="radio" id="evaluation_type_comp" checked value="0"/>
-                                <label for="evaluation_type_comp"><?= __('他製品と比較して評価')?></label>
+                                <label for="evaluation_type_comp"><?= __('自社従来製品')?></label>
                             </p>
                             <p onclick="changeEvaluationType(1);">
                                 <input name="evaluation_type" type="radio" id="evaluation_type_none" value="1"/>
-                                <label for="evaluation_type_none"><?= __('目標値と比較して評価')?></label>
+                                <label for="evaluation_type_none"><?= __('新規設計目標値')?></label>
                             </p>
 
                         </div>
@@ -95,6 +95,18 @@
                                 <input id="compared_model_number" type="text" name="compared_model_number" class="validate" value="<?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>"/>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="input-field col s12">     
+                                <label for="compared_url"><?= __('URL') ?></label>
+                                <input id="compared_url" type="text" name="compared_url" class="validate" value="<?php echo isset($product->evaluations[0]->compared_url) ? $product->evaluations[0]->compared_url: ''; ?>"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">     
+                                <label for="compared_sales_date"><?= __('発売日') ?></label>
+                                <input id="compared_sales_date" type="text" name="compared_sales_date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render();?>"/>
+                            </div>
+                        </div>              
                     </div>
                 </div>
             </div>
@@ -149,7 +161,7 @@
     <div class="row">
         <div class="col s12">
             <h5>
-                <i class="fa fa-user fa-with" aria-hidden="true"></i>
+                <i class="fa fa-ellipsis-h fa-with" aria-hidden="true"></i>
                 <?= __('その他') ?>
             </h5>
             <div class="card">
@@ -191,7 +203,9 @@
                 <h5>
                     <?php echo $key; ?>
                 </h5>
-
+                <blockquote>
+                    単位に「その他」を選択した場合、備考に内容を記載してください。
+                </blockquote>
 
                 <table class="tablesorter white striped z-depth-2 table-for-product">
                     <thead>
@@ -199,8 +213,9 @@
                             <th><?= __('選択') ?></th>
                             <th><?= __('項目') ?></th>
                             <th><?= __('単位') ?></th>
-                            <th><?= __('New Data') ?></th>
-                            <th><?= __('Old Data') ?></th>
+                            <th><?= __('データ(評価対象)') ?></th>
+                            <th><?= __('データ(比較対象)') ?></th>
+                            <th><?= __('備考') ?></th>
                             <th><?= __('結果') ?></th>
                             <th><?= __('得点') ?></th>
                         </tr>
@@ -211,7 +226,7 @@
                         <?php foreach ($evaluationHeadMeds as $key => $evaluationHeads): ?>
 
                         <tr>
-                            <td colspan="7"><b><?php echo $key; ?></b></td>
+                            <td colspan="8"><b><?php echo $key; ?></b></td>
                         </tr>
 
                         <?php foreach ($evaluationHeads as $evaluationHead): ?>
@@ -239,9 +254,9 @@
                                 </p>
                                 <div id="detail_modal_<?php echo $evaluationHead->id; ?>" class="modal">
                                     <div class="modal-content">
-                                        <h5><?= __('判断基準')?></h5>
+                                        <h5><?= __('評価に用いる指標')?></h5>
                                         <p><?php echo $evaluationHead->item_criteria; ?></p>
-                                        <h5><?= __('その他情報')?></h5>
+                                        <h5><?= __('評価方法など')?></h5>
                                         <p><?php echo $evaluationHead->options; ?></p>
                                     </div>
                                     <div class="modal-footer">
@@ -280,7 +295,9 @@
                                 <input id="old_value_<?php echo $evaluationHead->id; ?>" type="number" name="old_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedCompValues[$evaluationHead->id]) ? $selectedCompValues[$evaluationHead->id] : ''; ?>"  min="0">
                             </td>
                             <?php endif; ?>
-                            
+                            <td>
+                                <input id="other_unit_<?php echo $evaluationHead->id; ?>" type="text" name="other_unit[<?php echo $evaluationHead->id; ?>]" class="validate" value="<?php echo isset($selectedOptValues[$evaluationHead->id]) ? $selectedOptValues[$evaluationHead->id] : ''; ?>" >
+                            </td>
                             <td>
                                 <p id="result_<?php echo $evaluationHead->id; ?>">
                                     <?= __('-') ?>
@@ -372,7 +389,7 @@
         <?php endif;?>
 
         <?php foreach ($evaluationHeadsMap as $evaluationMeds): ?>
-            <?php foreach ($evaluationMeds as $evaluationHead): ?>
+            <?php foreach ($evaluationMeds as $evaluationHeads): ?>
                 <?php foreach ($evaluationHeads as $evaluationHead): ?>
                     evalAjax(<?php echo $evaluationHead->id;?>);
                 <?php endforeach ?>

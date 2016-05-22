@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 /**
  * Admins Controller
@@ -57,7 +58,7 @@ class AdminsController extends AppController
         // 上位クラスの機能を使用
         parent::beforeFilter($event);
         // ユーザーによるログアウトを許可する
-        $this->Auth->allow(['login']);
+        $this->Auth->allow(['login', 'logout']);
 
         $this->viewBuilder()->layout('admin');
     }
@@ -142,9 +143,11 @@ class AdminsController extends AppController
         $company = $this->Companies->get($id);
 
         if ($this->request->is('post')) {
-            $company = $this->Companies->patchEntity($company, $this->request->data);
+            $data = $this->request->data;
+            $company = $this->Companies->patchEntity($company, $data);
             if ($this->Companies->save($company)) {
                 $this->Flash->success(__('パスワードが更新されました。'));
+                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password']);
                 return $this->redirect(['action' => 'view']);
             } else {
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
@@ -153,29 +156,6 @@ class AdminsController extends AppController
         $this->set('company', $company);
     }
 
-    // public function viewCompany($id = null)
-    // {
-    //     $this->loadModel('Companies');
-    //     $company = $this->Companies->get($id, ['contain' => ['Products'] ]);
-    //     $this->set('company', $company);
-    // }
-
-    // public function editProduct($id)
-    // {
-    //     $this->loadModel('Products');
-    //     $product = $this->Products->get($id, ['contain' => ['Companies']]);
-    //     $this->set('product', $product);
-
-    //     if ($this->request->is('post')) {
-    //         $product = $this->Products->patchEntity($product, $this->request->data);
-    //         if ($this->Products->save($product)) {
-    //             $this->Flash->success(__('パスワードが更新されました。'));
-    //             return $this->redirect(['action' => 'viewCompany', $product->company->id]);
-    //         } else {
-    //             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
-    //         }
-    //     }
-    // }
 
     public function addCompany(){
         if ($this->request->is('post')) {
@@ -183,17 +163,42 @@ class AdminsController extends AppController
             $this->loadModel('Companies');
             $company = $this->Companies->newEntity();
             $company = $this->Companies->patchEntity($company, $data);
+
+            if(!$this->_validateCompany($company)){
+                $this->Flash->error(__('全ての項目を入力してください'));
+                return $this->redirect(['action' => 'addCompany']);
+            }
+
             if($this->_existEmail($company->email) != null){
                 $this->Flash->error(__('すでに登録済みのメールアドレスです'));
                 return $this->redirect(['action' => 'view']);
             }
             if ($this->Companies->save($company)) {
                 $this->Flash->success(__('新規登録されました'));
+
+                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password']);
+
                 return $this->redirect(['action' => 'view']);
             }else{
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             }
         }
+    }
+
+    private function _validateCompany($company){
+        if ( is_null($company->company_name) || strlen($company->company_name) <= 0 ){
+            return false;
+        }
+        if ( is_null($company->name_kana) || strlen($company->name_kana) <= 0 ){
+            return false;   
+        }
+        if ( is_null($company->email) || strlen($company->email) <= 0 ){
+            return false;
+        }
+        if ( is_null($company->password) || strlen($company->password) <= 0 ){
+            return false;
+        }
+        return true;
     }
 
     private function _existEmail($email){
@@ -205,6 +210,42 @@ class AdminsController extends AppController
             return null;
         }
     }
+
+    private function _sendAccountInfoMail($company_name, $email, $password){
+
+        $title = "環境配慮バルブ登録システム確認メッセージ";
+
+        $message = <<< EOF
+$company_name 様
+
+この度は環境配慮バルブ登録制度をご利用いただきありがとうございます。
+以下の情報で登録・更新されましたのでご確認お願いします。
+
+----------------------------------
+登録情報
+----------------------------------
+ログインID(メールアドレス): $email
+初期パスワード: $password
+
+*このメールへの返信は必要ありません。
+*このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+
+        $this->_sendMail($email, $title, $message);
+        $this->Flash->success(__('アカウント情報が送信されました'));
+    }
+
+    private function _sendMail($toAddress, $title, $message){
+        $email = new Email('default');
+        $email->to($toAddress)->subject($title)->send($message);
+    }
+
 
     public function deleteCompany($id = null)
     {

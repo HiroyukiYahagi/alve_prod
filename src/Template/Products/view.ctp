@@ -6,11 +6,11 @@
             <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
             <?= __('製品情報') ?>
         </h5>
-        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
-            <i class="fa fa-file"></i>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "downloadCsv", $product->id ]);?>'>
+            <i class="fa fa-file fa-with"></i><?= __('CSV出力') ?>
         </a>
-        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
-            <i class="fa fa-pencil-square-o"></i>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>' >
+            <i class="fa fa-pencil-square-o fa-with"></i><?= __('編集') ?>
         </a>
     </div>
 
@@ -131,8 +131,11 @@
     <div class="row">
         <h5>
             <i class="fa fa-file fa-with" aria-hidden="true"></i>
-            <?= __('結果シート') ?>
+            <?= __('評価結果開示シート作成') ?>
         </h5>
+        <blockquote>
+            評価結果開示シートに載せる項目にチェックを入れ、下の「作成」ボタンをクリックしてください。
+        </blockquote>
         <div class="card">
             <div class="card-content">
                 <?php foreach($answersMap as $key => $answers):?>
@@ -157,16 +160,16 @@
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('結果シート(PDF)を作成する') ?></button>
+                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('結果開示シート(PDF)を作成する') ?></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row fixed-button">
+<!--     <div class="row fixed-button">
         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('製品情報を公開する') ?></button>
-    </div>
+    </div> -->
 </form>
 
 

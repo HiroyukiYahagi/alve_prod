@@ -57,7 +57,7 @@ $cakeDescription = 'Alve -環境配慮バルブ登録システム-';
         </nav>
     </div>
     <div class="row">
-        <div class="col s8 offset-s2">
+        <div class="col s10 offset-s1">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>

@@ -27,7 +27,7 @@
 					<label for="password">パスワード</label>
 				</div>
 			</div>
-			<button class="btn waves-effect waves-light green" type="submit" name="action">送信</button>
+			<button class="btn waves-effect waves-light green" type="submit" name="action" onclick="return confirmSend();">登録</button>
 		</form>
 	</div>
 </div>

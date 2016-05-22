@@ -7,7 +7,7 @@
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="email" name="email" type="email" class="validate" required>
-					<label for="email" data-error="XXXX@XXXと入力してください">メールアドレス</label>
+					<label for="email">ログインID(メールアドレス)</label>
 				</div>
 			</div>
 			<div class="row">

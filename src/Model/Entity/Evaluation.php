@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
 /**
  * Evaluation Entity.
@@ -33,4 +34,22 @@ class Evaluation extends Entity
         '*' => true,
         'id' => false,
     ];
+
+
+    protected function _setComparedSalesDate($value){
+        if ($value != null && is_string($value)) {
+            $value = new Time($value, 'Asia/Tokyo');
+            $value->hour = 0;
+            $value->minute = 0;
+        }
+        return $value;
+    }
+
+    public function set($property, $value = null, array $options = [])
+    {
+        if(is_string($value)){
+            $value = htmlspecialchars($value, ENT_QUOTES);
+        }
+        parent::set($property, $value, $options);
+    }
 }

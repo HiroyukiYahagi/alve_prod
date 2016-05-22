@@ -32,15 +32,22 @@ $cakeDescription = 'Alve';
 <body class="light-green lighten-5">
     <div class="navbar-fixed">
         <nav class="white">
-            <div class="brand-logo">
+            <a class="brand-logo" href="<?php echo $this->Url->build(["controller" => "Admins", "action" => "view" ]);?>" >
                 <?php echo $this->Html->image('logo.jpg', ['alt' => 'alve', 'class' => 'logo-img']);?>
                 <?php echo $this->Html->image('logo.png', ['alt' => 'alve', 'class' => 'logo-img']);?>
-                <span class="green-text">環境配慮バルブ登録制度(管理画面)</span>
-            </div>
+                <span class="green-text">環境配慮バルブ登録制度 - 管理画面 -</span>
+            </a>
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <a href="<?php echo $this->Url->build(["controller" => "Admins", "action" => "logout" ]);?>" class="nav-link green-text">
+                        <i class="fa fa-sign-out fa-with"></i>ログアウト
+                    </a>
+                </li>
+            </ul>
         </nav>
     </div>
     <div class="row">
-        <div class="col s8 offset-s2">
+        <div class="col s10 offset-s1">
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
         </div>

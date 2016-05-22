@@ -1,6 +1,12 @@
 <h4><?= __('マイページ') ?></h4>
 
 <div class="row">
+	<a href="#" class="waves-effect waves-light btn grey"><?= __('ラベルデータ') ?></a>
+	<a href="#" class="waves-effect waves-light btn grey"><?= __('評価結果開示フォーマット') ?></a>
+	<a href="#" class="waves-effect waves-light btn grey"><?= __('利用規約') ?></a>
+</div>
+
+<div class="row">
 	<h5>
 		<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
 		<?= __('会社情報') ?>
@@ -10,15 +16,15 @@
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4"><?php echo $company->company_name; ?></h6>
 				<p><?php echo $company->name_kana;?></p>
-				<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
-					<i class="fa fa-pencil-square-o"></i>
+				<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>'>
+					<i class="fa fa-pencil-square-o fa-with"></i><?= __('会社情報の編集')?>
 				</a>
-				<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>' data-delay="10" data-tooltip="<?= __('パスワード変更')?>">
-					<i class="fa fa-key" aria-hidden="true"></i>
+				<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>'>
+					<i class="fa fa-key fa-with" aria-hidden="true"></i><?= __('ログイン情報の編集')?>
 				</a>
 			</div>
 
-			<label><?= __('E-mail') ?></label>
+			<label><?= __('ログインID(メールアドレス)') ?></label>
 			<p><?php echo $company->email;?></p>
 
 			<label><?= __('会社HP URL') ?></label>
@@ -26,11 +32,6 @@
 
 			<label><?= __('TEL') ?></label>
 			<p><?php echo $company->tel;?></p>
-		</div>
-		<div class="card-action">
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('ラベルデータ') ?></a>
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('評価結果開示フォーマット') ?></a>
-			<a href="#" class="waves-effect waves-light btn grey"><?= __('利用規約') ?></a>
 		</div>
 	</div>
 </div>
@@ -42,19 +43,19 @@
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
 			<?= __('製品評価') ?>
 		</h5>
-		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>' data-delay="10" data-tooltip="<?= __('新規作成')?>">
-			<i class="fa fa-plus"></i>
+		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>'>
+			<i class="fa fa-plus fa-with"></i><?= __('新規登録') ?>
 		</a>
 	</div>
 	<div class="card">
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('保存済みのデータ') ?>
+					<?= __('評価中のデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
-				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
+				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist-edit">
 					<thead>
 						<tr>
 							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
@@ -97,55 +98,6 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('評価済みのデータ') ?>
-				</h6>
-			</div>
-			<?php if(isset($completedProducts) && count($completedProducts) != 0): ?>
-				<table class="sorter tablesorter white striped z-depth-0 table-for-productlist">
-					<thead>
-						<tr>
-							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($completedProducts as $product): ?>
-							<tr>
-								<td>
-									<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
-										<?php echo $product->product_name; ?>
-									</a>
-								</td>
-								<td><?php echo $product->model_number; ?></td>
-								<td>
-									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
-								</td>
-								<td><?php echo $product->operator_name; ?></td>
-								<td>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
-										<i class="fa fa-sm fa-file"></i>
-									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
-										<i class="fa fa-sm fa-pencil-square-o"></i>
-									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
-										<i class="fa fa-sm fa-trash"></i>
-									</a>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else: ?>
-				<p><?= __('データがありません。') ?></p>
-			<?php endif; ?>
-		</div>
-		<div class="card-content">
-			<div class="title-and-item">
-				<h6 class="card-title grey-text text-darken-4">
 					<?= __('公開中のデータ') ?>
 				</h6>
 			</div>
@@ -155,6 +107,7 @@
 						<tr>
 							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('公開日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
@@ -170,6 +123,9 @@
 								</td>
 								<td><?php echo $product->model_number; ?></td>
 								<td>
+									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->published_date ])->render();?>
+								</td>
+								<td>
 									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
@@ -180,8 +136,8 @@
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('更新')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "unpublish", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('非公開')?>">
-										<i class="fa fa-sm fa-undo"></i>
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();" >
+										<i class="fa fa-sm fa-trash"></i>
 									</a>
 								</td>
 							</tr>
@@ -202,8 +158,8 @@
 			<i class="fa fa-filter fa-with" aria-hidden="true"></i>
 			<?= __('しくみ評価') ?>
 		</h5>
-		<a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "edit" ]);?>' data-delay="10" data-tooltip="<?= __('新規作成')?>">
-			<i class="fa fa-plus"></i>
+		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Fomulas","action" => "edit" ]);?>'>
+			<i class="fa fa-plus fa-with"></i><?= __('新規登録') ?>
 		</a>
 	</div>
 	<div class="card">
