@@ -33,7 +33,7 @@
 			<table class="table-for-companieslist sorter tablesorter white striped">
 		        <thead>
 		            <tr>
-		                <th><?= __('ID') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+		                <th><?= __('ユーザーID') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 		                <th><?= __('会社名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 		                <th><?= __('Email') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 		                <th></th>
@@ -43,7 +43,7 @@
 		            <?php foreach ($companies as $company): ?>
 		                <tr>
 		                    <td>
-		                       <?php echo $company->id;?>
+		                       <?php echo $company->user_id;?>
 		                    </td>
 		                    <td>
 		                    	<?php echo $company->company_name;?>
