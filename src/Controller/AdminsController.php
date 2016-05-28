@@ -147,7 +147,7 @@ class AdminsController extends AppController
             $company = $this->Companies->patchEntity($company, $data);
             if ($this->Companies->save($company)) {
                 $this->Flash->success(__('パスワードが更新されました。'));
-                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password']);
+                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password'], $company->user_id);
                 return $this->redirect(['action' => 'view']);
             } else {
                 $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
@@ -174,9 +174,13 @@ class AdminsController extends AppController
                 return $this->redirect(['action' => 'view']);
             }
             if ($this->Companies->save($company)) {
+
+                $company->user_id = "ALV".str_pad($company->id, 5, 0, STR_PAD_LEFT);
+                $this->Companies->save($company);
+
                 $this->Flash->success(__('新規登録されました'));
 
-                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password']);
+                $this->_sendAccountInfoMail($company->company_name, $company->email, $data['password'], $company->user_id);
 
                 return $this->redirect(['action' => 'view']);
             }else{
@@ -211,7 +215,7 @@ class AdminsController extends AppController
         }
     }
 
-    private function _sendAccountInfoMail($company_name, $email, $password){
+    private function _sendAccountInfoMail($company_name, $email, $password, $user_id){
 
         $title = "環境配慮バルブ登録システム確認メッセージ";
 
@@ -224,8 +228,9 @@ $company_name 様
 ----------------------------------
 登録情報
 ----------------------------------
-ログインID(メールアドレス): $email
+ユーザID: $user_id
 初期パスワード: $password
+会社名: $company_name
 
 *このメールへの返信は必要ありません。
 *このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。

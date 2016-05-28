@@ -24,7 +24,10 @@
 				</a>
 			</div>
 
-			<label><?= __('ログインID(メールアドレス)') ?></label>
+			<label><?= __('ユーザーID') ?></label>
+			<p><?php echo $company->user_id;?></p>
+
+			<label><?= __('メールアドレス') ?></label>
 			<p><?php echo $company->email;?></p>
 
 			<label><?= __('会社HP URL') ?></label>

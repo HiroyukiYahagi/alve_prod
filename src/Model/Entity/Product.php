@@ -40,7 +40,9 @@ class Product extends Entity
     ];
 
     protected function _setSalesDate($value){
-        if ($value != null && is_string($value)) {
+        if($value == null)
+            return null;
+        if($value != null && is_string($value)){
             $value = new Time($value, 'Asia/Tokyo');
             $value->hour = 0;
             $value->minute = 0;
@@ -49,7 +51,9 @@ class Product extends Entity
     }
 
     protected function _setLatestFomula($value){
-        if ($value != null && is_string($value)) {
+        if($value == null)
+            return null;
+        if($value != null && is_string($value)){
             $value = new Time($value, 'Asia/Tokyo');
             $value->hour = 0;
             $value->minute = 0;

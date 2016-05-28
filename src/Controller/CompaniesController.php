@@ -87,7 +87,7 @@ class CompaniesController extends AppController
                 $this->Auth->setUser($company);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Flash->error(__('メールアドレスかパスワードが間違っています'));
+                $this->Flash->error(__('ユーザIDかパスワードが間違っています'));
             }
         }
     }
@@ -109,7 +109,12 @@ class CompaniesController extends AppController
                 return $this->redirect(['action' => 'login']);
             }
 
-            if ($this->Companies->save($company)) {
+            $company = $this->Companies->save($company);
+            if ($company) {
+
+                $company->user_id = "ALV".str_pad($company->id, 5, 0, STR_PAD_LEFT);
+                $this->Companies->save($company);
+
                 $this->_sendRegisterMail($company);
                 $this->Flash->success(__('入力されたメールアドレスに初期パスワードが送信されました'));
                 return $this->redirect(['action' => 'login']);
@@ -119,16 +124,13 @@ class CompaniesController extends AppController
         }
     }
 
-    // public function test(){
-    //     $this->autoRender = false;
-    // }
-
     private function _sendRegisterMail($company){
         $defaultPassword = $this->_makeRandStr(10);
         $company->password = $defaultPassword;
         $this->Companies->save($company);
         $email = $company->email;
         $company_name = $company->company_name;
+        $user_id = $company->user_id;
 
         $message = <<< EOF
 $company_name 様
@@ -138,8 +140,9 @@ $company_name 様
 ----------------------------------
 登録情報
 ----------------------------------
-ログインID(メールアドレス): $email
+ユーザーID: $user_id
 初期パスワード: $defaultPassword
+会社名: $company_name
 
 *このメールへの返信は必要ありません。
 *このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。
@@ -166,7 +169,7 @@ EOF;
 
     public function resetPassword(){
         if ($this->request->is('post')) {
-            if(!isset($this->request->data['email']) || count($this->request->data['email']) <= 0 ){
+            if(!isset($this->request->data['email']) || strlen($this->request->data['email']) <= 0 ){
                 $this->Flash->success(__('メールアドレスを入力してください'));
                 return $this->redirect(['action' => 'resetPassword']);
             }
@@ -176,7 +179,7 @@ EOF;
                 $this->_sendResetMail($company);
                 $this->Flash->success(__('入力されたメールアドレスに新しいパスワードが送信されました'));
             }else{
-                $this->Flash->error(__('メールが登録されていません'));
+                $this->Flash->error(__('メールアドレスが登録されていません'));
             }
             return $this->redirect(['action' => 'login']);
         }
@@ -188,6 +191,7 @@ EOF;
         $this->Companies->save($company);
         $email = $company->email;
         $company_name = $company->company_name;
+        $user_id = $company->user_id;
 
         $message = <<< EOF
 $company_name 様
@@ -197,8 +201,9 @@ $company_name 様
 ----------------------------------
 登録情報
 ----------------------------------
-ログインID(メールアドレス): $email
-新しいパスワード: $defaultPassword
+ユーザーID: $user_id
+初期パスワード: $defaultPassword
+会社名: $company_name
 
 *このメールへの返信は必要ありません。
 *このメールにお心当たりがない場合は下記連絡先にご連絡いただけると幸いです。

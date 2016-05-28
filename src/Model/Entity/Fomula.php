@@ -37,7 +37,9 @@ class Fomula extends Entity
     ];
 
     protected function _setFomulaStart($value){
-        if ($value != null && is_string($value)) {
+        if($value == null)
+            return null;
+        if($value != null && is_string($value)){
             $value = new Time($value, 'Asia/Tokyo');
             $value->hour = 0;
             $value->minute = 0;
@@ -46,7 +48,9 @@ class Fomula extends Entity
     }
 
     protected function _setFomulaEnd($value){
-        if ($value != null && is_string($value)) {
+        if($value == null)
+            return null;
+        if($value != null && is_string($value)){
             $value = new Time($value, 'Asia/Tokyo');
             $value->hour = 0;
             $value->minute = 0;

@@ -6,8 +6,8 @@
 		<form action="<?php echo $this->Url->build(['controller' => 'Companies', 'action' => 'login']);?>" method="post">
 			<div class="row">
 				<div class="input-field col s12">
-					<input id="email" name="email" type="email" class="validate" required>
-					<label for="email">ログインID(メールアドレス)</label>
+					<input id="user_id" name="user_id" type="text" class="validate" required>
+					<label for="user_id">ユーザーID</label>
 				</div>
 			</div>
 			<div class="row">

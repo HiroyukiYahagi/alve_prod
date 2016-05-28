@@ -37,7 +37,9 @@ class Evaluation extends Entity
 
 
     protected function _setComparedSalesDate($value){
-        if ($value != null && is_string($value)) {
+        if($value == null)
+            return null;
+        if($value != null && is_string($value)){
             $value = new Time($value, 'Asia/Tokyo');
             $value->hour = 0;
             $value->minute = 0;

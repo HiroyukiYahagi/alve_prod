@@ -57,7 +57,8 @@ class AppController extends Controller
         'userModel' => 'Companies',
                           // フィールド
         'fields' => [
-          'username' => 'email',
+          'username' => 'user_id',
+          //'username' => 'email',
           'password' => 'password'
           ],
                           // パスワード認証方法
