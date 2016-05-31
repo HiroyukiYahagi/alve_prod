@@ -175,7 +175,8 @@ class AdminsController extends AppController
             }
             if ($this->Companies->save($company)) {
 
-                $company->user_id = "ALV".str_pad($company->id, 5, 0, STR_PAD_LEFT);
+                //$company->user_id = "ALV".str_pad($company->id, 5, 0, STR_PAD_LEFT);
+                $company->user_id = str_pad($company->id, 4, 0, STR_PAD_LEFT);
                 $this->Companies->save($company);
 
                 $this->Flash->success(__('新規登録されました'));
