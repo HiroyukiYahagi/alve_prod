@@ -30,8 +30,8 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `username`, `password`) VALUES
-(2, 'admin', '$2y$10$5GSMXS8uAygH46UCF7/i1epYBT3sJHxriscXtph7imgglR9hzLbv2');
+-- INSERT INTO `admins` (`id`, `username`, `password`) VALUES
+-- (2, 'admin', '$2y$10$5GSMXS8uAygH46UCF7/i1epYBT3sJHxriscXtph7imgglR9hzLbv2');
 
 -- --------------------------------------------------------
 
@@ -149,14 +149,14 @@ CREATE TABLE `companies` (
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`id`, `password`, `deleted`, `created`, `modified`, `is_admin`, `company_name`, `url`, `tel`, `email`, `name_kana`, `user_id`) VALUES
-(4, '$2y$10$mEeEZ4kaFj11p..nHhkq8eY93D8yV0IMwwUOzFwhmml/ji1Zq1CaS', NULL, '2016-04-14 12:12:00', '2016-05-22 08:00:28', 0, 'テスト株式会社', 'http://test.com', '08088888888', 'test@test', NULL, 'ALV00004'),
-(5, '$2y$10$xdY0yr.W9p8UfTjI7wOOO.Ls7NijmSQpSO5a78UFIOye9d7eKVAqK', NULL, '2016-04-21 13:23:00', '2016-05-22 06:19:14', 0, '株式会社テスト1', 'https://google.com', '01200880112', 'test@1.com', 'テスト', 'ALV00005'),
-(8, '$2y$10$TfZCAoFOzO5iHfzD.jpc/.RSSyGHN4sTlZZpDR0c1Z2EolYQ6zEM6', NULL, '2016-04-24 10:04:44', '2016-05-08 11:24:50', 0, 'test4312', 'http://google.com', '<b>teethe</b>', 'test@3.com', NULL, 'ALV00008'),
-(9, '$2y$10$QTkuZPaaxt02Jk1kN8jkHuqhReSIEqht/K.hVY2asRA8NI8zdZL2e', '2016-05-11 10:22:36', '2016-05-11 10:22:25', '2016-05-11 10:22:25', 0, 'やはぎ', NULL, NULL, 'yahagi1989@gmail.com', 'やはぎ', 'ALV00009'),
-(10, '$2y$10$scoKhmLH7iUylNSCpF9nnuzJIzwhKSrjpv5U9tXKAKEr./syVHfcu', NULL, '2016-05-22 07:22:08', '2016-05-28 08:59:58', 0, '東京電力株式会社', NULL, NULL, '', 'トウキョウデンリョク', 'ALV00010'),
-(11, '$2y$10$VJS.A3Sr/kbNV/7aE1pPD.i9sZn2Of23OXIA89vyMmN8IAPpLqxQu', NULL, '2016-05-22 08:01:02', '2016-05-22 08:01:02', 0, '東京電力', NULL, NULL, 'yahagi1989@gmail.com', 'トウキョウデンリョク', 'ALV00011'),
-(13, '$2y$10$g4c7valE1BioLdAQurEW1eeTp1ozUt8qOYW/YHTMK3ZUbOi8I4Jbi', NULL, '2016-05-28 08:46:15', '2016-05-28 08:46:15', 0, '轟', NULL, NULL, 'test@2.com', 'トドロキ', 'ALV00013');
+-- INSERT INTO `companies` (`id`, `password`, `deleted`, `created`, `modified`, `is_admin`, `company_name`, `url`, `tel`, `email`, `name_kana`, `user_id`) VALUES
+-- (4, '$2y$10$mEeEZ4kaFj11p..nHhkq8eY93D8yV0IMwwUOzFwhmml/ji1Zq1CaS', NULL, '2016-04-14 12:12:00', '2016-05-22 08:00:28', 0, 'テスト株式会社', 'http://test.com', '08088888888', 'test@test', NULL, 'ALV00004'),
+-- (5, '$2y$10$xdY0yr.W9p8UfTjI7wOOO.Ls7NijmSQpSO5a78UFIOye9d7eKVAqK', NULL, '2016-04-21 13:23:00', '2016-05-22 06:19:14', 0, '株式会社テスト1', 'https://google.com', '01200880112', 'test@1.com', 'テスト', 'ALV00005'),
+-- (8, '$2y$10$TfZCAoFOzO5iHfzD.jpc/.RSSyGHN4sTlZZpDR0c1Z2EolYQ6zEM6', NULL, '2016-04-24 10:04:44', '2016-05-08 11:24:50', 0, 'test4312', 'http://google.com', '<b>teethe</b>', 'test@3.com', NULL, 'ALV00008'),
+-- (9, '$2y$10$QTkuZPaaxt02Jk1kN8jkHuqhReSIEqht/K.hVY2asRA8NI8zdZL2e', '2016-05-11 10:22:36', '2016-05-11 10:22:25', '2016-05-11 10:22:25', 0, 'やはぎ', NULL, NULL, 'yahagi1989@gmail.com', 'やはぎ', 'ALV00009'),
+-- (10, '$2y$10$scoKhmLH7iUylNSCpF9nnuzJIzwhKSrjpv5U9tXKAKEr./syVHfcu', NULL, '2016-05-22 07:22:08', '2016-05-28 08:59:58', 0, '東京電力株式会社', NULL, NULL, '', 'トウキョウデンリョク', 'ALV00010'),
+-- (11, '$2y$10$VJS.A3Sr/kbNV/7aE1pPD.i9sZn2Of23OXIA89vyMmN8IAPpLqxQu', NULL, '2016-05-22 08:01:02', '2016-05-22 08:01:02', 0, '東京電力', NULL, NULL, 'yahagi1989@gmail.com', 'トウキョウデンリョク', 'ALV00011'),
+-- (13, '$2y$10$g4c7valE1BioLdAQurEW1eeTp1ozUt8qOYW/YHTMK3ZUbOi8I4Jbi', NULL, '2016-05-28 08:46:15', '2016-05-28 08:46:15', 0, '轟', NULL, NULL, 'test@2.com', 'トドロキ', 'ALV00013');
 
 -- --------------------------------------------------------
 
@@ -182,17 +182,17 @@ CREATE TABLE `evaluations` (
 -- Dumping data for table `evaluations`
 --
 
-INSERT INTO `evaluations` (`id`, `product_id`, `compared_product_name`, `created`, `modified`, `deleted`, `update_comment`, `completed`, `compared_model_number`, `compared_url`, `compared_sales_date`) VALUES
-(2, 7, '', '2016-05-04 04:31:53', '2016-05-07 05:46:07', 0, NULL, 0, '', NULL, NULL),
-(3, 8, '', '2016-05-04 07:10:00', '2016-05-22 09:42:56', 0, NULL, 1, 'sad', '', '0000-00-00 00:00:00'),
-(6, 11, '', '2016-05-04 07:49:54', '2016-05-22 09:43:13', 0, NULL, 1, '', '', '0000-00-00 00:00:00'),
-(8, 13, 'dfvafsv', '2016-05-06 09:37:38', '2016-05-22 06:33:20', 0, NULL, 1, 'sfvasvfaf ', NULL, NULL),
-(9, 14, '', '2016-05-06 10:32:46', '2016-05-07 04:09:27', 0, NULL, 0, '', NULL, NULL),
-(10, 15, 'てすっお', '2016-05-07 05:34:46', '2016-05-07 05:35:36', 0, NULL, 0, 'あdさsfv-sdcあ', NULL, NULL),
-(11, 16, 'fgjhvgjk', '2016-05-08 17:11:21', '2016-05-22 08:24:07', 0, NULL, 0, 'chgvjkl', 'asdcasfvs', '2016-05-20 00:00:00'),
-(12, 17, '', '2016-05-11 10:37:07', '2016-05-11 11:35:34', 0, NULL, 0, '', NULL, NULL),
-(13, 18, '', '2016-05-22 09:21:10', '2016-05-22 09:39:32', 0, NULL, 0, '', '', '0000-00-00 00:00:00'),
-(14, 19, '', '2016-05-28 08:30:09', '2016-05-28 08:30:09', 0, NULL, 0, '', '', NULL);
+-- INSERT INTO `evaluations` (`id`, `product_id`, `compared_product_name`, `created`, `modified`, `deleted`, `update_comment`, `completed`, `compared_model_number`, `compared_url`, `compared_sales_date`) VALUES
+-- (2, 7, '', '2016-05-04 04:31:53', '2016-05-07 05:46:07', 0, NULL, 0, '', NULL, NULL),
+-- (3, 8, '', '2016-05-04 07:10:00', '2016-05-22 09:42:56', 0, NULL, 1, 'sad', '', '0000-00-00 00:00:00'),
+-- (6, 11, '', '2016-05-04 07:49:54', '2016-05-22 09:43:13', 0, NULL, 1, '', '', '0000-00-00 00:00:00'),
+-- (8, 13, 'dfvafsv', '2016-05-06 09:37:38', '2016-05-22 06:33:20', 0, NULL, 1, 'sfvasvfaf ', NULL, NULL),
+-- (9, 14, '', '2016-05-06 10:32:46', '2016-05-07 04:09:27', 0, NULL, 0, '', NULL, NULL),
+-- (10, 15, 'てすっお', '2016-05-07 05:34:46', '2016-05-07 05:35:36', 0, NULL, 0, 'あdさsfv-sdcあ', NULL, NULL),
+-- (11, 16, 'fgjhvgjk', '2016-05-08 17:11:21', '2016-05-22 08:24:07', 0, NULL, 0, 'chgvjkl', 'asdcasfvs', '2016-05-20 00:00:00'),
+-- (12, 17, '', '2016-05-11 10:37:07', '2016-05-11 11:35:34', 0, NULL, 0, '', NULL, NULL),
+-- (13, 18, '', '2016-05-22 09:21:10', '2016-05-22 09:39:32', 0, NULL, 0, '', '', '0000-00-00 00:00:00'),
+-- (14, 19, '', '2016-05-28 08:30:09', '2016-05-28 08:30:09', 0, NULL, 0, '', '', NULL);
 
 -- --------------------------------------------------------
 

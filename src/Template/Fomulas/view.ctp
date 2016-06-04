@@ -6,11 +6,11 @@
             <i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
             <?= __('評価情報') ?>
         </h5>
-        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "downloadCsv", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
-            <i class="fa fa-file"></i>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "downloadCsv", $fomula->id ]);?>'>
+            <i class="fa fa-file fa-with"></i><?= __('CSV出力') ?>
         </a>
-        <a class="btn-floating btn-large green tooltipped" href='<?php echo $this->Url->build(["action" => "edit", $fomula->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
-            <i class="fa fa-pencil-square-o"></i>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $fomula->id ]);?>' >
+            <i class="fa fa-pencil-square-o fa-with"></i><?= __('編集') ?>
         </a>
     </div>
 
