@@ -17,16 +17,11 @@
             </h5>
             <div class="card">
                 <div class="card-content">
-
                     <div class="row">
-                        <div class="input-field col s12">
-                            <select id="types" name="type_id">
-                                <option value="" disabled selected><?= __('製品種別を選択してください') ?></option>
-                                <?php foreach ($types as $type):?>
-                                    <option value="<?php echo $type->id;?>" <?php echo isset($product)&&($type->id==$product->type_id) ? 'selected': ''; ?> ><?php echo $type->type_name.$type->fomula.$type->purpose;?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="col s12">
                             <label><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品種別') ?></label>
+                            <p><?php echo $type->type_name;?></p>
+                            <input type="hidden" name="type_id" value="<?php echo $type->id;?>">
                         </div>
                     </div>
 
@@ -185,7 +180,7 @@
         </div>
     </div>
 
-
+    <?php if(!is_null($evaluationHeadsMap)): ?>
 
     <div class="row">
         <div class="col s12">
@@ -321,6 +316,9 @@
 
     <?php endforeach; ?>
 
+
+    <?php endif; ?>
+
     <div class="row fixed-button">
         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>"><?= __('保存して中断') ?></button>
          <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>"><?= __('登録') ?></button>
@@ -388,13 +386,16 @@
         <?php endforeach; ?>
         <?php endif;?>
 
-        <?php foreach ($evaluationHeadsMap as $evaluationMeds): ?>
-            <?php foreach ($evaluationMeds as $evaluationHeads): ?>
-                <?php foreach ($evaluationHeads as $evaluationHead): ?>
-                    evalAjax(<?php echo $evaluationHead->id;?>);
+
+        <?php if(!is_null($evaluationHeadsMap)): ?>
+            <?php foreach ($evaluationHeadsMap as $evaluationMeds): ?>
+                <?php foreach ($evaluationMeds as $evaluationHeads): ?>
+                    <?php foreach ($evaluationHeads as $evaluationHead): ?>
+                        evalAjax(<?php echo $evaluationHead->id;?>);
+                    <?php endforeach ?>
                 <?php endforeach ?>
             <?php endforeach ?>
-        <?php endforeach ?>
+        <?php endif; ?>
     });
 
 </script>

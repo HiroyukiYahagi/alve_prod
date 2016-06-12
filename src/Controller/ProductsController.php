@@ -101,19 +101,45 @@ class ProductsController extends AppController
         return $evaluationHeadsMap;        
     }
 
-    public function edit($id = null)
+    private function _setEvaluationHeadsDetailByTypeId($type_id){
+        $this->loadModel("TypeHeadRelations");
+        $typeHeadRelations = $this->TypeHeadRelations->find()->where(['type_id' => $type_id])->contain(['EvaluationHeads' => [ 'Allocations' => ['AllocationItems']]])->all()->toArray();
+
+        foreach ($typeHeadRelations as $typeHeadRelation) {
+            $evaluationHead = $typeHeadRelation->evaluation_head;
+            $evaluationHeadsMap[$evaluationHead->large_type][$evaluationHead->medium_type.' - '.$evaluationHead->small_type][] = $evaluationHead;
+        }
+
+        $this->set('evaluationHeadsMap', isset($evaluationHeadsMap)? $evaluationHeadsMap : null );
+        return $evaluationHeadsMap;        
+    }
+
+    public function selectType($id = null)
     {
         $this->loadModel("Types");
         $types = $this->Types->find();
         $this->set('types', $types);
 
-        // TODO
-        // $this->_setEvaluationHeads();
-        $this->_setEvaluationHeadsDetail();
+        if($id != null){
+            $product = $this->Products->get($id, [
+                'contain' => ['Types']]);
+            $this->set('product', $product);
+        }
+    }
+
+    public function edit($id = null)
+    {
         $this->_setUnitMap();
 
         if($id == null){
             $this->set('title', __('製品評価'));
+
+            if(!isset($this->request->data['type_id'])){
+                $this->Flash->error(__('製品種別を選択してください'));
+                return $this->redirect($this->referer());
+            }
+            $type_id = $this->request->data['type_id'];
+
         }else{
             $this->set('title', __('製品評価の編集'));
             $product = $this->Products->get($id, [
@@ -121,10 +147,16 @@ class ProductsController extends AppController
             ]);
             $this->set('product', $product);
 
+            if(isset($this->request->data['type_id'])){
+                $type_id = $this->request->data['type_id'];
+            }else{
+                $type_id = $product->type_id;
+            }
 
             $selectedUnits=null;
             $selectedValues=null;
             $selectedCompValues=null;
+            $selectedOptValues=null;
             foreach ($product->evaluations[0]->evaluation_items as $evaluation_item) {
                 $selectedUnits[$evaluation_item->head_id] = $evaluation_item->unit_id;
                 $selectedValues[$evaluation_item->head_id] = $evaluation_item->value;
@@ -137,6 +169,12 @@ class ProductsController extends AppController
             $this->set('selectedCompValues', $selectedCompValues);
             $this->set('selectedOptValues', $selectedOptValues);
         }
+
+        $this->loadModel("Types");
+        $type = $this->Types->get($type_id);
+        $this->set('type', $type);
+
+        $this->_setEvaluationHeadsDetailByTypeId($type_id);
     }
 
     /* ajax function */
@@ -276,15 +314,17 @@ class ProductsController extends AppController
         $evalId = $evaluation->id;
         $this->EvaluationItems->deleteAll(['evaluation_id' => $evalId]);
 
-        foreach ($data['selected'] as $key => $value) {
-            $this->_createEvaluationItem(
-                $evalId,
-                $key,
-                isset($data['units'][$key]) ? $data['units'][$key] : null,
-                isset($data['new_value'][$key]) ? $data['new_value'][$key] : null,
-                isset($data['old_value'][$key]) ? $data['old_value'][$key] : null,
-                isset($data['other_unit'][$key]) ? $data['other_unit'][$key] : null
-            );
+        if(isset($data['selected'])){
+            foreach ($data['selected'] as $key => $value) {
+                $this->_createEvaluationItem(
+                    $evalId,
+                    $key,
+                    isset($data['units'][$key]) ? $data['units'][$key] : null,
+                    isset($data['new_value'][$key]) ? $data['new_value'][$key] : null,
+                    isset($data['old_value'][$key]) ? $data['old_value'][$key] : null,
+                    isset($data['other_unit'][$key]) ? $data['other_unit'][$key] : null
+                );
+            }
         }
 
         $product = $this->Products->get($product->id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);

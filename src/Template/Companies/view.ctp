@@ -73,7 +73,7 @@
 			<i class="fa fa-cog fa-with" aria-hidden="true"></i>
 			<?= __('製品評価') ?>
 		</h5>
-		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit" ]);?>'>
+		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "selectType" ]);?>'>
 			<i class="fa fa-plus fa-with"></i><?= __('新規登録') ?>
 		</a>
 	</div>
@@ -110,7 +110,7 @@
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
 										<i class="fa fa-sm fa-file"></i>
 									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "selectType", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('編集')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();">
@@ -163,7 +163,7 @@
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
 										<i class="fa fa-sm fa-file"></i>
 									</a>
-									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "edit", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('更新')?>">
+									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "selectType", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('更新')?>">
 										<i class="fa fa-sm fa-pencil-square-o"></i>
 									</a>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "delete", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('削除')?>" onclick="return confirmDelete();" >
