@@ -1,18 +1,18 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\EvaluationHead;
+use App\Model\Entity\LoginHistory;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * EvaluationHeads Model
+ * LoginHistories Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Allocations
+ * @property \Cake\ORM\Association\BelongsTo $Companies
  */
-class EvaluationHeadsTable extends Table
+class LoginHistoriesTable extends Table
 {
 
     /**
@@ -25,26 +25,15 @@ class EvaluationHeadsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('evaluation_heads');
+        $this->table('login_histories');
         $this->displayField('id');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Allocations', [
-            'foreignKey' => 'allocation_id'
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id'
         ]);
-
-        $this->belongsToMany('Units', [
-            'joinTable' => 'Units',
-            'foreignKey' => 'category',
-            'targetForeignKey' => 'unit_category'
-        ]);
-
-        $this->hasMany('TypeHeadRelations', [
-            'foreignKey' => 'evaluation_head_id'
-        ]);
-
     }
 
     /**
@@ -60,33 +49,12 @@ class EvaluationHeadsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('large_type');
+            ->dateTime('create')
+            ->allowEmpty('create');
 
         $validator
-            ->allowEmpty('medium_type');
-
-        $validator
-            ->allowEmpty('small_type');
-
-        $validator
-            ->allowEmpty('item_description');
-
-        $validator
-            ->allowEmpty('item_criteria');
-
-        $validator
-            ->integer('deleted')
-            ->allowEmpty('deleted');
-
-        $validator
-            ->integer('required')
-            ->allowEmpty('required');
-
-        $validator
-            ->allowEmpty('options');
-
-        $validator
-            ->allowEmpty('unit_category');
+            ->integer('result')
+            ->allowEmpty('result');
 
         return $validator;
     }
@@ -100,7 +68,7 @@ class EvaluationHeadsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['allocation_id'], 'Allocations'));
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
         return $rules;
     }
 }

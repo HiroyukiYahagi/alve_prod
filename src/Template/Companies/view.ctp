@@ -7,36 +7,63 @@
 </div>
 
 <div class="row">
-	<h5>
-		<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
-		<?= __('会社情報') ?>
-	</h5>
-	<div class="card">
-		<div class="card-content">
-			<div class="title-and-item">
-				<h6 class="card-title grey-text text-darken-4"><?php echo $company->company_name; ?></h6>
-				<p><?php echo $company->name_kana;?></p>
-				<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>'>
-					<i class="fa fa-pencil-square-o fa-with"></i><?= __('会社情報の編集')?>
-				</a>
-				<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>'>
-					<i class="fa fa-key fa-with" aria-hidden="true"></i><?= __('ログイン情報の編集')?>
-				</a>
+	<div class="title-and-item">
+		<h5>
+			<i class="fa fa-info-circle fa-with" aria-hidden="true"></i>
+			<?= __('会社情報') ?>
+		</h5>
+		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $company->id ]);?>'>
+			<i class="fa fa-pencil-square-o fa-with"></i><?= __('会社情報の編集')?>
+		</a>
+		<a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "editPassword", $company->id ]);?>'>
+			<i class="fa fa-key fa-with" aria-hidden="true"></i><?= __('ログイン情報の編集')?>
+		</a>
+	</div>
+
+	<div class="col s8">
+		<div class="card">
+			<div class="card-content">
+				<div class="title-and-item">
+					<h6 class="card-title grey-text text-darken-4"><?php echo $company->company_name; ?></h6>
+					<p><?php echo $company->name_kana;?></p>
+				</div>
+
+				<label><?= __('ユーザーID') ?></label>
+				<p><?php echo $company->user_id;?></p>
+
+				<label><?= __('メールアドレス') ?></label>
+				<p><?php echo $company->email;?></p>
+
+				<label><?= __('会社HP URL') ?></label>
+				<p><?php echo $company->url;?></p>
+
+				<label><?= __('TEL') ?></label>
+				<p><?php echo $company->tel;?></p>
 			</div>
-
-			<label><?= __('ユーザーID') ?></label>
-			<p><?php echo $company->user_id;?></p>
-
-			<label><?= __('メールアドレス') ?></label>
-			<p><?php echo $company->email;?></p>
-
-			<label><?= __('会社HP URL') ?></label>
-			<p><?php echo $company->url;?></p>
-
-			<label><?= __('TEL') ?></label>
-			<p><?php echo $company->tel;?></p>
 		</div>
 	</div>
+
+	<div class="col s4">
+		<div class="card history-base">
+			<div class="card-content">
+				<label><?= __('ログイン履歴') ?></label>
+				<div class="history-table">
+					<table class="white striped">
+						<tbody>
+							<?php foreach ($loginHistories as $loginHistory): ?>
+							<tr>
+								<td>
+									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $loginHistory->created ])->render();?>
+								</td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>	
+	</div>
+
 </div>
 
 
@@ -230,7 +257,7 @@
 							<tr>
 								<td>
 									<a href='<?php echo $this->Url->build(["controller" => "Fomulas", "action" => "view", $fomula->id ]);?>'>
-									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $fomula->modified ])->render();?>
+										<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $fomula->modified ])->render();?>
 									</a>
 								</td>
 								<td>

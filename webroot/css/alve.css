@@ -238,5 +238,13 @@ ul.dropdown-content.select-dropdown > li > span{
 }
 
 
+div.history-base{
+	height: 277px;
+}
 
+div.history-table{
+	overflow: scroll;
+	height: 210px;
+	margin-top: 10px;
+}
 

@@ -45,6 +45,10 @@ class CompaniesTable extends Table
         $this->hasMany('Products', [
             'foreignKey' => 'company_id'
         ]);
+
+        $this->hasMany('LoginHistories', [
+            'foreignKey' => 'company_id'
+        ]);
     }
 
     /**

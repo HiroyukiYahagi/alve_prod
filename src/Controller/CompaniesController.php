@@ -77,6 +77,8 @@ class CompaniesController extends AppController
         $this->set('company', $company);
         $this->set('_serialize', ['company']);
 
+        $this->set('loginHistories', $this->_getHistory($id));
+
     }
 
     public function login(){
@@ -85,11 +87,28 @@ class CompaniesController extends AppController
             if ($company) {
                 $this->Flash->success(__('ログインしました'));
                 $this->Auth->setUser($company);
+
+                //ログイン履歴に追加
+                $this->_addHistory($company['id'], true);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('ユーザIDかパスワードが間違っています'));
             }
         }
+    }
+
+    private function _addHistory($company_id, $success){
+        $this->loadModel('LoginHistories');
+        $loginHistory = $this->LoginHistories->newEntity();
+        $loginHistory->company_id = $company_id;
+        $loginHistory->result = $success ? 1 : 0;
+        $loginHistory = $this->LoginHistories->save($loginHistory);
+    }
+
+    private function _getHistory($company_id){
+        $this->loadModel('LoginHistories');
+        $loginHistories = $this->LoginHistories->find()->where(['company_id' => $company_id])->order(['created' => 'DESC'])->limit(50)->all();
+        return $loginHistories;
     }
 
     public function logout(){

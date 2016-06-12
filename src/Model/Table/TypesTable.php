@@ -34,6 +34,9 @@ class TypesTable extends Table
         $this->hasMany('Products', [
             'foreignKey' => 'type_id'
         ]);
+        $this->hasMany('TypeHeadRelations', [
+            'foreignKey' => 'type_id'
+        ]);
     }
 
     /**
