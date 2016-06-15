@@ -520,10 +520,30 @@ class ProductsController extends AppController
         $filename = "評価データ_".$product->product_name."_".date('Ymd');
         $this->set('filename', $filename);
 
-        $header = ['大分類', '中分類', '小分類', '項目', '単位', '値', '比較値'];
+        $header = ['大分類', '中分類', '小分類', '項目', '単位', '値', '比較値', '備考'];
         $this->set('header', $header);
 
-        foreach ($product->evaluations[0]->evaluation_items as $key => $evaluationItem) {
+
+        $this->loadModel("Types");
+        $type = $this->Types->get($product->type_id, ['contain' => ["TypeHeadRelations" => ['EvaluationHeads'] ] ]);
+
+        foreach ($type->type_head_relations as $key => $type_head_relation) {
+            
+            $evaluationHead = $type_head_relation->evaluation_head;
+
+            $buffer['large_type'] = $evaluationHead->large_type;
+            $buffer['medium_type'] = $evaluationHead->medium_type;
+            $buffer['small_type'] = $evaluationHead->small_type;
+            $buffer['item_description'] = $evaluationHead->item_description;
+            $buffer['unit'] = '';
+            $buffer['value'] = '';
+            $buffer['compared_value'] = '';
+            $buffer['option'] = '';
+            $data[$evaluationHead->id] = $buffer;
+        }
+
+        $evaluationItems = $product->evaluations[0]->evaluation_items;
+        foreach ($evaluationItems as $key => $evaluationItem) {
 
             $evaluationHead = $evaluationItem->evaluation_head;
             $unit = $evaluationItem->unit;
@@ -554,10 +574,13 @@ class ProductsController extends AppController
             $buffer['unit'] = !is_null($unit) ? $unit->name : '';
             $buffer['value'] = $value;
             $buffer['compared_value'] = $comparedValue;
-            $data[] = $buffer;
+            $buffer['option'] = !is_null($evaluationItem->other_unit)? $evaluationItem->other_unit : '' ;
+            $data[$evaluationHead->id] = $buffer;
         }
         $this->set('data', $data);
 
         $this->viewBuilder()->layout(false);
     }
+
+
 }

@@ -29,7 +29,7 @@ if (Configure::read('debug')):
     endif;
 
     $this->end();
-endif;
+// endif;
 ?>
 <h2><?= h($message) ?></h2>
 <p class="error">
@@ -39,3 +39,4 @@ endif;
         "<strong>'{$url}'</strong>"
     ) ?>
 </p>
+<?php endif; ?>

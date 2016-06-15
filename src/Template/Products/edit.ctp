@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col s12">
                             <label><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品種別') ?></label>
-                            <p><?php echo $type->type_name;?></p>
+                            <p><?php echo $type->type_name.$type->fomula.$type->purpose;?></p>
                             <input type="hidden" name="type_id" value="<?php echo $type->id;?>">
                         </div>
                     </div>
