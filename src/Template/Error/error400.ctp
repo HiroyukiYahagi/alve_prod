@@ -39,4 +39,6 @@ if (Configure::read('debug')):
         "<strong>'{$url}'</strong>"
     ) ?>
 </p>
+<?php else: ?>
+<p></p>
 <?php endif; ?>

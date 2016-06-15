@@ -41,4 +41,6 @@ if (Configure::read('debug')):
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
 </p>
+<?php else: ?>
+<p>500 ERROR</p>
 <?php endif; ?>
