@@ -174,6 +174,14 @@ class ProductsController extends AppController
         $type = $this->Types->get($type_id);
         $this->set('type', $type);
 
+        $companyId = $this->getAuthedUserId();
+        $this->loadModel('Fomulas');
+        $fomulas = $this->Fomulas->find()->where(['company_id' => $companyId])->where(['completed' => 1])->order(['modified'=>'DESC'])->all()->toArray();
+        if(isset($fomulas[0])){
+            $fomulaDate = $fomulas[0]->modified;
+            $this->set('fomulaDate', $fomulaDate);
+        }
+
         $this->_setEvaluationHeadsDetailByTypeId($type_id);
     }
 
@@ -220,13 +228,19 @@ class ProductsController extends AppController
 
     private function _rangeEvaluation($rate, $candidates){
         foreach ($candidates as $candidate) {
-            if($candidate->range_max === null || intval($candidate->range_max) > $rate ){
-                if($candidate->range_min === null || intval($candidate->range_min) <= $rate ){
-                    return ['result' => round($rate, 1), 'point' => $candidate->point];
+            if($candidate->range_max === null || $candidate->range_max > $rate ){
+                if($candidate->range_min === null || $candidate->range_min <= $rate ){
+
+                    if($rate == 0){
+                        return ['result' => round($rate, 1), 'point' => '0'];
+                    }else{
+                        return ['result' => round($rate, 1), 'point' => $candidate->point];
+                        //return ['result' => $candidate->range_max, 'point' => $candidate->range_min];
+                    }
                 }
             }
         }
-        return ['result' => round($rate, 1), 'point' => '0'];
+        return ['result' => round($rate, 1), 'point' => '-1'];
     }
 
     private function _valueEvaluation($newValue, $candidates){
@@ -419,7 +433,6 @@ class ProductsController extends AppController
             }
             $scores[$key] = $sum / ($count == 0 ? 1: $count);
         }
-
         return $scores;
     }
 
@@ -447,7 +460,9 @@ class ProductsController extends AppController
             $this->Flash->error(__('不正なアクセスです'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
+
         if(!$this->_validateProductEvaluation($product)){
+            $this->_changeCompleted($product->evaluations[0], false);
             $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
             return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
         }

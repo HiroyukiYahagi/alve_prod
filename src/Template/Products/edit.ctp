@@ -155,7 +155,6 @@
                             <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '';?>"/>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -174,12 +173,12 @@
                     <div class="row">
                         <div class="col s6">     
                             <label for="latest_fomula"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('最近のしくみ評価実施日') ?></label>
-                            <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->latest_fomula) ? $product->latest_fomula : null ])->render();?>"/>
+                            <input id="latest_fomula" class="datepicker" type="date" name="latest_fomula" class="validate"  value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->latest_fomula) ? $product->latest_fomula : ( isset($fomulaDate) ? $fomulaDate : null) ])->render();?>"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="product_comment"><?= __('製品コメント') ?></label>
+                            <label for="product_comment"><?= __('評価結果開示シートに掲載する備考') ?></label>
                             <textarea id="product_comment" class="materialize-textarea" type="text" name="product_comment" class="validate"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
                         </div>
                     </div>
@@ -218,7 +217,7 @@
                             <th><?= __('項目') ?></th>
                             <th><?= __('単位') ?></th>
                             <th><?= __('データ(評価対象)') ?></th>
-                            <th><?= __('データ(比較対象)') ?></th>
+                            <th class="compared_label"><?= __('データ(比較対象)') ?></th>
                             <th><?= __('備考') ?></th>
                             <th><?= __('結果') ?></th>
                             <th><?= __('得点') ?></th>
@@ -260,6 +259,16 @@
                                     <div class="modal-content">
                                         <h5><?= __('評価に用いる指標')?></h5>
                                         <p><?php echo $evaluationHead->item_criteria; ?></p>
+                                        <br/>
+                                        <h5><?= __('配点区分')?></h5>
+                                        <p>
+                                            <b>
+                                                <?php echo $evaluationHead->allocation->allocation_name; ?>
+                                            </b>
+                                            <br/>
+                                            <?php echo $evaluationHead->allocation->description; ?>
+                                        </p>
+                                        <br/>
                                         <h5><?= __('評価方法など')?></h5>
                                         <p><?php echo $evaluationHead->options; ?></p>
                                     </div>
@@ -281,7 +290,7 @@
                             <?php endif; ?>
                             <?php if($evaluationHead->allocation->allocation_type!=0):?>
                             <td>
-                                <input id="new_value_<?php echo $evaluationHead->id; ?>" type="number" name="new_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedValues[$evaluationHead->id]) ? $selectedValues[$evaluationHead->id] : ''; ?>" min="0">
+                                <input id="new_value_<?php echo $evaluationHead->id; ?>" type="text" name="new_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedValues[$evaluationHead->id]) ? $selectedValues[$evaluationHead->id] : ''; ?>" min="0.0">
                             </td>
                             <?php elseif($evaluationHead->allocation->allocation_type==0): ?>
                             <td class="no-old" colspan="2">
@@ -296,7 +305,7 @@
                             <?php endif; ?>
                             <?php if($evaluationHead->allocation->allocation_type!=0):?>
                             <td>
-                                <input id="old_value_<?php echo $evaluationHead->id; ?>" type="number" name="old_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedCompValues[$evaluationHead->id]) ? $selectedCompValues[$evaluationHead->id] : ''; ?>"  min="0">
+                                <input id="old_value_<?php echo $evaluationHead->id; ?>" type="text" name="old_value[<?php echo $evaluationHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $evaluationHead->id; ?>);" value="<?php echo isset($selectedCompValues[$evaluationHead->id]) ? $selectedCompValues[$evaluationHead->id] : ''; ?>"  min="0.0">
                             </td>
                             <?php endif; ?>
                             <td>
@@ -340,10 +349,12 @@
     function changeEvaluationType(mode){
         if(mode == 0){
             $('#compared-option').show();
+            $('.compared_label').text("<?= __('データ(比較対象)') ?>");
         }else{
             $('#compared-option').hide();
             $('#compared_product_name').val(null);
             $('#compared_model_number').val(null);
+            $('.compared_label').text("<?= __('新規設計目標値') ?>");
         }
     }
 
