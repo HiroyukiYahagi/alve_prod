@@ -179,9 +179,9 @@
         </div>
     </div>
 
-<!--     <div class="row fixed-button">
+     <div class="row fixed-button">
         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('製品情報を公開する') ?></button>
-    </div> -->
+    </div>
 </form>
 
 

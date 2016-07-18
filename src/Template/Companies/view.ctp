@@ -99,13 +99,17 @@
 						<?php foreach ($editingProducts as $product): ?>
 							<tr>
 								<td>
+									<a href='<?php echo $this->Url->build(["controller" => "Products", "action" => "view", $product->id ]);?>'>
 									<?php echo $product->product_name; ?>
+									</a>
 								</td>
 								<td><?php echo $product->model_number; ?></td>
 								<td>
 									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
 								</td>
-								<td><?php echo $product->operator_name; ?></td>
+								<td>
+									<?php echo $product->operator_name; ?>
+								</td>
 								<td>
 									<a class="btn-floating btn grey tooltipped" href='<?php echo $this->Url->build(["controller" => "Products", "action" => "downloadCsv", $product->id ]);?>' data-delay="10" data-tooltip="<?= __('CSV出力')?>">
 										<i class="fa fa-sm fa-file"></i>

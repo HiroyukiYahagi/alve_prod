@@ -1,4 +1,4 @@
-<h4><?= __('登録') ?></h4>
+<h4><?= __('情報公開確認') ?></h4>
 <blockquote>
     <?= __('以下の情報が公開されます。正しく入力されているかを確認してください。')?>
 </blockquote>
@@ -156,7 +156,7 @@
     </div>
 
     <button class="submit btn waves-effect waves-light green" type="submit">
-        <?= __('登録') ?>
+        <?= __('公開') ?>
     </button>
 
 </form>

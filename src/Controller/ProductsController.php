@@ -390,8 +390,8 @@ class ProductsController extends AppController
 
         $this->_changeCompleted($product->evaluations[0], true);
 
-        return $this->redirect(['controller' => 'Products', 'action' => 'register', $product->id]);
-
+        //return $this->redirect(['controller' => 'Products', 'action' => 'register', $product->id]);
+        return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
     }
 
     private function _scoring($evaluationItems){
@@ -440,8 +440,18 @@ class ProductsController extends AppController
     }
 
     public function publish($id = null){
-        $data = $this->request->data;
-        $product = $this->Products->get($id);
+        //$data = $this->request->data;
+        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
+
+        if($product == null){
+            $this->Flash->error(__('不正なアクセスです'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+        if(!$this->_validateProductEvaluation($product)){
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
+        }
+
         $product->published = 1;
 
         if(!isset($product->published_date)){
@@ -449,8 +459,8 @@ class ProductsController extends AppController
         }
 
         if($this->Products->save($product)){
-            $this->Flash->success(__('製品情報が更新されました'));
-            return $this->redirect(['controller' => 'Products', 'action' => 'view', $id]);
+            $this->Flash->success(__('製品情報が公開されました'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }else{
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
