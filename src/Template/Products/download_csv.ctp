@@ -15,6 +15,6 @@
 		$this->Csv->endRow();
 	}
 	$this->Csv->setFilename($filename);
-	echo $this->Csv->render(true, 'utf-8');
-
+	//echo $this->Csv->render(true, 'utf-8');
+	echo $this->Csv->render(true, 'SJIS');
 ?>

@@ -510,6 +510,8 @@ class ProductsController extends AppController
         $this->viewBuilder()->layout(false);
     }
 
+
+
     public function downloadCsv($id){
 
         $product = $this->Products->get($id, ['contain' => ['Types', 'Evaluations' => ['EvaluationItems' => [ 'Units','EvaluationHeads' => ['Allocations' => ['AllocationItems'] ] ] ] ] ]);
