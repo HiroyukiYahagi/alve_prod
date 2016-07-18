@@ -514,7 +514,20 @@ class ProductsController extends AppController
 
     public function createPdf($id = null)
     {
-        $product = $this->Products->get($id, ['contain' => ['Companies', 'Types', 'Evaluations']]);
+        $product = $this->Products->get($id, ['contain' => ['Companies', 'Types', 'Evaluations' => ['EvaluationItems'] ]]);
+
+        if($product == null){
+            $this->Flash->error(__('不正なアクセスです'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        if(!$this->_validateProductEvaluation($product)){
+            $this->_changeCompleted($product->evaluations[0], false);
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
+        }
+        
+
         $product_info = $this->request->data['product_info'];
         $product->product_comment = $product_info;
         $product = $this->Products->save($product);
