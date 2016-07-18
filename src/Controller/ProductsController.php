@@ -549,6 +549,11 @@ class ProductsController extends AppController
         $filename = "評価データ_".$product->product_name."_".date('Ymd');
         $this->set('filename', $filename);
 
+        $this->loadModel('Companies');
+        $company = $this->Companies->get($this->getAuthedUserId());
+        $companyInfo = [$company->user_id, $company->company_name, $company->name_kana, $company->tel, $company->email, $company->url];
+        $this->set('companyInfo', $companyInfo);
+
         $header = ['大分類', '中分類', '小分類', '項目', '単位', '値', '比較値', '備考'];
         $this->set('header', $header);
 

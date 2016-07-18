@@ -1,6 +1,9 @@
 <?php
 	
 	$this->Csv->clear();
+
+	$this->Csv->addRow($companyInfo);
+
 	$this->Csv->addRow($header);
 
 	foreach($data as $row) {
