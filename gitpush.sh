@@ -9,6 +9,7 @@ sudo git add ./*
 sudo git commit -m "$@"
 sudo git push origin master
 
+URL=tk2-245-32227.vs.sakura.ne.jp
 
-#ssh root@ik1-305-12678.vs.sakura.ne.jp "~/work/alve_deploy.sh"
+ssh alve@$URL "~/work/alve_deploy.sh"
 
