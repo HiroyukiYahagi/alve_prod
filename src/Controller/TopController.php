@@ -28,6 +28,7 @@ class TopController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->layout('top');
     }
 
     /**
