@@ -105,7 +105,7 @@
                     </div>
 
 
-                    <?php if($evaluation_type):?>
+                    <?php if(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0):?>
                     <div class="row">
                         <div class="col s6">
                             <label>
@@ -121,13 +121,17 @@
                             <label for="compared_product_name">
                                 <?= __('比較対象製品名') ?>
                             </label>
-                            <p id="compared_product_name"></p>
+                            <p id="compared_product_name">
+                                <?php echo $product->evaluations[0]->compared_product_name; ?>
+                            </p>
                         </div>
                         <div class=" col s6">
                             <label for="compared_model_number">
                                 <?= __('比較対象製品型番') ?>
                             </label>
-                            <p id="compared_model_number"></p>
+                            <p id="compared_model_number">
+                                <?php echo $product->evaluations[0]->compared_model_number; ?>
+                            </p>
                         </div>
                     </div>
 

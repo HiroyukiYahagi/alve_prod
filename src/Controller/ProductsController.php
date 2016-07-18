@@ -374,6 +374,8 @@ class ProductsController extends AppController
 
     public function submit($id = null){
         $data = $this->request->data;
+        //var_dump($data);
+
         $product = $this->_saveData($id, $data);
         if($product == null){
             $this->Flash->error(__('不正なアクセスです'));

@@ -40,5 +40,5 @@ if (Configure::read('debug')):
     ) ?>
 </p>
 <?php else: ?>
-<p></p>
+<p>400 ERROR</p>
 <?php endif; ?>

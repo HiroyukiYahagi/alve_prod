@@ -60,12 +60,12 @@
             </h5>
             <div class="card">
                 <div class="card-content">
-
                     <div class="row">
                         <div class=" col s12">
                             <label>
                                 <?= __('比較方法') ?>
                             </label>
+                             <?php if(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0):?>
                             <p onclick="changeEvaluationType(0);">
                                 <input name="evaluation_type" type="radio" id="evaluation_type_comp" checked value="0"/>
                                 <label for="evaluation_type_comp"><?= __('自社従来製品')?></label>
@@ -74,7 +74,16 @@
                                 <input name="evaluation_type" type="radio" id="evaluation_type_none" value="1"/>
                                 <label for="evaluation_type_none"><?= __('新規設計目標値')?></label>
                             </p>
-
+                            <?php else: ?>
+                            <p onclick="changeEvaluationType(0);">
+                                <input name="evaluation_type" type="radio" id="evaluation_type_comp"  value="0"/>
+                                <label for="evaluation_type_comp"><?= __('自社従来製品')?></label>
+                            </p>
+                            <p onclick="changeEvaluationType(1);">
+                                <input name="evaluation_type" type="radio" id="evaluation_type_none" checked value="1"/>
+                                <label for="evaluation_type_none"><?= __('新規設計目標値')?></label>
+                            </p>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div id="compared-option">
@@ -395,6 +404,11 @@
                     <?php endforeach ?>
                 <?php endforeach ?>
             <?php endforeach ?>
+        <?php endif; ?>
+
+
+        <?php if(!(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0)):?>
+            changeEvaluationType(1);
         <?php endif; ?>
     });
 

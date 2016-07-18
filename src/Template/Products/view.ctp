@@ -50,17 +50,29 @@
 
 
             <div class="row">
+                <?php if(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0):?>
                 <div class="col s4">
                     <label><?= __('比較対象製品') ?></label>
                     <p>
-                        <?php echo (isset($product->evaluations[0]->compared_product_name) && count($product->evaluations[0]->compared_product_name) == 0) ? $product->evaluations[0]->compared_product_name: __('目標値と比較して評価'); ?>
+                        <?php echo $product->evaluations[0]->compared_product_name; ?>
                     </p>
                 </div>
                 <div class="col s4">
+                    <label><?= __('比較対象製品型番') ?></label>
                     <p>
-                        <?php echo isset($product->evaluations[0]->compared_model_number) ? $product->evaluations[0]->compared_model_number: ''; ?>
+                        <?php echo $product->evaluations[0]->compared_model_number; ?>
                     </p>
                 </div>
+                <?php else:?>
+                <div class="col s4">
+                    <label><?= __('比較対象製品') ?></label>
+                    <p>
+                        <?= __('目標値と比較して評価') ?>
+                    </p>
+                </div>
+                <div class="col s4">
+                </div>                    
+                <?php endif; ?>
             </div>
 
             <div class="row">
