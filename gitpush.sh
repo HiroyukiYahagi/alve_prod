@@ -11,5 +11,5 @@ sudo git push origin master
 
 URL=tk2-245-32227.vs.sakura.ne.jp
 
-ssh alve@$URL "~/work/alve_deploy.sh"
+ssh alve@$URL "/home/alve/source/alve_prod/deploy.sh"
 

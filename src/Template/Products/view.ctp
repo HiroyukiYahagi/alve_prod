@@ -9,7 +9,7 @@
         <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "downloadCsv", $product->id ]);?>'>
             <i class="fa fa-file fa-with"></i><?= __('CSV出力') ?>
         </a>
-        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>' >
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "selectType", $product->id ]);?>' >
             <i class="fa fa-pencil-square-o fa-with"></i><?= __('編集') ?>
         </a>
     </div>

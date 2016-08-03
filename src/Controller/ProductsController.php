@@ -285,6 +285,11 @@ class ProductsController extends AppController
     }
 
     private function _saveData($id, $data){
+
+        if(count($data) == 0){
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
         $companyId = $this->getAuthedUserId();
         if(!isset($id)){
             $product = $this->Products->newEntity();
@@ -297,7 +302,6 @@ class ProductsController extends AppController
         //日付関係
         $product->sales_date = $data['sales_date'];
         $product->latest_fomula = $data['latest_fomula'];
-        //var_dump($product->sales_date);
 
         if(!$this->Products->save($product)){
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
