@@ -36,7 +36,7 @@ class CompaniesController extends AppController
         }
 
         if($this->getAuthedUserId() != $id){
-            $this->Flash->error(__('Invalid Access'));
+            $this->Flash->error(__('不正なアクセスです'));
             $this->redirect(['controller' => 'Top', 'action' => 'index']);
         }
     }
@@ -90,7 +90,8 @@ class CompaniesController extends AppController
 
                 //ログイン履歴に追加
                 $this->_addHistory($company['id'], true);
-                return $this->redirect($this->Auth->redirectUrl());
+                //return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect(['controler' => 'Companies', 'action' => 'view']);
             } else {
                 $this->Flash->error(__('ユーザIDかパスワードが間違っています'));
             }
