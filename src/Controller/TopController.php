@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use Cake\Event\Event;
 use App\Controller\AppController;
+use Cake\I18n\Time;
 
 /**
  * Company Controller
@@ -28,6 +29,10 @@ class TopController extends AppController
      */
     public function index()
     {
+        $this->loadModel('Products');
+        $count = $this->Products->find()->where(["published" => 1])->count();
+        $this->set("count", $count);
+        $this->set("today", Time::now());
         $this->viewBuilder()->layout('top');
     }
 

@@ -81,7 +81,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('評価中のデータ') ?>
+					<?= __('評価中の製品') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingProducts) && count($editingProducts) != 0): ?>
@@ -90,7 +90,7 @@
 						<tr>
 							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('最後に保存した日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
@@ -132,7 +132,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('公開中のデータ') ?>
+					<?= __('登録済の製品') ?>
 				</h6>
 			</div>
 			<?php if(isset($publishedProducts) && count($publishedProducts) != 0): ?>
@@ -141,8 +141,8 @@
 						<tr>
 							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('公開日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('最終更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('登録日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('最後に保存した日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
@@ -200,7 +200,7 @@
 		<div class="card-content">
 			<div class="title-and-item">
 				<h6 class="card-title grey-text text-darken-4">
-					<?= __('保存済みのデータ') ?>
+					<?= __('評価中のデータ') ?>
 				</h6>
 			</div>
 			<?php if(isset($editingFomulas) && count($editingFomulas) != 0): ?>

@@ -1,4 +1,4 @@
-<h4><?= __('管理者パスワードの変更')?></h4>
+<h4><?= __('管理者情報の変更')?></h4>
 
 <div class="card">
 	<div class="card-content">
@@ -7,6 +7,12 @@
 				<div class="input-field col s12">
 					<input id="username" name="username" type="text" class="validate" required value="<?php echo $admin->username;?>">
 					<label for="username">ユーザ名</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="email" name="email" type="text" class="validate" required value="<?php echo $admin->email;?>">
+					<label for="email">Email</label>
 				</div>
 			</div>
 			<div class="row">

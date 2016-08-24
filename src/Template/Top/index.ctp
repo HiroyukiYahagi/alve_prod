@@ -17,7 +17,7 @@
 
 <div class="start-menu">
 	<div class="row">
-		<div class="col s12">
+		<div class="col s4">
 			<a href="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>" class="waves-effect waves-light btn green ">
 				<i class="fa fa-search fa-with"></i>
 				製品検索
@@ -26,11 +26,14 @@
 			登録されている製品を検索できます。
 			</blockquote>
 		</div>
+		<div class="col s8">
+			<h5 style="margin:0;"><small><?= $this->cell('DateTime', ['type'=> 'date-jp', 'data' => $today])->render();?>現在　製品登録</small><big class="green-text"><?php echo $count;?></big><small>件</small></h5>
+		</div>
 	</div>
 </div>
 <div class="start-menu">
 	<div class="row">
-		<div class="col s6">
+		<div class="col s12">
 			<a href="<?php echo $this->Url->build(["controller" => "Companies", "action" => "login" ]);?>" class="waves-effect waves-light btn green">
 				<i class="fa fa-sign-in fa-with"></i>
 				製品登録(正会員のみ)

@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 
 /**
  * Application Controller
@@ -135,7 +136,6 @@ class AppController extends Controller
     return $this->Auth->user()['id'];
   }
 
-
   protected function _setUnitMap(){
     $this->loadModel("Units");
     $units = $this->Units->find()->all()->toArray();
@@ -151,6 +151,11 @@ class AppController extends Controller
     }
 
     $this->set('units', $unitMap);
+  }
+
+  protected function _sendMail($toAddress, $title, $message){
+      $email = new Email('default');
+      $email->to($toAddress)->subject($title)->send($message);
   }
 
 }

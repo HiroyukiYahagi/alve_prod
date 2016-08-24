@@ -51,9 +51,8 @@ $(function() {
         close: "閉じる",
         format: "yyyy-mm-dd",
         selectMonths: true,
-	    selectYears: 15,
+	    selectYears:20,
     });
-
 
 	$('.modal-trigger').leanModal();
 
@@ -64,6 +63,18 @@ $(function() {
 
 });
 
+$(document).ready(function() {
+    jQuery.each($('input[required]'), function(index, val) {
+    	if($(val).val().length == 0){
+    		$(val).addClass('invalid');
+    	}    	
+    });
+    $('input.picker__input').change(function(event) {
+        if($(this).val().length != 0){
+            $(this).removeClass('invalid');
+        } 
+    });
+});
 
 
 

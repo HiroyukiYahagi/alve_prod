@@ -12,6 +12,9 @@ class DateTimeCell extends Cell
         	case 'date':
         		$this->template = 'date';
         		break;
+            case 'date-jp':
+                $this->template = 'dateJp';
+                break;
             case 'datetime':
                 $this->template = 'datetime';
                 break;

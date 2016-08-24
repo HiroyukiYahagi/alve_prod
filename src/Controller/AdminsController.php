@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
 
 /**
  * Admins Controller
@@ -247,10 +246,10 @@ EOF;
         $this->Flash->success(__('アカウント情報が送信されました'));
     }
 
-    private function _sendMail($toAddress, $title, $message){
-        $email = new Email('default');
-        $email->to($toAddress)->subject($title)->send($message);
-    }
+    // private function _sendMail($toAddress, $title, $message){
+    //     $email = new Email('default');
+    //     $email->to($toAddress)->subject($title)->send($message);
+    // }
 
 
     public function deleteCompany($id = null)

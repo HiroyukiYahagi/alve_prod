@@ -19,7 +19,7 @@
                             <label for="operator_name">
                                 <?= __('作業者名') ?>
                             </label>
-                            <input id="operator_name" type="text" name="operator_name" class="validate" required value="<?php echo isset($fomula->operator_name) ? $fomula->operator_name : ''; ?>">
+                            <input id="operator_name" type="text" name="operator_name" class="validate" value="<?php echo isset($fomula->operator_name) ? $fomula->operator_name : ''; ?>">
                         </div>
                     </div>
                 </div>
@@ -41,14 +41,14 @@
                                 <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 <?= __('評価期間開始日') ?>
                             </label>
-                             <input id="fomula_start" name="fomula_start" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>"/>
+                             <input id="fomula_start" name="fomula_start" type="date" class="datepicker" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_start ])->render();?>"/>
                         </div>
                         <div class="col s6">
                             <label for="fomula_end">
                                 <i class="fa fa-star fa-with" aria-hidden="true"></i>
                                 <?= __('評価期間終了日') ?>
                             </label>
-                            <input id="fomula_end" name="fomula_end" type="date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>"/>
+                            <input id="fomula_end" name="fomula_end" type="date" class="datepicker" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $fomula->fomula_end ])->render();?>"/>
                         </div>
                     </div>
                 </div>

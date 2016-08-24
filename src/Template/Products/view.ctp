@@ -10,12 +10,18 @@
             <i class="fa fa-file fa-with"></i><?= __('CSV出力') ?>
         </a>
         <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "selectType", $product->id ]);?>' >
-            <i class="fa fa-pencil-square-o fa-with"></i><?= __('編集') ?>
+            <i class="fa fa-pencil-square-o fa-with"></i><?= __('製品評価に戻る') ?>
         </a>
     </div>
 
     <div class="card">
         <div class="card-content">
+            <div class="row">
+                <div class="col s4">
+                    <label><?= __('製品種別') ?></label>
+                    <p><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></p>
+                </div>
+            </div>
             <div class="row">
                 <div class="col s4">
                     <label><?= __('製品名') ?></label>
@@ -24,12 +30,6 @@
                 <div class="col s4">
                     <label><?= __('型番') ?></label>
                     <p><?php echo $product->model_number;?></p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s4">
-                    <label><?= __('製品種別') ?></label>
-                    <p><?php echo $product->type->type_name.$product->type->fomula.$product->type->purpose;?></p>
                 </div>
             </div>
 
@@ -48,6 +48,7 @@
                 </div>
             </div>
 
+            <hr/>
 
             <div class="row">
                 <?php if(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0):?>
@@ -164,15 +165,45 @@
                     </div>
                 <?php endforeach;?>
                 <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="product_info" class="materialize-textarea" name="product_info"><?php echo $product->product_comment;?></textarea>
-                        <label for="product_info"><?= __('製品コメント') ?></label>
+                    <div class=" col s12">
+                        <label for="product_comment"><?= __('製品説明') ?></label>
+                        <p id="product_comment"><?php echo $product->product_comment;?></p>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="input-field col s12">
-                        <button class="submit btn waves-effect waves-light grey" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'createPdf', $product->id]);?>"><?= __('結果開示シート(PDF)を作成する') ?></button>
+                    <div class="col s12">
+                        <label for="update_comment"><?= __('登録更新内容') ?></label>
+                        <p id="update_comment"><?php echo $product->update_comment;?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col s12">
+                        <label for="model_comment"><?= __('製品評価に関する備考(評価結果開示シートに記載されます)') ?></label>
+                        <p id="model_comment"><?php echo $product->model_comment;?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h5>
+            <i class="fa fa-calendar-check-o fa-with" aria-hidden="true"></i>
+            <?= __('登録日付') ?>
+        </h5>
+        <blockquote>
+            ここで選択した日付が登録日(また登録更新日)として評価結果開示シート PDFに記載されます。PDF作成後の修正はできませんのでご注意ください。
+        </blockquote>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class=" col s6">
+                        <label for="register_date"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('登録日') ?></label>
+                        <input id="register_date" class="datepicker" type="date" name="register_date" class="validate" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->register_date) ? $product->register_date : null ])->render();?>"/>
+                    </div>
+                    <div class=" col s6">
+                        <label for="register_update_date"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('登録更新日') ?></label>
+                        <input id="register_update_date" class="datepicker" type="date" name="register_update_date" class="validate" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->register_update_date) ? $product->register_update_date : null ])->render();?>"/>
                     </div>
                 </div>
             </div>
@@ -180,7 +211,13 @@
     </div>
 
      <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('製品情報を公開する') ?></button>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Companies", "action" => "view"]);?>' >
+            <i class="fa fa-pencil-square-o fa-with"></i><?= __('保存して中断') ?>
+        </a>
+        <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "selectType", $product->id ]);?>' >
+            <i class="fa fa-pencil-square-o fa-with"></i><?= __('製品評価に戻る') ?>
+        </a>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'register', $product->id]);?>"><?= __('評価結果開示内容確認') ?></button>
     </div>
 </form>
 

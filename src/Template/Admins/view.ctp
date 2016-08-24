@@ -14,6 +14,8 @@
 		<div class="card-content">
 			<label><?= __('ユーザ名') ?></label>
 			<p><?php echo $admin->username;?></p>
+			<label><?= __('メールアドレス') ?></label>
+			<p><?php echo $admin->email;?></p>
 		</div>
 	</div>
 </div>

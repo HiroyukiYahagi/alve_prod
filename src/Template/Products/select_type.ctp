@@ -1,4 +1,4 @@
-<h4><?= __('会社情報の編集') ?></h4>
+<h4><?= __('製品評価') ?></h4>
 
 <div class="content">
 	<div class="card">

@@ -27,6 +27,8 @@ $cakeDescription = 'Alve -環境配慮バルブ登録システム-';
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
 
+    <?= $this->Html->script('calendar.js') ?>
+
     <!-- material design lite -->
     <?= $this->Html->css('materialize.min.css') ?>
     <?= $this->Html->script('materialize.min.js') ?>

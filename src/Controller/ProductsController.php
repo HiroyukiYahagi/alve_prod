@@ -440,25 +440,149 @@ class ProductsController extends AppController
         return $scores;
     }
 
+    private function _savaAdvancedData($product, $data){
+        if(isset($data['register_date']))
+            $product->register_date = $data['register_date'];
+        if(isset($data['register_update_date']))
+            $product->register_update_date = $data['register_update_date'];
+        $this->Products->save($product);
+    }
+
     public function register($id = null){
-        $data = $this->request->data;
-        $product = $this->Products->get($id, [
-            'contain' => ['Companies', 'Types', 'Evaluations']
-        ]);
+        $product = $this->Products->get($id, ['contain' => ['Companies', 'Evaluations' => ['EvaluationItems'], 'Types']]);
+        if($product == null){
+            $this->Flash->error(__('不正なアクセスです'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+
+        $this->_savaAdvancedData($product, $this->request->data);
+
+        if(!$this->_validateProductEvaluation($product)){
+            $this->_changeCompleted($product->evaluations[0], false);
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
+        }
 
         $this->set('product', $product);
 
-        $this->loadModel('Types');
-        $types = $this->Types->find()->all();
-        $this->set('types', $types->toArray());
+        $reported = $this->request->data['reported'];
+        foreach ($reported as $key => $value) {
+            $keyArr[] = $key;
+        }
+        $this->loadModel('EvaluationHeads');
+        $evaluationHeads = $this->EvaluationHeads->find()->where(['id IN' => $keyArr ])->all()->toArray();
+        $this->set('evaluationHeads', $evaluationHeads);
 
         $evaluation_type = isset($product->compared_product_name) && isset($product->compared_model_number);
         $this->set('evaluation_type', $evaluation_type);
     }
 
+    public function confirm($id = null){
+        $product = $this->Products->get($id, ['contain' => ['Companies']]);
+        if($product == null){
+            $this->Flash->error(__('不正なアクセスです'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+        $this->set("product", $product);
+    }
+
+
+    private function _checkPublishable($product, $data){
+        if(!isset($data['operator_name'])){
+            return false;
+        }else{
+            $product->operator_name = $data['operator_name'];
+        }
+        if(!isset($data['operator_department'])){
+            return false;
+        }else{
+            $product->operator_department = $data['operator_department'];
+        }
+        if(!isset($data['operator_email'])){
+            return false;
+        }else{
+            $product->operator_email = $data['operator_email'];
+        }
+        if(!isset($data['operator_tel'])){
+            return false;
+        }else{
+            $product->operator_tel = $data['operator_tel'];
+        }
+        return $product;
+    }
+
+    private function _sendRegistrationMail($product){
+        $this->loadModel('Admins');
+        $admins = $this->Admins->find()->all()->toArray();
+        foreach ($admins as $key => $admin) {
+            $this->__sendEach($admin->email, $product);
+        }
+    }
+
+    private function __sendEach($email, $product){
+        $user = $product->company->user_id;
+        $company_name = $product->company->company_name;
+        $product_name = $product->product_name;
+        $operator_name = $product->operator_name;
+        $operator_department = $product->operator_department;
+        $operator_email = $product->operator_email;
+        $operator_tel = $product->operator_tel;
+        
+        $title = "製品が登録されました";
+        $message = <<< EOF
+環境配慮バルブ登録制度にて以下の製品が登録・更新されました。
+
+----------------------------------
+登録情報
+----------------------------------
+ユーザID: $user
+会社名: $company_name
+登録製品名: $product_name
+登録担当者氏名: $operator_name
+登録担当者所属・役職: $operator_department
+登録担当者メールアドレス: $operator_email
+登録担当者電話番号: $operator_tel
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+
+        $this->_sendMail($email, $title, $message);
+        
+
+        $title = "環境配慮バルブ登録システム確認メッセージ";
+        $message = <<< EOF
+$company_name 様
+
+この度は環境配慮バルブ登録制度をご利用いただきありがとうございます。
+以下の情報で登録・更新されましたのでご確認お願いします。
+
+----------------------------------
+登録情報
+----------------------------------
+ユーザID: $user
+登録製品名: $product_name
+登録担当者氏名: $operator_name
+登録担当者所属・役職: $operator_department
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+お問合せ先　：　●●●●事務局
+　　mail　　：　●●●●●
+企画運営　　：　株式会社●●●
+Copyright c 2016 ●●●●●. All rights reserved.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF;
+
+        $this->_sendMail($operator_email, $title, $message);
+
+    }
+
     public function publish($id = null){
-        //$data = $this->request->data;
-        $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
+        $product = $this->Products->get($id, ['contain' => ['Companies', 'Evaluations' => ['EvaluationItems'], 'Types']]);
 
         if($product == null){
             $this->Flash->error(__('不正なアクセスです'));
@@ -471,6 +595,15 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
 
+        $data = $this->request->data;
+        $product = $this->_checkPublishable($product, $data);
+        if(!$product){
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'confirm', $product->id]);
+        }
+
+        $this->_sendRegistrationMail($product);
+
         $product->published = 1;
 
         if(!isset($product->published_date)){
@@ -478,12 +611,14 @@ class ProductsController extends AppController
         }
 
         if($this->Products->save($product)){
-            $this->Flash->success(__('製品情報が公開されました'));
-            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+            return $this->redirect(['action' => 'finished']);
         }else{
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
+    }
+
+    public function finished(){
     }
 
     private function _changeCompleted($evaluation, $shouldComplete)
@@ -531,20 +666,9 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
         
-
-        $product_info = $this->request->data['product_info'];
-        $product->product_comment = $product_info;
-        $product = $this->Products->save($product);
         $this->set('product', $product);
 
-        $reported = $this->request->data['reported'];
-        foreach ($reported as $key => $value) {
-            $keyArr[] = $key;
-        }
-        $this->loadModel('EvaluationHeads');
-        $evaluationHeads = $this->EvaluationHeads->find()->where(['id IN' => $keyArr ])->all()->toArray();
-        $this->set('evaluationHeads', $evaluationHeads);
-
+        $this->set('evaluationHeadsText', $this->request->data['evaluationHeads']);
 
         $this->response->type('pdf');
         $this->response->charset('UTF-8');

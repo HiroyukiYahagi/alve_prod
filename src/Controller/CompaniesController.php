@@ -249,11 +249,6 @@ EOF;
         return $r_str;
     }
 
-    private function _sendMail($toAddress, $title, $message){
-        $email = new Email('default');
-        $email->to($toAddress)->subject($title)->send($message);
-    }
-
     public function edit($id = null)
     {
         $company = $this->Companies->get($id, [
