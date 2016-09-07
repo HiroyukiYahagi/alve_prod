@@ -441,10 +441,12 @@ class ProductsController extends AppController
     }
 
     private function _savaAdvancedData($product, $data){
-        if(isset($data['register_date']))
+        if(isset($data['register_date']) && strlen($data['register_date']) ){
             $product->register_date = $data['register_date'];
-        if(isset($data['register_update_date']))
+        }
+        if(isset($data['register_update_date']) && strlen($data['register_update_date']) ){
             $product->register_update_date = $data['register_update_date'];
+        }
         $this->Products->save($product);
     }
 
@@ -455,13 +457,13 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
-        $this->_savaAdvancedData($product, $this->request->data);
-
         if(!$this->_validateProductEvaluation($product)){
             $this->_changeCompleted($product->evaluations[0], false);
             $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
+
+        $this->_savaAdvancedData($product, $this->request->data);
 
         $this->set('product', $product);
 
