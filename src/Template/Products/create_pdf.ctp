@@ -21,6 +21,7 @@ $productName = $product->product_name;
 $modelNumber = $product->model_number;
 $salesDate = $product->sales_date->i18nFormat('yyyy-MM-dd', 'Asia/Tokyo', 'ja-JP');
 $productInfoUrl = $product->product_info_url;
+$productTel = $product->product_tel;
 $tel = $product->company->tel;
 $url = $product->company->url;
 $latestFomula = $product->latest_fomula->i18nFormat('yyyy-MM-dd', 'Asia/Tokyo', 'ja-JP');
@@ -94,7 +95,7 @@ $html = <<< EOF
 		</tr>
 		<tr>
 			<td colspan="1" style="text-align: center;">製品情報</td>
-			<td colspan="5">$productInfoUrl</td>
+			<td colspan="5">$productInfoUrl または $productTel</td>
 		</tr>
 		<tr>
 			<td colspan="1" style="text-align: center;">お問い合わせ</td>

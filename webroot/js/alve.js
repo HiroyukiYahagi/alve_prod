@@ -11,11 +11,35 @@ function successRow(id){
 }
 
 function confirmDelete(){
-    if(confirm("データを削除しますがよろしいですか？")) {
+    if(confirm("製品を削除してよろしいですか?\n一度削除を実行すると復元できません。\n必要な場合は、CSVで保存をお願いします。\n削除を実行してよろしいですか?")) {
 	    location.href = $(this).attr('href');
 	} else {
 	    return false;
 	}
+}
+
+function confirmEdit(){
+    if(confirm("登録済の製品を編集する場合、上書きで保存されます。\n元の登録内容が必要な場合は、CSVで保存してください。\n編集を開始しますか?")) {
+        location.href = $(this).attr('href');
+    } else {
+        return false;
+    }    
+}
+
+function confirmDeleteForm(){
+    if(confirm("評価を削除してよろしいですか?\n一度削除を実行すると復元できません。\n必要な場合は、CSVで保存をお願いします。\n削除を実行してよろしいですか?")) {
+        location.href = $(this).attr('href');
+    } else {
+        return false;
+    }
+}
+
+function confirmEditForm(){
+    if(confirm("登録済のしくみ評価を編集する場合、上書きで保存されます。\n元の登録内容が必要な場合は、CSVで保存してください。\n編集を開始しますか?")) {
+        location.href = $(this).attr('href');
+    } else {
+        return false;
+    }    
 }
 
 function confirmSend(){

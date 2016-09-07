@@ -18,12 +18,14 @@
                         </label>
                         <p><?php echo $product->register_date;?></p>
                     </div>
+                    <?php if(isset($product->register_update_date) && strlen($product->register_update_date)): ?>
                     <div class="col s6">
                         <label>
                             <?= __('最新の登録更新日') ?>
                         </label>
                         <p><?php echo $product->register_update_date;?></p>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <div class="row">
                     <div class="col s12">
@@ -116,7 +118,7 @@
                         <p><?php echo $product->product_comment;?></p>
                     </div>
                 </div>
-
+                <?php if(isset($product->update_comment) && strlen($product->update_comment) ): ?>
                 <div class="row">
                     <div class="col s12">
                         <label>
@@ -125,13 +127,19 @@
                         <p><?php echo $product->update_comment;?></p>
                     </div>
                 </div>
-
+                <?php endif; ?>
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s4">
                         <label>
-                            <?= __('製品情報') ?>
+                            <?= __('製品HP URL') ?>
                         </label>
                         <p><?php echo $product->product_info_url;?></p>
+                    </div>
+                    <div class="col s4">
+                        <label><?= __('製品問い合わせTEL') ?></label>
+                        <p>
+                            <?php echo isset($product->product_tel) ? $product->product_tel: ''; ?>
+                        </p>
                     </div>
                 </div>
 
@@ -215,7 +223,7 @@
 
 
 <div class="row fixed-button">
-    <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "selectType", $product->id ]);?>' >
+    <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "edit", $product->id ]);?>' >
         <i class="fa fa-pencil-square-o fa-with"></i><?= __('製品評価に戻る') ?>
     </a>
     <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["action" => "confirm", $product->id ]);?>' >

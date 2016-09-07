@@ -44,6 +44,12 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="input-field col s12">     
+                            <label for="product_tel"><?= __('製品問い合わせTEL') ?></label>
+                            <input id="product_tel" type="text" name="product_tel" class="validate" value="<?php echo isset($product->product_tel) ? $product->product_tel: ''; ?>"/>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col s12">     
                             <label for="sales_date"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('発売日') ?></label>
                             <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->sales_date) ? $product->sales_date : null ])->render();?>"/>
@@ -126,7 +132,6 @@
             </h5>
             <div class="card">
                 <div class="card-content">
-
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="operator_name">
@@ -139,6 +144,14 @@
                                 <?= __('作業部門') ?>
                             </label>
                             <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="operator_email">
+                                <?= __('作業者Email') ?>
+                            </label>
+                            <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '' ;?>"/>
                         </div>
                     </div>
                 </div>
@@ -168,12 +181,14 @@
                             <textarea id="product_comment" class="materialize-textarea" type="text" name="product_comment" class="validate"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
                         </div>
                     </div>
+                    <?php if(isset($product->register_date)): ?>
                     <div class="row">
                         <div class="input-field col s12">     
                             <label for="update_comment"><?= __('登録更新内容') ?></label>
                             <textarea id="update_comment" class="materialize-textarea" type="text" name="update_comment" class="validate"><?php echo isset($product->update_comment) ? $product->update_comment: ''; ?></textarea>
                         </div>
                     </div>
+                    <?php endif; ?>
                     <div class="row">
                         <div class="input-field col s12">     
                             <label for="model_comment"><?= __('製品評価に関する備考（評価結果開示シートに記載されます）') ?></label>

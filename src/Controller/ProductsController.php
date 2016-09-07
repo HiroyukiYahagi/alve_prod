@@ -477,7 +477,7 @@ class ProductsController extends AppController
     }
 
     private function _setEvaluationType($product){
-        $evaluation_type = isset($product->evaluations[0]->compared_product_name) && isset($product->evaluations[0]->compared_model_number);
+        $evaluation_type = isset($product->evaluations[0]->compared_product_name) && isset($product->evaluations[0]->compared_model_number) && strlen($product->evaluations[0]->compared_product_name);
         $this->set('evaluation_type', $evaluation_type);
     }
 
@@ -492,25 +492,25 @@ class ProductsController extends AppController
 
 
     private function _checkPublishable($product, $data){
-        if(!isset($data['operator_name'])){
+        if(!isset($data['register_name'])){
             return false;
         }else{
-            $product->operator_name = $data['operator_name'];
+            $product->register_name = $data['register_name'];
         }
-        if(!isset($data['operator_department'])){
+        if(!isset($data['register_department'])){
             return false;
         }else{
-            $product->operator_department = $data['operator_department'];
+            $product->register_department = $data['register_department'];
         }
-        if(!isset($data['operator_email'])){
+        if(!isset($data['register_email'])){
             return false;
         }else{
-            $product->operator_email = $data['operator_email'];
+            $product->register_email = $data['register_email'];
         }
-        if(!isset($data['operator_tel'])){
+        if(!isset($data['register_tel'])){
             return false;
         }else{
-            $product->operator_tel = $data['operator_tel'];
+            $product->register_tel = $data['register_tel'];
         }
         return $product;
     }
@@ -526,11 +526,13 @@ class ProductsController extends AppController
     private function __sendEach($email, $product){
         $user = $product->company->user_id;
         $company_name = $product->company->company_name;
+        $company_email = $product->company->email;
         $product_name = $product->product_name;
-        $operator_name = $product->operator_name;
-        $operator_department = $product->operator_department;
+        $register_name = $product->register_name;
+        $register_department = $product->register_department;
+        $register_email = $product->register_email;
         $operator_email = $product->operator_email;
-        $operator_tel = $product->operator_tel;
+        $register_tel = $product->register_tel;
         
         $title = "製品が登録されました";
         $message = <<< EOF
@@ -542,10 +544,10 @@ class ProductsController extends AppController
 ユーザID: $user
 会社名: $company_name
 登録製品名: $product_name
-登録担当者氏名: $operator_name
-登録担当者所属・役職: $operator_department
-登録担当者メールアドレス: $operator_email
-登録担当者電話番号: $operator_tel
+登録担当者氏名: $register_name
+登録担当者所属・役職: $register_department
+登録担当者メールアドレス: $register_email
+登録担当者電話番号: $register_tel
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 お問合せ先　：　●●●●事務局
@@ -570,8 +572,8 @@ $company_name 様
 ----------------------------------
 ユーザID: $user
 登録製品名: $product_name
-登録担当者氏名: $operator_name
-登録担当者所属・役職: $operator_department
+登録担当者氏名: $register_name
+登録担当者所属・役職: $register_department
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 お問合せ先　：　●●●●事務局
@@ -580,9 +582,15 @@ $company_name 様
 Copyright c 2016 ●●●●●. All rights reserved.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF;
-
-        $this->_sendMail($operator_email, $title, $message);
-
+        if(isset($company_email)){
+            $this->_sendMail($company_email, $title, $message);
+        }
+        if(isset($register_email)){
+           $this->_sendMail($register_email, $title, $message);
+        }
+        if(isset($operator_email)){
+            $this->_sendMail($operator_email, $title, $message);
+        }
     }
 
     public function publish($id = null){
