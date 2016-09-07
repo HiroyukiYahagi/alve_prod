@@ -204,7 +204,7 @@
     掲載内容を修正する場合は「製品評価に戻る」をクリックしてください。
 </blockquote>
 
-<form method="post" action="<?php echo $this->Url->build(["action" => "createPdf", $product->id ]);?>">
+<form target="_blank" method="post" action="<?php echo $this->Url->build(["action" => "createPdf", $product->id ]);?>">
     <?php foreach ($evaluationHeads as $key => $evaluationHead):?>
         <input type="hidden" name="evaluationHeads[]" value="<?php echo $evaluationHead->item_description; ?>">
     <?php endforeach; ?>

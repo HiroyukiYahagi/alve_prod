@@ -108,8 +108,34 @@
                             </td>
                             <td>
                                 <p>
-                                    <?php echo $fomulaHead->item_description; ?>
+                                    <a class="modal-trigger black-text" href="#detail_modal_<?php echo $fomulaHead->id; ?>">
+                                        <?php echo $fomulaHead->item_description; ?>
+                                        <i class="fa fa-question fa-with" aria-hidden="true"></i>
+                                    </a>
                                 </p>
+
+                                <div id="detail_modal_<?php echo $fomulaHead->id; ?>" class="modal">
+                                    <div class="modal-content">
+                                        <h5><?= __('評価に用いる指標')?></h5>
+                                        <p><?php echo $fomulaHead->item_criteria; ?></p>
+                                        <br/>
+                                        <h5><?= __('配点区分')?></h5>
+                                        <p>
+                                            <b>
+                                                <?php echo $fomulaHead->allocation->allocation_name; ?>
+                                            </b>
+                                            <br/>
+                                            <?php echo $fomulaHead->allocation->description; ?>
+                                        </p>
+                                        <br/>
+                                        <h5><?= __('評価方法など')?></h5>
+                                        <p><?php echo $fomulaHead->options; ?></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?= __('確認') ?></a>
+                                    </div>
+                                </div>
+
                             </td>
                             
                             <?php if($fomulaHead->allocation->allocation_type!=0):?>

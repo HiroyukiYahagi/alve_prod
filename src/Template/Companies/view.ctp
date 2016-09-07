@@ -142,7 +142,7 @@
 							<th><?= __('製品名') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('型番') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('登録日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
-							<th><?= __('最後に保存した日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
+							<th><?= __('登録更新日') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th><?= __('作業者') ?><i class="fa fa-sort fa-with" aria-hidden="true"></i></th>
 							<th></th>
 						</tr>
@@ -157,10 +157,10 @@
 								</td>
 								<td><?php echo $product->model_number; ?></td>
 								<td>
-									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->published_date ])->render();?>
+									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->register_date ])->render();?>
 								</td>
 								<td>
-									<?= $this->cell('DateTime', ['type'=> 'datetime', 'data' => $product->modified ])->render();?>
+									<?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->register_update_date ])->render();?>
 								</td>
 								<td><?php echo $product->operator_name; ?></td>
 								<td>

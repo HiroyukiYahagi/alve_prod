@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="input-field col s12">
 					<input id="email" name="email" type="email" class="validate" required>
-					<label for="email" data-error="XXXX@XXXと入力してください">メールアドレス</label>
+					<label for="email">メールアドレス</label>
 				</div>
 			</div>
 			<button class="btn waves-effect waves-light green" type="submit" name="action">送信</button>

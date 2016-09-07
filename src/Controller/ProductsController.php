@@ -473,7 +473,11 @@ class ProductsController extends AppController
         $evaluationHeads = $this->EvaluationHeads->find()->where(['id IN' => $keyArr ])->all()->toArray();
         $this->set('evaluationHeads', $evaluationHeads);
 
-        $evaluation_type = isset($product->compared_product_name) && isset($product->compared_model_number);
+        $this->_setEvaluationType($product);
+    }
+
+    private function _setEvaluationType($product){
+        $evaluation_type = isset($product->evaluations[0]->compared_product_name) && isset($product->evaluations[0]->compared_model_number);
         $this->set('evaluation_type', $evaluation_type);
     }
 
