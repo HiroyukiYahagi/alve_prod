@@ -73,13 +73,16 @@
                     <?php echo $key; ?>
                 </h5>
 
-                <table class="tablesorter white striped z-depth-2 table-for-fomula">
+                <table class="tablesorter white striped z-depth-2 table-for-product">
                     <thead>
                         <tr>
                             <th><?= __('選択') ?></th>
                             <th><?= __('項目') ?></th>
-                            <th><?= __('Data') ?></th>
-                            <th></th>
+                            <th><?= __('単位') ?></th>
+                            <th><?= __('今回評価') ?></th>
+                            <th class="compared_label"><?= __('前回評価') ?></th>
+                            <th><?= __('備考') ?></th>
+                            <th><?= __('結果') ?></th>
                             <th><?= __('得点') ?></th>
                         </tr>
                     </thead>
@@ -88,7 +91,7 @@
                          <?php foreach ($fomulaHeadMeds as $key => $fomulaHeads): ?>
 
                         <tr>
-                            <td colspan="5"><b><?php echo $key; ?></b></td>
+                            <td colspan="8"><b><?php echo $key; ?></b></td>
                         </tr>
 
                         <?php foreach ($fomulaHeads as $fomulaHead): ?>
@@ -127,9 +130,11 @@
                                             <br/>
                                             <?php echo $fomulaHead->allocation->description; ?>
                                         </p>
+                                        <?php if(isset($fomulaHead->options)): ?>
                                         <br/>
                                         <h5><?= __('評価方法など')?></h5>
                                         <p><?php echo $fomulaHead->options; ?></p>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="modal-footer">
                                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><?= __('確認') ?></a>
@@ -137,13 +142,20 @@
                                 </div>
 
                             </td>
-                            
+                            <?php if(isset($fomulaHead->unit_category)):?>
+                            <td>
+                                <select id="units_<?php echo $fomulaHead->id; ?>" name="units[<?php echo $fomulaHead->id; ?>]">
+                                    <?php foreach ($units[$fomulaHead->unit_category] as $unit):?>
+                                        <option class="unit_id_<?php echo $unit->id;?>" value="<?php echo $unit->id;?>" <?php echo (isset($selectedUnits[$fomulaHead->id]) && $selectedUnits[$fomulaHead->id] == $unit->id ) ? 'selected' : '' ;?> ><?php echo $unit->name;?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <?php else: ?>
+                            <td class="no-old"></td>
+                            <?php endif; ?>
                             <?php if($fomulaHead->allocation->allocation_type!=0):?>
                             <td>
-                                <input id="new_value_<?php echo $fomulaHead->id; ?>" type="number" name="new_value[<?php echo $fomulaHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $fomulaHead->id; ?>);" value="<?php echo isset($selectedValues[$fomulaHead->id]) ? $selectedValues[$fomulaHead->id] : ''; ?>" min="0">
-                            </td>
-                            <td>
-                                %
+                                <input id="new_value_<?php echo $fomulaHead->id; ?>" type="text" name="new_value[<?php echo $fomulaHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $fomulaHead->id; ?>);" value="<?php echo isset($selectedValues[$fomulaHead->id]) ? $selectedValues[$fomulaHead->id] : ''; ?>" min="0">
                             </td>
                             <?php elseif($fomulaHead->allocation->allocation_type==0): ?>
                             <td class="no-old" colspan="2">
@@ -156,7 +168,19 @@
                                 <input id="old_value_<?php echo $fomulaHead->id; ?>" type="hidden" name="old_value[<?php echo $fomulaHead->id; ?>]" value="0">
                             </td>
                             <?php endif; ?>
-                            
+                            <?php if($fomulaHead->allocation->allocation_type!=0):?>
+                            <td>
+                                <input id="old_value_<?php echo $fomulaHead->id; ?>" type="text" name="old_value[<?php echo $fomulaHead->id; ?>]" class="validate" onblur="evalAjax(<?php echo $fomulaHead->id; ?>);" value="<?php echo isset($selectedCompValues[$fomulaHead->id]) ? $selectedCompValues[$fomulaHead->id] : ''; ?>"  min="0.0">
+                            </td>
+                            <?php endif; ?>
+                            <td>
+                                <input id="other_unit_<?php echo $fomulaHead->id; ?>" type="text" name="other_unit[<?php echo $fomulaHead->id; ?>]" class="validate" value="<?php echo isset($selectedOptValues[$fomulaHead->id]) ? $selectedOptValues[$fomulaHead->id] : ''; ?>" >
+                            </td>
+                            <td>
+                                <p id="result_<?php echo $fomulaHead->id; ?>">
+                                    <?= __('-') ?>
+                                </p>
+                            </td>
                             <td>
                                 <p id="point_<?php echo $fomulaHead->id; ?>">
                                     <?= __('-') ?>
@@ -196,8 +220,10 @@
 
     function evalAjax(head_id) {
         var newValue = $('#new_value_'+head_id).val();
+        var oldValue = $('#old_value_'+head_id).val();
 
-        if(newValue == null || newValue.length == 0 ){
+        if(newValue == null || oldValue==null || newValue.length == 0 || oldValue.length == 0){
+            $('#result_' + head_id).text('-');
             $('#point_' + head_id).text('-');
             if($('#selected_' + head_id).attr('checked') == 'checked'){
                 alertRow(head_id);
@@ -211,9 +237,11 @@
             data: { 
                 head_id: head_id,
                 newValue : newValue,
+                oldValue : oldValue,
              },
             dataType: "json",
             success : function(response){
+                $('#result_' + response.head_id).text(response.data.result);
                 $('#point_' + response.head_id).text(response.data.point);
                 $('#selected_' + response.head_id).attr('checked', true);
                 successRow(response.head_id);
@@ -228,13 +256,15 @@
         <?php endforeach; ?>
         <?php endif;?>
 
-        <?php foreach ($fomulaHeadsMap as $fomulaHeadMeds): ?>
-            <?php foreach ($fomulaHeadMeds as $fomulaHeads): ?>
-                <?php foreach ($fomulaHeads as $fomulaHead): ?>
-                    evalAjax(<?php echo $fomulaHead->id;?>);
-                <?php endforeach ?>    
+        <?php if(!is_null($fomulaHeadsMap)): ?>
+            <?php foreach ($fomulaHeadsMap as $fomulaHeadMeds): ?>
+                <?php foreach ($fomulaHeadMeds as $fomulaHeads): ?>
+                    <?php foreach ($fomulaHeads as $fomulaHead): ?>
+                        evalAjax(<?php echo $fomulaHead->id;?>);
+                    <?php endforeach ?>    
+                <?php endforeach ?>
             <?php endforeach ?>
-        <?php endforeach ?>
+        <?php endif; ?>
     });
 
 </script>

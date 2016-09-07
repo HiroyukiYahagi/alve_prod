@@ -66,7 +66,7 @@ class FomulasController extends AppController
 
         foreach ($fomulaItems as $fomulaItem) {
             $fomulaHead = $fomulaItem->fomula_head;
-            $buffer[$fomulaHead->large_type][$fomulaHead->small_type]['value'] += $this->_evaluation($fomulaItem->head_id, $fomulaItem->value);
+            $buffer[$fomulaHead->large_type][$fomulaHead->small_type]['value'] += $this->_evaluation($fomulaItem->head_id, $fomulaItem->value, $fomulaItem->compared_value)['point'];
             $buffer[$fomulaHead->large_type][$fomulaHead->small_type]['count'] += 1;
         }
 
@@ -106,51 +106,68 @@ class FomulasController extends AppController
     }
 
     public function evaluate(){
+        $this->autoRender = false;
 
         $head_id = $this->request->data['head_id'];
         $newValue = $this->request->data['newValue'];
+        $oldValue = $this->request->data['oldValue'];
 
-        $point = $this->_evaluation($head_id, $newValue);
+        //echo json_encode(["test"=>$head_id , "a" => $newValue]);
 
-        $json = json_encode(['head_id' => $head_id ,'data' => ['point' => $point ]]);
-        echo $json;
-        $this->autoRender = false;
+        echo json_encode(['head_id' => $head_id ,'data' => $this->_evaluation($head_id, $newValue, $oldValue)]);
     }
 
-    private function _evaluation($headId, $value){
+    private function _evaluation($headId, $newValue, $oldValue){
         $this->loadModel('FomulaHeads');
         $fomulaHead = $this->FomulaHeads->get($headId, ['contain' => ['Allocations' => ['AllocationItems']]]);
-
         switch ($fomulaHead->allocation->allocation_type) {
             case 0:
-                return $this->_valueEvaluation($value, $fomulaHead->allocation->allocation_items);
+                $data = $this->_valueEvaluation($newValue, $fomulaHead->allocation->allocation_items);
+                break;
             case 1:
+                if($newValue == 0) break;
+                $rate = (($newValue - $oldValue)/$newValue)*100;
+                $data = $this->_rangeEvaluation($rate, $fomulaHead->allocation->allocation_items);
+                $data['result'] .= $fomulaHead->allocation->allocation_unit;
+                break;
             case 2:
-                return $this->_rangeEvaluation($value, $fomulaHead->allocation->allocation_items);
+                if($oldValue == 0) break;
+                $rate = (($oldValue - $newValue)/$oldValue)*100;
+                $data = $this->_rangeEvaluation($rate, $fomulaHead->allocation->allocation_items);
+                $data['result'] .= $fomulaHead->allocation->allocation_unit;
+                break;
         }
-        return null;
+        return $data;
     }
 
-    private function _valueEvaluation($value, $allocationItems){
-        foreach ($allocationItems as $allocationItem) {
-            if($allocationItem->id == $value)
-                return $allocationItem->point;
+    private function _valueEvaluation($newValue, $candidates){
+        foreach ($candidates as $candidate) {
+            if($newValue == $candidate->id){
+                return ['result' => '-', 'point' => $candidate->point];
+            }
         }
-        return 0;
+        return ['result' => '-', 'point' => '-'];
     }
     
-    private function _rangeEvaluation($value, $allocationItems){
-        foreach ($allocationItems as $allocationItem) {
-            if($allocationItem->range_max === null || intval($allocationItem->range_max) > $value ){
-                if($allocationItem->range_min === null || intval($allocationItem->range_min) <= $value ){
-                    return $allocationItem->point;
+    private function _rangeEvaluation($rate, $candidates){
+
+        foreach ($candidates as $candidate) {
+            if($candidate->range_max === null || $candidate->range_max > $rate ){
+                if($candidate->range_min === null || $candidate->range_min <= $rate ){
+                    if($rate == 0){
+                        return ['result' => round($rate, 1), 'point' => '0'];
+                    }else{
+                        return ['result' => round($rate, 1), 'point' => $candidate->point];
+                    }
                 }
             }
         }
-        return 0;
+        return ['result' => round($rate, 1), 'point' => '-1'];
     }
 
     public function edit($id = null){
+        $this->_setUnitMap();
+
         if($id == null){
             $fomula = $this->Fomulas->newEntity();
             $this->set('title', __('新規しくみ評価'));
@@ -158,10 +175,20 @@ class FomulasController extends AppController
             $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['FomulaHeads', 'Units']]]);
             $this->set('title', __('しくみ評価の編集'));
 
+            $selectedUnits=null;
+            $selectedValues=null;
+            $selectedCompValues=null;
+            $selectedOptValues=null;
             foreach ($fomula->fomula_items as $fomula_item) {
+                $selectedUnits[$fomula_item->head_id] = $fomula_item->unit_id;
                 $selectedValues[$fomula_item->head_id] = $fomula_item->value;
+                $selectedCompValues[$fomula_item->head_id] = $fomula_item->compared_value;
+                $selectedOptValues[$fomula_item->head_id] = $fomula_item->other_unit;
             }
+            $this->set('selectedUnits', $selectedUnits);
             $this->set('selectedValues', $selectedValues);
+            $this->set('selectedCompValues', $selectedCompValues);
+            $this->set('selectedOptValues', $selectedOptValues);
         }
         $this->set('fomula', $fomula);
 
@@ -195,6 +222,10 @@ class FomulasController extends AppController
         foreach ($data['selected'] as $key => $value) {
             $fomulaItems = $this->FomulaItems->newEntity();
             $fomulaItems->value = isset($data['new_value'][$key]) ? $data['new_value'][$key] : null;
+            $fomulaItems->compared_value = isset($data['old_value'][$key]) ? $data['old_value'][$key] : null;
+            $fomulaItems->other_unit = isset($data['other_unit'][$key]) ? $data['other_unit'][$key] : null;
+            $fomulaItems->unit_id = isset($data['units'][$key]) ? $data['units'][$key] : null;
+
             $fomulaItems->head_id = $key;
             $fomulaItems->fomula_id = $fomula->id;
             if(!$this->FomulaItems->save($fomulaItems)){

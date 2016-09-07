@@ -206,6 +206,10 @@ class ProductsController extends AppController
 
         $data = ['result' => '-', 'point' => '-'];
         switch ($evaluationHead->allocation->allocation_type) {
+            case 0:
+                //特定値評価
+                $data = $this->_valueEvaluation($newValue, $evaluationHead->allocation->allocation_items);
+                break;            
             case 1:
                 if($newValue == 0) break;
                 $rate = (($newValue - $oldValue)/$newValue)*100;
@@ -218,39 +222,32 @@ class ProductsController extends AppController
                 $data = $this->_rangeEvaluation($rate, $evaluationHead->allocation->allocation_items);
                 $data['result'] .= $evaluationHead->allocation->allocation_unit;
                 break;
-            case 0:
-                //特定値評価
-                $data = $this->_valueEvaluation($newValue, $evaluationHead->allocation->allocation_items);
-                break;
         }
         return $data;
-    }
-
-    private function _rangeEvaluation($rate, $candidates){
-        foreach ($candidates as $candidate) {
-            if($candidate->range_max === null || $candidate->range_max > $rate ){
-                if($candidate->range_min === null || $candidate->range_min <= $rate ){
-
-                    if($rate == 0){
-                        return ['result' => round($rate, 1), 'point' => '0'];
-                    }else{
-                        return ['result' => round($rate, 1), 'point' => $candidate->point];
-                        //return ['result' => $candidate->range_max, 'point' => $candidate->range_min];
-                    }
-                }
-            }
-        }
-        return ['result' => round($rate, 1), 'point' => '-1'];
     }
 
     private function _valueEvaluation($newValue, $candidates){
         foreach ($candidates as $candidate) {
             if($newValue == $candidate->id){
                 return ['result' => '-', 'point' => $candidate->point];
-                
             }
         }
         return ['result' => '-', 'point' => '-'];
+    }
+
+    private function _rangeEvaluation($rate, $candidates){
+        foreach ($candidates as $candidate) {
+            if($candidate->range_max === null || $candidate->range_max > $rate ){
+                if($candidate->range_min === null || $candidate->range_min <= $rate ){
+                    if($rate == 0){
+                        return ['result' => round($rate, 1), 'point' => '0'];
+                    }else{
+                        return ['result' => round($rate, 1), 'point' => $candidate->point];
+                    }
+                }
+            }
+        }
+        return ['result' => round($rate, 1), 'point' => '-1'];
     }
 
     private function _validateProductEvaluation($product){
