@@ -120,6 +120,8 @@ class FomulasController extends AppController
     private function _evaluation($headId, $newValue, $oldValue){
         $this->loadModel('FomulaHeads');
         $fomulaHead = $this->FomulaHeads->get($headId, ['contain' => ['Allocations' => ['AllocationItems']]]);
+        
+        $data = ['result' => '0%', 'point' => '0'];
         switch ($fomulaHead->allocation->allocation_type) {
             case 0:
                 $data = $this->_valueEvaluation($newValue, $fomulaHead->allocation->allocation_items);
@@ -381,7 +383,14 @@ class FomulasController extends AppController
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
 
-        $filename = "しくみ評価データ_".date('Ymd');
+
+        $filename = "しくみ評価データ_".date('Ymd');   
+        
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        if (strstr($user_agent, 'Trident') || strstr($user_agent, 'MSIE')) {
+            $filename = mb_convert_encoding($filename, "SJIS");
+        }
+
         $this->set('filename', $filename);
 
         $header = ['大分類', '中分類', '小分類', '項目', '値'];

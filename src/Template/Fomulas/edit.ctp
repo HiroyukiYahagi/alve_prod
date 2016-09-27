@@ -199,8 +199,8 @@
     <?php endforeach; ?>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'save', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('保存して中断') ?></button>
-         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'submit', isset($fomula->id) ? $fomula->id : null]);?>"><?= __('登録') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'save', isset($fomula->id) ? $fomula->id : null]);?>" onClick="javascript:stopDoubleClick(this)"><?= __('保存して中断') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Fomulas', 'action' => 'submit', isset($fomula->id) ? $fomula->id : null]);?>" onClick="javascript:stopDoubleClick(this)"><?= __('登録') ?></button>
     </div>
 
 </form>

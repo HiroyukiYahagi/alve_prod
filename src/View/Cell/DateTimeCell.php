@@ -18,6 +18,9 @@ class DateTimeCell extends Cell
             case 'datetime':
                 $this->template = 'datetime';
                 break;
+            case 'year':
+                $this->template = 'year';
+                break;
         	default:
         		break;
         }

@@ -58,16 +58,28 @@
 
             <div class="row">
                 <?php if(isset($product->evaluations[0]->compared_product_name) && strlen($product->evaluations[0]->compared_product_name) > 0):?>
-                <div class="col s4">
+                <div class="col s3">
                     <label><?= __('比較対象製品') ?></label>
                     <p>
                         <?php echo $product->evaluations[0]->compared_product_name; ?>
                     </p>
                 </div>
-                <div class="col s4">
+                <div class="col s3">
                     <label><?= __('比較対象製品型番') ?></label>
                     <p>
                         <?php echo $product->evaluations[0]->compared_model_number; ?>
+                    </p>
+                </div>
+                <div class="col s3">
+                    <label><?= __('製品HP URL') ?></label>
+                    <p>
+                        <?php echo $product->evaluations[0]->compared_url; ?>
+                    </p>
+                </div>
+                <div class="col s3">
+                    <label><?= __('発売年') ?></label>
+                    <p>
+                        <?= $this->cell('DateTime', ['type'=> 'year', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render() ?>年
                     </p>
                 </div>
                 <?php else:?>
@@ -214,7 +226,7 @@
         </div>
     </div>
 
-     <div class="row fixed-button">
+    <div class="row fixed-button">
         <a class="waves-effect waves-light btn green" href='<?php echo $this->Url->build(["controller" => "Companies", "action" => "view"]);?>' >
             <i class="fa fa-pencil-square-o fa-with"></i><?= __('保存して中断') ?>
         </a>

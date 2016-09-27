@@ -103,7 +103,7 @@ class ProductsController extends AppController
 
     private function _setEvaluationHeadsDetailByTypeId($type_id){
         $this->loadModel("TypeHeadRelations");
-        $typeHeadRelations = $this->TypeHeadRelations->find()->where(['type_id' => $type_id])->contain(['EvaluationHeads' => [ 'Allocations' => ['AllocationItems']]])->all()->toArray();
+        $typeHeadRelations = $this->TypeHeadRelations->find()->where(['type_id' => $type_id])->contain(['EvaluationHeads' => [ 'Allocations' => ['AllocationItems']]])->order('TypeHeadRelations.evaluation_head_id ASC')->all()->toArray();
 
         foreach ($typeHeadRelations as $typeHeadRelation) {
             $evaluationHead = $typeHeadRelation->evaluation_head;
@@ -183,6 +183,7 @@ class ProductsController extends AppController
         }
 
         $this->_setEvaluationHeadsDetailByTypeId($type_id);
+
     }
 
     /* ajax function */
@@ -204,7 +205,7 @@ class ProductsController extends AppController
         $this->loadModel('EvaluationHeads');
         $evaluationHead = $this->EvaluationHeads->get($evaluationId, ['contain' => ['Allocations' => ['AllocationItems'] ] ]);
 
-        $data = ['result' => '-', 'point' => '-'];
+        $data = ['result' => '0%', 'point' => '0'];
         switch ($evaluationHead->allocation->allocation_type) {
             case 0:
                 //特定値評価
@@ -281,6 +282,20 @@ class ProductsController extends AppController
         return true;
     }
 
+    private function _validateCommentLength($product){
+        if(mb_strlen($product->product_comment) > 84){
+            return false;
+        }
+        if(mb_strlen($product->update_comment) > 84){
+            return false;
+        }
+        if(mb_strlen($product->model_comment) > 150){
+            return false;
+        }        
+
+        return true;
+    }
+
     private function _saveData($id, $data){
 
         if(count($data) == 0){
@@ -294,6 +309,7 @@ class ProductsController extends AppController
         }else{
             $product = $this->Products->get($id, ['contain' => ['Evaluations' => ['EvaluationItems'], 'Types']]);
         }
+
         $product = $this->Products->patchEntity($product, $data);
 
         //日付関係
@@ -317,7 +333,9 @@ class ProductsController extends AppController
         $evaluation->compared_product_name = $data['compared_product_name'];
         $evaluation->compared_model_number = $data['compared_model_number'];
         $evaluation->compared_url = $data['compared_url'];
-        $evaluation->compared_sales_date = $data['compared_sales_date'];
+
+        //var_dump($data['compared_sales_date']);
+        $evaluation->compared_sales_date = $data['compared_sales_date'].'-01-01';
         $evaluation->completed == 0;
         
         $evaluation = $this->Evaluations->save($evaluation);
@@ -403,6 +421,12 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
 
+        if(!$this->_validateCommentLength($product)){
+            $this->_changeCompleted($product->evaluations[0], false);
+            $this->Flash->error(__('入力した文章が長すぎます。入力内容を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
+        }
+
         $this->_changeCompleted($product->evaluations[0], true);
 
         //return $this->redirect(['controller' => 'Products', 'action' => 'register', $product->id]);
@@ -438,13 +462,18 @@ class ProductsController extends AppController
     }
 
     private function _savaAdvancedData($product, $data){
-        if(isset($data['register_date']) && strlen($data['register_date']) ){
+        if(isset($data['register_date']) && strlen($data['register_date']) > 0 ){
             $product->register_date = $data['register_date'];
+        }else{
+            return false;
         }
-        if(isset($data['register_update_date']) && strlen($data['register_update_date']) ){
+
+        if(isset($data['register_update_date']) && strlen($data['register_update_date']) > 0 ){
             $product->register_update_date = $data['register_update_date'];
         }
+
         $this->Products->save($product);
+        return true;
     }
 
     public function register($id = null){
@@ -459,8 +488,11 @@ class ProductsController extends AppController
             $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
             return $this->redirect(['controller' => 'Products', 'action' => 'edit', $product->id]);
         }
-
-        $this->_savaAdvancedData($product, $this->request->data);
+    
+        if(!$this->_savaAdvancedData($product, $this->request->data)){
+            $this->Flash->error(__('必須項目が入力されていません。入力項目を確認してください。'));
+            return $this->redirect(['controller' => 'Products', 'action' => 'view', $product->id]);
+        }
 
         $this->set('product', $product);
 
@@ -525,12 +557,12 @@ class ProductsController extends AppController
     private function __sendEach($email, $product){
         $user = $product->company->user_id;
         $company_name = $product->company->company_name;
-        $company_email = $product->company->email;
+        //$company_email = $product->company->email;
         $product_name = $product->product_name;
         $register_name = $product->register_name;
         $register_department = $product->register_department;
         $register_email = $product->register_email;
-        $operator_email = $product->operator_email;
+        //$operator_email = $product->operator_email;
         $register_tel = $product->register_tel;
         
         $title = "製品が登録されました";
@@ -581,15 +613,15 @@ $company_name 様
 Copyright c 2016 ●●●●●. All rights reserved.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF;
-        if(isset($company_email)){
-            $this->_sendMail($company_email, $title, $message);
-        }
+        // if(isset($company_email)){
+        //     $this->_sendMail($company_email, $title, $message);
+        // }
         if(isset($register_email)){
            $this->_sendMail($register_email, $title, $message);
         }
-        if(isset($operator_email)){
-            $this->_sendMail($operator_email, $title, $message);
-        }
+        // if(isset($operator_email)){
+        //     $this->_sendMail($operator_email, $title, $message);
+        // }
     }
 
     public function publish($id = null){
@@ -699,6 +731,13 @@ EOF;
         }
 
         $filename = "評価データ_".$product->product_name."_".date('Ymd');
+
+
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        if (strstr($user_agent, 'Trident') || strstr($user_agent, 'MSIE')) {
+            $filename = mb_convert_encoding($filename, "SJIS");
+        }
+
         $this->set('filename', $filename);
 
         $this->loadModel('Companies');

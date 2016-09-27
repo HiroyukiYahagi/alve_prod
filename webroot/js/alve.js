@@ -50,6 +50,10 @@ function confirmSend(){
 	}
 }
 
+function stopDoubleClick(btn){
+    btn.disabled=true;
+}
+
 $(function() {
 	$('.sorter').tablesorter();
 
@@ -93,11 +97,23 @@ $(document).ready(function() {
     		$(val).addClass('invalid');
     	}    	
     });
-    $('input.picker__input').change(function(event) {
+    //$('input.picker__input').change(function(event) {
+    $('input[required]').change(function(event) {
         if($(this).val().length != 0){
             $(this).removeClass('invalid');
+        }else{
+            $(this).addClass('invalid');
         } 
     });
+
+    jQuery.each($('textarea'), function(index, val) {
+        console.log(val.getAttribute('length'));
+        console.log($(this).val().length);
+        if(val.getAttribute('length') < $(this).val().length){
+            $(this).addClass('invalid');
+        }
+    });
+
 });
 
 

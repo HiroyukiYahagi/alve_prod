@@ -110,6 +110,13 @@ i.fa-sm{
 	display: none;
 }
 
+input.invalid{
+	background-color: #ffebee;
+}
+textarea.invalid{
+	background-color: #ffebee;
+}
+
 
 /* fix-button */
 .fixed-button{

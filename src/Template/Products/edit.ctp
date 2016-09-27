@@ -113,8 +113,15 @@
                         </div>
                         <div class="row">
                             <div class="col s12">     
-                                <label for="compared_sales_date"><?= __('発売日') ?></label>
-                                <input id="compared_sales_date" type="text" name="compared_sales_date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render();?>"/>
+                                <label for="compared_sales_date"><?= __('発売年') ?></label>
+<!--                                 <input id="compared_sales_date" type="text" name="compared_sales_date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render();?>"/>  -->
+
+                                <select name="compared_sales_date">
+                                    <?php for ($i=date('Y') - 50 ; $i <= date('Y') + 2; $i++): ?>
+                                        <option value="<?php echo $i;?>" <?php echo $i==$this->cell('DateTime', ['type'=> 'year', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render() ? 'selected': ''; ?> ><?php echo $i;?>年</option>
+                                    <?php endfor; ?>
+                                </select>
+
                             </div>
                         </div>              
                     </div>
@@ -178,21 +185,21 @@
                     <div class="row">
                         <div class="input-field col s12">     
                             <label for="product_comment"><?= __('製品説明') ?></label>
-                            <textarea id="product_comment" class="materialize-textarea" type="text" name="product_comment" class="validate"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
+                            <textarea id="product_comment" class="materialize-textarea counted" type="text" name="product_comment" class="validate" length="84"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
                         </div>
                     </div>
                     <?php if(isset($product->register_date)): ?>
                     <div class="row">
                         <div class="input-field col s12">     
                             <label for="update_comment"><?= __('登録更新内容') ?></label>
-                            <textarea id="update_comment" class="materialize-textarea" type="text" name="update_comment" class="validate"><?php echo isset($product->update_comment) ? $product->update_comment: ''; ?></textarea>
+                            <textarea id="update_comment" class="materialize-textarea counted" type="text" name="update_comment" class="validate" length="84"><?php echo isset($product->update_comment) ? $product->update_comment: ''; ?></textarea>
                         </div>
                     </div>
                     <?php endif; ?>
                     <div class="row">
                         <div class="input-field col s12">     
                             <label for="model_comment"><?= __('製品評価に関する備考（評価結果開示シートに記載されます）') ?></label>
-                            <textarea id="model_comment" class="materialize-textarea" type="text" name="model_comment" class="validate"><?php echo isset($product->model_comment) ? $product->model_comment: ''; ?></textarea>
+                            <textarea id="model_comment" class="materialize-textarea counted" type="text" name="model_comment" class="validate" length="150"><?php echo isset($product->model_comment) ? $product->model_comment: ''; ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -350,8 +357,8 @@
     <?php endif; ?>
 
     <div class="row fixed-button">
-        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>"><?= __('保存して中断') ?></button>
-         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>"><?= __('評価結果確認') ?></button>
+        <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'save', isset($product->id) ? $product->id : null]);?>" onClick="javascript:stopDoubleClick(this)"><?= __('保存して中断') ?></button>
+         <button class="submit btn waves-effect waves-light green" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'submit', isset($product->id) ? $product->id : null]);?>" onClick="javascript:stopDoubleClick(this)"><?= __('評価結果確認') ?></button>
     </div>
 
 </form>
