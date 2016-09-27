@@ -89,7 +89,7 @@
                                     <?= __('発売時期') ?>
                                 </label>
                                 <p>
-                                    <?= $this->cell('DateTime', ['type'=> 'date', 'data' => $product->evaluations[0]->compared_sales_date])->render();?>
+                                    <?= $this->cell('DateTime', ['type'=> 'year', 'data' => $product->evaluations[0]->compared_sales_date])->render();?>
                                 </p>
                             </div>
                         </div>
