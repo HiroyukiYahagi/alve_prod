@@ -320,6 +320,13 @@ class FomulasController extends AppController
         }
 
         $filename = "しくみ評価データ_".date('Ymd');
+
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        if (strstr($user_agent, 'Trident') || strstr($user_agent, 'MSIE')) {
+            $filename = mb_convert_encoding($filename, "SJIS");
+        }
+
+
         $this->set('filename', $filename);
 
         $header = ['大分類', '中分類', '小分類', '項目', '値'];
@@ -373,59 +380,4 @@ class FomulasController extends AppController
         $this->viewBuilder()->layout(false);
     }
 
-
-    private function _downloadCsv($id){
-
-        $fomula = $this->Fomulas->get($id, ['contain' => ['FomulaItems' => ['Units', 'FomulaHeads' => ['Allocations' => ['AllocationItems'] ] ] ] ]);
-
-        if(!isset($fomula)){
-            $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
-            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
-        }
-
-
-        $filename = "しくみ評価データ_".date('Ymd');   
-        
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        if (strstr($user_agent, 'Trident') || strstr($user_agent, 'MSIE')) {
-            $filename = mb_convert_encoding($filename, "SJIS");
-        }
-
-        $this->set('filename', $filename);
-
-        $header = ['大分類', '中分類', '小分類', '項目', '値'];
-        $this->set('header', $header);
-
-        foreach ($fomula->fomula_items as $key => $fomulaItem) {
-
-            $fomulaHead = $fomulaItem->fomula_head;
-            $unit = $fomulaItem->unit;
-            $allocation = $fomulaHead->allocation;
-            $allocationType = $allocation->allocation_type;
-            
-            $value = '';
-            if($allocationType != 0){
-                $value = $fomulaItem->value;
-            }else{
-                $allocationItems = $allocation->allocation_items;
-                foreach ($allocationItems as $allocationItem) {
-                    if($allocationItem->id == $fomulaItem->value){
-                        $value = $allocationItem->text;
-                    }
-                }
-            }
-
-            $buffer['large_type'] = $fomulaHead->large_type;
-            $buffer['medium_type'] = $fomulaHead->medium_type;
-            $buffer['small_type'] = $fomulaHead->small_type;
-            $buffer['item_description'] = $fomulaHead->item_description;
-            $buffer['unit'] = !is_null($unit) ? $unit->name : '';
-            $buffer['value'] = $value;
-
-            $data[] = $buffer;
-        }
-        $this->set('data', $data);
-
-        $this->viewBuilder()->layout(false);
-    }
 }
