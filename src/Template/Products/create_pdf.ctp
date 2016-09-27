@@ -34,7 +34,7 @@ if(!is_null($product->evaluations[0]->compared_product_name)
 	&& strlen($product->evaluations[0]->compared_product_name) > 0 ){
 	$productNameComp = $product->evaluations[0]->compared_product_name;
 	$modelNumberComp = $product->evaluations[0]->compared_model_number;
-	$salesDateComp = $product->evaluations[0]->compared_sales_date->i18nFormat('yyyy', 'Asia/Tokyo', 'ja-JP').'年';
+	$salesDateComp = $product->evaluations[0]->compared_sales_date->i18nFormat('yyyy', 'Asia/Tokyo', 'ja-JP');
 }else{
  	$productNameComp = '新規設計目標値と比較';
 	$modelNumberComp = '';

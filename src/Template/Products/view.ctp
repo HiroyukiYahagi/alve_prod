@@ -79,7 +79,7 @@
                 <div class="col s3">
                     <label><?= __('発売年') ?></label>
                     <p>
-                        <?= $this->cell('DateTime', ['type'=> 'year', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render() ?>年
+                        <?= $this->cell('DateTime', ['type'=> 'year', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render() ?>
                     </p>
                 </div>
                 <?php else:?>
