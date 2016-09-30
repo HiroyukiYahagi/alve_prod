@@ -462,17 +462,21 @@ class ProductsController extends AppController
     }
 
     private function _savaAdvancedData($product, $data){
-        if(isset($data['register_date']) && strlen($data['register_date']) > 0 ){
-            $product->register_date = $data['register_date'];
-        }else{
+        if(isset($data['register_date']) && strlen($data['register_date']) == 0 ){
             return false;
         }
 
         if(isset($data['register_update_date']) && strlen($data['register_update_date']) > 0 ){
             $product->register_update_date = $data['register_update_date'];
+        }else{
+            if(isset($product->register_date)){
+                return false;
+            }
         }
 
+        $product->register_date = $data['register_date'];
         $this->Products->save($product);
+
         return true;
     }
 
@@ -654,14 +658,20 @@ EOF;
         }
 
         if($this->Products->save($product)){
-            return $this->redirect(['action' => 'finished']);
+            return $this->redirect(['action' => 'finished', $product->id]);
         }else{
             $this->Flash->error(__('システムエラーが発生しました。管理者に確認してください。'));
             return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
         }
     }
 
-    public function finished(){
+    public function finished($id){
+        $product = $this->Products->get($id);
+        if($product == null){
+            $this->Flash->error(__('不正なアクセスです'));
+            return $this->redirect(['controller' => 'Companies', 'action' => 'view']);
+        }
+        $this->set('product', $product);
     }
 
     private function _changeCompleted($evaluation, $shouldComplete)

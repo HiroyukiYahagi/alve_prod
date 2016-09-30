@@ -63,6 +63,10 @@ i.fa-sm{
 	font-size: 20px;
 }
 
+i.require,label.require {
+	color:red;
+}
+
 .content{
 	margin-bottom: 40px;
 }

@@ -123,10 +123,6 @@
                     <label><?= __('作業部門') ?></label>
                     <p><?php echo $product->operator_department;?></p>
                 </div>
-                <div class="col s4">
-                    <label><?= __('作業者Email') ?></label>
-                    <p><?php echo $product->operator_email;?></p>
-                </div>
             </div>
         </div>
     </div>
@@ -159,7 +155,7 @@
             <?= __('評価結果開示シート作成') ?>
         </h5>
         <blockquote>
-            評価結果開示シートに載せる項目にチェックを入れ、下の「作成」ボタンをクリックしてください。
+            評価結果開示シートに載せる項目にチェックを入れてください。
         </blockquote>
         <div class="card">
             <div class="card-content">

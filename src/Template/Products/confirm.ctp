@@ -57,6 +57,7 @@
             <div class="row">
             	<div class="col s12">
             		<button disabled id="submit" class="submit btn waves-effect waves-light green disabled" type="submit" data-action="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'publish', $product->id]);?>"><?= __('登録') ?></button>
+                     <a id="submit" class="submit btn waves-effect waves-light grey " href="<?php echo $this->Url->build(['controller' => 'Products', 'action' => 'view', $product->id]);?>"><?= __('キャンセル') ?></a>
                 </div>
             </div>
         </div>

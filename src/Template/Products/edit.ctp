@@ -19,7 +19,7 @@
                 <div class="card-content">
                     <div class="row">
                         <div class="col s12">
-                            <label><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品種別') ?></label>
+                            <label class="require"><i class="fa fa-star fa-with require" aria-hidden="true"></i><?= __('製品種別') ?></label>
                             <p><?php echo $type->type_name.$type->fomula.$type->purpose;?></p>
                             <input type="hidden" name="type_id" value="<?php echo $type->id;?>">
                         </div>
@@ -27,13 +27,13 @@
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <label for="product_name"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品名') ?></label>
+                            <label for="product_name" class="require"><i class="fa fa-star fa-with require" aria-hidden="true"></i><?= __('製品名') ?></label>
                             <input id="product_name" type="text" name="product_name" class="validate" required="true" value="<?php echo isset($product->product_name) ? $product->product_name: ''; ?>" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="model_number"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('型番') ?></label>
+                            <label for="model_number" class="require"><i class="fa fa-star fa-with require" aria-hidden="true"></i><?= __('型番') ?></label>
                             <input id="model_number" type="text" name="model_number" class="validate" required value="<?php echo isset($product->model_number) ? $product->model_number: ''; ?>"/>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12">     
-                            <label for="sales_date"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('発売日') ?></label>
+                            <label for="sales_date" class="require"><i class="fa fa-star fa-with require" aria-hidden="true"></i><?= __('発売日') ?></label>
                             <input id="sales_date" class="datepicker" type="date" name="sales_date" class="validate" required value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->sales_date) ? $product->sales_date : null ])->render();?>"/>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <div id="compared-option">
                         <div class="row">
                             <div class="input-field col s12">
-                                <label for="compared_product_name"><i class="fa fa-star fa-with" aria-hidden="true"></i><?= __('製品名') ?></label>
+                                <label for="compared_product_name" class="require"><i class="fa fa-star fa-with require" aria-hidden="true"></i><?= __('製品名') ?></label>
                                 <input id="compared_product_name" type="text" name="compared_product_name" class="validate" required value="<?php echo isset($product->evaluations[0]->compared_product_name) ? $product->evaluations[0]->compared_product_name: ''; ?>" />
                             </div>
                         </div>
@@ -117,7 +117,7 @@
 <!--                                 <input id="compared_sales_date" type="text" name="compared_sales_date" class="datepicker" value="<?= $this->cell('DateTime', ['type'=> 'date', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render();?>"/>  -->
 
                                 <select name="compared_sales_date">
-                                    <?php for ($i=date('Y') - 50 ; $i <= date('Y') + 2; $i++): ?>
+                                    <?php for ($i=date('Y') ; $i >= date('1954') ; $i--): ?>
                                         <option value="<?php echo $i;?>" <?php echo $i==$this->cell('DateTime', ['type'=> 'year', 'data' => isset($product->evaluations[0]->compared_sales_date) ? $product->evaluations[0]->compared_sales_date : null ])->render() ? 'selected': ''; ?> ><?php echo $i;?>年</option>
                                     <?php endfor; ?>
                                 </select>
@@ -153,14 +153,7 @@
                             <input id="operator_department" type="text" name="operator_department" class="validate" value="<?php echo isset($product->operator_department) ? $product->operator_department : '' ;?>" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <label for="operator_email">
-                                <?= __('作業者Email') ?>
-                            </label>
-                            <input id="operator_email" type="text" name="operator_email" class="validate" value="<?php echo isset($product->operator_email) ? $product->operator_email : '' ;?>"/>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -184,7 +177,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="product_comment"><?= __('製品説明') ?></label>
+                            <label for="product_comment"><?= __('製品説明（84字以内。評価結果開示シートに記載されます）') ?></label>
                             <textarea id="product_comment" class="materialize-textarea counted" type="text" name="product_comment" class="validate" length="84"><?php echo isset($product->product_comment) ? $product->product_comment: ''; ?></textarea>
                         </div>
                     </div>
@@ -198,7 +191,7 @@
                     <?php endif; ?>
                     <div class="row">
                         <div class="input-field col s12">     
-                            <label for="model_comment"><?= __('製品評価に関する備考（評価結果開示シートに記載されます）') ?></label>
+                            <label for="model_comment"><?= __('製品評価に関する備考（150字以内。評価結果開示シートに記載されます）') ?></label>
                             <textarea id="model_comment" class="materialize-textarea counted" type="text" name="model_comment" class="validate" length="150"><?php echo isset($product->model_comment) ? $product->model_comment: ''; ?></textarea>
                         </div>
                     </div>

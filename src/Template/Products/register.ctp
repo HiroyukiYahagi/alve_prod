@@ -62,7 +62,41 @@
                                 </p>
                             </div>
                         </div>
+                                        
+                                                <div class="row">
+                                                        <div class="col s12">
+                                                                <label>
+                                                                        <?= __('製品説明') ?>
+                                                                </label>
+                                                                <p><?php echo $product->product_comment;?></p>
+                                                        </div>
+                                                </div>
+                                                <?php if(isset($product->update_comment) && strlen($product->update_comment) ): ?>
+                                                <div class="row">
+                                                        <div class="col s12">
+                                                                <label>
+                                                                        <?= __('登録更新内容') ?>
+                                                                </label>
+                                                                <p><?php echo $product->update_comment;?></p>
+                                                        </div>
+                                                </div>
+                                                <?php endif; ?>
+                                                <div class="row">
+                                                        <div class="col s4">
+                                                                <label>
+                                                                        <?= __('製品HP URL') ?>
+                                                                </label>
+                                                                <p><?php echo $product->product_info_url;?></p>
+                                                        </div>
+                                                        <div class="col s4">
+                                                                <label><?= __('製品問い合わせTEL') ?></label>
+                                                                <p>
+                                                                        <?php echo isset($product->product_tel) ? $product->product_tel: ''; ?>
+                                                                </p>
+                                                        </div>
+                                                </div>
                     </div>
+
                 </div>
                 <hr/>
                 <?php if($evaluation_type): ?>
@@ -92,7 +126,16 @@
                                     <?= $this->cell('DateTime', ['type'=> 'year', 'data' => $product->evaluations[0]->compared_sales_date])->render();?>
                                 </p>
                             </div>
+                                                </div>
+                                                <div class="row">
+                            <div class="col s4">
+                                <label>
+                                    <?= __('製品HP URL') ?>
+                                </label>
+                                <p><?php echo $product->evaluations[0]->compared_url;?></p>
+                            </div>
                         </div>
+                                                
                     </div>
                 </div>
                 <?php else: ?>
@@ -110,60 +153,7 @@
                 </div>
                 <?php endif; ?>
 
-                <div class="row">
-                    <div class="col s12">
-                        <label>
-                            <?= __('製品説明') ?>
-                        </label>
-                        <p><?php echo $product->product_comment;?></p>
-                    </div>
-                </div>
-                <?php if(isset($product->update_comment) && strlen($product->update_comment) ): ?>
-                <div class="row">
-                    <div class="col s12">
-                        <label>
-                            <?= __('登録更新内容') ?>
-                        </label>
-                        <p><?php echo $product->update_comment;?></p>
-                    </div>
-                </div>
-                <?php endif; ?>
-                <div class="row">
-                    <div class="col s4">
-                        <label>
-                            <?= __('製品HP URL') ?>
-                        </label>
-                        <p><?php echo $product->product_info_url;?></p>
-                    </div>
-                    <div class="col s4">
-                        <label><?= __('製品問い合わせTEL') ?></label>
-                        <p>
-                            <?php echo isset($product->product_tel) ? $product->product_tel: ''; ?>
-                        </p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col s12">
-                        <h6>
-                            <?= __('お問い合わせ') ?>
-                        </h6>
-                        <div class="row">
-                            <div class="col s6">
-                                <label>
-                                    <?= __('URL') ?>
-                                </label>
-                                <p><?php echo $product->company->tel;?></p>
-                            </div>
-                            <div class="col s6">
-                                <label>
-                                    <?= __('TEL') ?>
-                                </label>
-                                <p><?php echo $product->company->url;?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

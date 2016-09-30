@@ -53,7 +53,7 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
                     <form method="get" action="<?php echo $this->Url->build(["controller" => "Products", "action" => "search" ]);?>">
                         <div class="card-content">
                             <div class="row">
-                                <div class="input-field col s12">
+                                <div class="input-field col s12" style="width:650px;">
                                     <select id="options" multiple name="options[]">
                                         <option value="" disabled selected><?= __('製品種別を選択してください') ?></option>
                                         <?php foreach ($types as $type):?>
@@ -66,9 +66,10 @@ $cakeDescription = 'Alve -環境配慮バルブ検索システム-';
                                     </select>
                                     <label><?= __('製品種別') ?></label>
                                 </div>
+                            <button class="btn waves-effect waves-light green" style="float:right; margin-right:30px; margin-top:20px;width:120px;" type="submit" name="action"><?= __('検索') ?></button>
                             </div>
 
-                            <button class="btn waves-effect waves-light green" type="submit" name="action"><?= __('検索') ?></button>
+                            
                         </div>
                     </form>
                 </div>
